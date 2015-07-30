@@ -1,0 +1,84 @@
+digraph
+{
+    title [ fontcolor="black", label = "mulle_aba\nState transitions\n(c) 2015 Mulle kybernetiK / Nat!" shape="none"];
+
+	0 [];
+	1 [ style=filled, fillcolor="cadetblue1", penwidth=1.75 ];
+	2 [ fontcolor="red"  ];
+	3 [ style=filled, fillcolor="cadetblue1", fontcolor="red" , penwidth=1.75 ];
+
+	5 [ style=filled, fillcolor="cadetblue3", penwidth=1.75 ];
+
+	7 [ style=filled, fillcolor="cadetblue3", fontcolor="red", penwidth=1.75 ];
+
+	9  [ style=filled, fillcolor="wheat2", penwidth=1.75  ];
+
+	11 [ style=filled, fillcolor="wheat2", fontcolor="red", penwidth=1.75 ];
+
+	12 [ style=filled, fillcolor="goldenrod2" ];
+	13 [ style=filled, fillcolor="goldenrod2", penwidth=1.75 ];
+	14 [ style=filled, fillcolor="goldenrod2", fontcolor="red" ];
+	15 [ style=filled, fillcolor="goldenrod2", fontcolor="red", penwidth=1.75 ];
+
+	0 -> 2  [color="gray"];
+
+	1 -> 3  [color="gray"];
+	1 -> 1	[color ="deeppink1"];
+	1 -> 1	[color="forestgreen"];
+
+	2 -> 0	[color="gray"];
+        2 -> 1	[color="blue"];
+
+	3 -> 1  [color="gray"];
+        3 -> 9	[color="blue"];
+        3 -> 2	[color="dodgerblue"];
+	3 -> 3	[color="deeppink1"];
+	3 -> 3	[color="forestgreen"];
+
+	5 -> 7	[color="gray"];
+	5 -> 5	[color ="deeppink1"];
+	5 -> 5	[color="forestgreen"];
+
+	7 -> 5	[color="gray"];
+	7 -> 13	[color="blue"];
+	7 -> 2	[color="dodgerblue"];
+	7 -> 7	[color ="deeppink1"];
+	7 -> 7	[color="forestgreen"];
+
+	9 -> 11  [color="gray"];
+	9 -> 9  [color="deeppink1"];
+	9 -> 12  [color="forestgreen"];
+
+
+	11 -> 9		[color="gray"];
+	11 -> 9 	[color="blue"];
+	11 -> 1		[color="dodgerblue"];
+	11 -> 9		[color="dodgerblue"];
+	11 -> 9		[color ="deeppink1"];
+	11 -> 12	[color="forestgreen"];
+
+	12 -> 14	[color="gray"];
+	12 -> 13	[color ="deeppink1"];
+	12 -> 12	[color="forestgreen"];
+
+	13 -> 15	[color="gray"];
+	13 -> 13	[color ="deeppink1"];
+	13 -> 12	[color="forestgreen"];
+
+	14 -> 12	[color="gray"];
+	14 -> 13	[color="blue"];
+	14 -> 5		[color="dodgerblue"];
+	14 -> 13	[color="dodgerblue"];
+	14 -> 13	[color="deeppink1"];
+	14 -> 14	[color="forestgreen"];
+
+	15 -> 13	[color="blue"];
+	15 -> 13	[color="gray"];
+	15 -> 5		[color="dodgerblue"];
+	15 -> 13	[color="dodgerblue"];
+	15 -> 13	[color ="deeppink1"];
+	15 -> 12	[color="forestgreen"];
+
+
+    comment [ fontcolor="gray", label = "Legend:\nlightblue : singlethreaded timestamp=0\ngrayblue : singlethreaded\nbeige=multithreaded timestamp=0\ngold : multithreaded\nfat stroke : bit set\nred number : locked \npink : checkin\ngreen : free\ndarkblue : register\nlightblue : unregister\ngray : lock/unlock", shape="none"];
+};

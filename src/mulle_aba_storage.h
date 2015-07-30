@@ -1,0 +1,485 @@
+//
+//  mulle_aba_storage.c
+//  mulle-aba
+//
+//  Created by Nat! on 19.03.15.
+//  Copyright (c) 2015 Mulle kybernetiK. All rights reserved.
+//
+//  Redistribution and use in source and binary forms, with or without
+//  modification, are permitted provided that the following conditions are met:
+//
+//  Redistributions of source code must retain the above copyright notice, this
+//  list of conditions and the following disclaimer.
+//
+//  Redistributions in binary form must reproduce the above copyright notice,
+//  this list of conditions and the following disclaimer in the documentation
+//  and/or other materials provided with the distribution.
+//
+//  Neither the name of Mulle kybernetiK nor the names of its contributors
+//  may be used to endorse or promote products derived from this software
+//  without specific prior written permission.
+//
+//  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+//  AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+//  IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+//  ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE
+//  LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+//  CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+//  SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+//  INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+//  CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+//  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+//  POSSIBILITY OF SUCH DAMAGE.
+//
+
+#ifndef mulle_aba_storage_h__
+#define mulle_aba_storage_h__
+
+#include "mulle_callback_types.h"
+#include "mulle_aba_linked_list.h"
+#include "mulle_aba_defines.h"
+
+#include <assert.h>
+#include <pthread.h>
+#include <stdint.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#if DEBUG
+enum
+{
+   _mulle_aba_world_memtype             = 0xB16B16B1,
+   _mulle_aba_timestamp_storage_memtype = 0x10011001,
+   _mulle_aba_timestamp_entry_memtype   = 0x00011000,
+   _mulle_aba_linked_list_entry_memtype = 0x5a775a77
+};
+#endif
+
+void   _mulle_aba_linked_list_entry_set( struct _mulle_aba_linked_list_entry *entry,
+                                        void *owner,
+                                        void *pointer,
+                                        void (*free)( void *, void *));
+
+static inline void _mulle_aba_linked_list_entry_free( struct _mulle_aba_linked_list_entry *entry,
+                                                     struct _mulle_allocator *allocator)
+{
+   (*allocator->free)( entry);
+}
+
+void   _mulle_aba_linked_list_print( struct _mulle_aba_linked_list *p);
+
+# pragma mark -
+# pragma mark _mulle_aba_timestamp_entry
+
+struct _mulle_aba_timestamp_entry
+{
+   mulle_atomic_ptr_t              _retain_count_1;  // really an inptr_t ...
+#if DEBUG
+   uintptr_t                       _memtype;
+#endif
+   struct _mulle_aba_linked_list   _block_list;
+};
+
+
+# pragma mark -
+# pragma mark _mulle_aba_timestamp_storage
+
+#if DEBUG
+enum
+{
+   _mulle_aba_timestamp_storage_n_entries = 2
+};
+#else
+enum
+{
+   _mulle_aba_timestamp_storage_n_entries = sizeof( uintptr_t) * 8
+};
+#endif
+
+struct _mulle_aba_timestamp_storage
+{
+   mulle_atomic_ptr_t                  _usage_bits;
+#if DEBUG
+   uintptr_t                           _memtype;
+#endif
+   struct _mulle_aba_timestamp_entry   _entries[ _mulle_aba_timestamp_storage_n_entries];
+};
+
+
+struct _mulle_aba_timestamp_storage *_mulle_aba_timestamp_storage_alloc( struct _mulle_allocator *allocator);
+
+
+static inline unsigned int
+   _mulle_aba_timestamp_storage_get_usage_bit( struct _mulle_aba_timestamp_storage *ts_storage,
+                                               unsigned int index)
+{
+   uintptr_t   usage;
+   
+   usage = (uintptr_t) _mulle_atomic_read_pointer( &ts_storage->_usage_bits);
+   return( (usage & (1UL << index)) ? 1 : 0);
+}
+
+
+extern char  *pthread_name( void);
+
+
+static inline int   _mulle_aba_timestamp_storage_set_usage_bit( struct _mulle_aba_timestamp_storage *ts_storage, unsigned int index, int bit)
+{
+   uintptr_t   i_mask;
+   uintptr_t   usage;
+   uintptr_t   expect;
+   
+   do
+   {
+      usage  = (uintptr_t) _mulle_atomic_read_pointer( &ts_storage->_usage_bits);
+      expect = usage;
+      i_mask = 1UL << index;
+      usage  = (usage & ~(i_mask)) | (bit ? i_mask : 0);
+      UNPLEASANT_RACE_YIELD();
+   }
+   while( ! _mulle_atomic_compare_and_swap_pointer( &ts_storage->_usage_bits, (void *) usage, (void *) expect));
+   
+#if TRACE
+   fprintf( stderr, "%s: set usage bit (%d/%d) for storage %p: %p -> %p\n", pthread_name(), index, bit, ts_storage, (void *) expect, (void *) usage);
+#endif
+   
+   return( usage != 0);
+}
+
+
+static inline unsigned int  mulle_aba_timestamp_storage_get_timestamp_index( uintptr_t timestamp)
+{
+   return( (unsigned int)( timestamp % _mulle_aba_timestamp_storage_n_entries));
+}
+
+
+static inline struct _mulle_aba_timestamp_entry  *_mulle_aba_timestamp_storage_get_timestamp_entry( struct _mulle_aba_timestamp_storage *ts_storage, uintptr_t timestamp)
+{
+   return( &ts_storage->_entries[ mulle_aba_timestamp_storage_get_timestamp_index( timestamp)]);
+}
+
+
+static inline struct _mulle_aba_timestamp_entry  *_mulle_aba_timestamp_storage_get_timestamp_entry_at_index( struct _mulle_aba_timestamp_storage *ts_storage, unsigned int index)
+{
+   assert( index >= 0 && index < _mulle_aba_timestamp_storage_n_entries);
+   return( &ts_storage->_entries[ index]);
+}
+
+void   __mulle_aba_timestamp_storage_free( struct _mulle_aba_timestamp_storage *ts_storage, struct _mulle_allocator *allocator);
+
+void   _mulle_aba_timestamp_storage_free( struct _mulle_aba_timestamp_storage *ts_storage, struct _mulle_allocator *allocator);
+
+
+
+
+// the _mulle_aba_world_pointer_t combines a bit and the struct pointer
+// to the world
+typedef struct _mulle_aba_world_pointer_t  *_mulle_aba_world_pointer_t;
+
+struct _mulle_aba_world_pointers
+{
+   _mulle_aba_world_pointer_t             new_world_p;
+   _mulle_aba_world_pointer_t             old_world_p;
+   struct _mulle_aba_linked_list_entry    *free_worlds;
+};
+
+struct _mulle_aba_world;
+
+# pragma mark -
+# pragma mark _mulle_aba_world_pointer_t
+
+static inline _mulle_aba_world_pointer_t   mulle_aba_world_pointer_set_lock( _mulle_aba_world_pointer_t p_world, int bit)
+{
+   return( (void *) ( ((intptr_t) p_world & ~0x2) | (bit ? 0x2 : 0x0)));
+}
+
+
+static inline int   mulle_aba_world_pointer_get_lock( _mulle_aba_world_pointer_t p_world)
+{
+   return( ((intptr_t) p_world & 0x2) ? 1 : 0);
+}
+
+
+static inline _mulle_aba_world_pointer_t   mulle_aba_world_pointer_set_bit( _mulle_aba_world_pointer_t p_world, int bit)
+{
+   assert( bit >= 0 && bit <= 1);
+   return( (void *) ( ((intptr_t) p_world & ~0x1) | bit));
+}
+
+
+static inline int   mulle_aba_world_pointer_get_bit( _mulle_aba_world_pointer_t p_world)
+{
+   return( ((intptr_t) p_world & 0x1));
+}
+
+
+static inline _mulle_aba_world_pointer_t   *mulle_aba_world_pointer_set_struct( _mulle_aba_world_pointer_t p_world, struct _mulle_aba_world *world)
+{
+   assert( ! ((intptr_t) world & 0x3));
+   return( (void *) (((intptr_t) p_world & 0x3) | (intptr_t) world));
+}
+
+
+static inline struct _mulle_aba_world   *mulle_aba_world_pointer_get_struct( _mulle_aba_world_pointer_t p_world)
+{
+   return( (void *) ((intptr_t) p_world & ~0x3));
+}
+
+
+static inline _mulle_aba_world_pointer_t   mulle_aba_world_pointer_make( struct _mulle_aba_world *world, int bits)
+{
+   assert( bits >= 0 && bits <= 3);
+   assert( ! ((intptr_t) world & 0x3));
+   
+   return( (void *) ((intptr_t) world | bits));
+}
+
+
+static inline struct _mulle_aba_world_pointers  _mulle_aba_world_pointers_make( _mulle_aba_world_pointer_t new_world_p, _mulle_aba_world_pointer_t old_world_p)
+{
+   assert( (! new_world_p && ! old_world_p) || (mulle_aba_world_pointer_get_struct( new_world_p) && mulle_aba_world_pointer_get_struct( old_world_p)));
+   
+   return( (struct _mulle_aba_world_pointers) { .new_world_p = new_world_p, .old_world_p = old_world_p });
+}
+
+
+int   _mulle_aba_world_pointer_state( _mulle_aba_world_pointer_t world_p);
+
+# pragma mark -
+# pragma mark _mulle_aba_world
+
+struct _mulle_aba_world
+{
+   struct _mulle_aba_world               *_next;           // chain, used when deallocing/dealloced
+   
+#if DEBUG
+   uintptr_t                             _memtype;
+   uintptr_t                             _generation;      // debugging
+#endif
+   uintptr_t                             _timestamp;       // current timestamp
+   uintptr_t                             _n_threads;       // currently active threads
+   
+   // storage for registered threads
+   uintptr_t                             _offset;          // _min_timestamp / _mulle_aba_timestamp_storage_n_entries
+   unsigned int                          _size;            // storage of timestamp, rc, blocks
+   unsigned int                          _n;
+   struct _mulle_aba_timestamp_storage   *_storage[];
+};
+
+
+
+struct _mulle_aba_timestamp_storage   *
+_mulle_aba_world_pop_storage( struct _mulle_aba_world *world);
+
+int  _mulle_aba_world_push_storage( struct _mulle_aba_world *world,
+                                    struct _mulle_aba_timestamp_storage *ts_storage);
+
+void   _mulle_aba_world_rotate_storage( struct _mulle_aba_world *world);
+
+unsigned int
+   _mulle_aba_world_get_timestamp_storage_index( struct _mulle_aba_world *world,
+                                                 uintptr_t timestamp);
+
+struct _mulle_aba_timestamp_storage *
+   _mulle_aba_world_get_timestamp_storage( struct _mulle_aba_world *world,
+                                           uintptr_t timestamp);
+
+static inline struct _mulle_aba_timestamp_storage  *
+   _mulle_aba_world_get_timestamp_storage_at_index( struct _mulle_aba_world *world,
+                                                    unsigned int ts_index)
+{
+   struct _mulle_aba_timestamp_storage  *ts_storage;
+   
+   assert( ts_index != -1 && ts_index < world->_n);
+   ts_storage = world->_storage[ ts_index];
+   assert( ts_storage);
+   return( ts_storage);
+}
+
+struct _mulle_aba_timestamp_entry   *
+   _mulle_aba_world_get_timestamp_entry( struct _mulle_aba_world *world,
+                                         uintptr_t timestamp);
+
+#pragma mark -
+#pragma mark _mulle_aba_storage
+
+struct _mulle_aba_storage
+{
+   mulle_atomic_ptr_t              _world;  // really a _mulle_aba_world_pointer_t
+#if DEBUG
+   uintptr_t                       _memtype;
+#endif
+   struct _mulle_allocator         _allocator;
+   struct _mulle_aba_linked_list   _leaks;
+   struct _mulle_aba_linked_list   _free_entries;
+   struct _mulle_aba_linked_list   _free_worlds;
+};
+
+
+# pragma mark -
+# pragma mark storage init/done
+
+int   _mulle_aba_storage_init( struct _mulle_aba_storage *q,
+                               struct _mulle_allocator *allocator);
+
+void   _mulle_aba_storage_done( struct _mulle_aba_storage *q);
+
+
+
+# pragma mark -
+# pragma mark world init/free
+
+struct _mulle_aba_linked_list_entry  *
+   _mulle_aba_storage_alloc_linked_list_entry( struct _mulle_aba_storage *q);
+
+static inline void   _mulle_aba_storage_free_linked_list_entry( struct _mulle_aba_storage *q,
+                                                                struct _mulle_aba_linked_list_entry  *entry)
+{
+   memset( entry, 0, sizeof( *entry));
+   _mulle_aba_linked_list_add( &q->_free_entries, (void *) entry);
+}
+
+
+struct _mulle_aba_world  *_mulle_aba_storage_alloc_world( struct _mulle_aba_storage *q,
+                                                          unsigned int size);
+void   _mulle_aba_storage_free_world( struct _mulle_aba_storage *q,
+                                      struct _mulle_aba_world *world);
+
+void   _mulle_aba_world_sanity_assert( struct _mulle_aba_world *world);
+
+static inline _mulle_aba_world_pointer_t   _mulle_aba_storage_get_world_pointer( struct _mulle_aba_storage *q)
+{
+   _mulle_aba_world_pointer_t   world_p;
+   extern char  *pthread_name( void);
+   
+   // if your thread isn't registered yet, you must not read the struct
+   // it may be dealloced already
+   world_p = (_mulle_aba_world_pointer_t) _mulle_atomic_read_pointer( &q->_world);
+#if TRACE
+   fprintf( stderr, "%s: read world as %p\n", pthread_name(), world_p);
+#endif
+   return( world_p);
+}
+
+
+static inline void   _mulle_aba_storage_add_leak_world( struct _mulle_aba_storage *q,
+                                                        struct _mulle_aba_world *orphan)
+{
+   struct _mulle_aba_linked_list_entry   *entry;
+
+   entry = _mulle_aba_storage_alloc_linked_list_entry( q);
+   if( ! entry)
+      abort();   // TODO:  weak ENOMEM handling
+
+   _mulle_aba_linked_list_entry_set( entry, q, orphan, (void *) _mulle_aba_storage_free_world);
+   _mulle_aba_linked_list_add( &q->_leaks, (void *) entry);
+#if TRACE
+   fprintf( stderr, "%s: add leak world %p to storage %p\n", pthread_name(), orphan, q);
+#endif
+}
+
+
+void   _mulle_aba_storage_free_leak_worlds( struct _mulle_aba_storage *q);
+void   _mulle_aba_storage_free_leak_entries( struct _mulle_aba_storage *q);
+
+
+# pragma mark -
+# pragma mark world atomic world changes
+
+enum _mulle_swap_intent
+{
+   _mulle_swap_register_intent,
+   _mulle_swap_unregister_intent,
+   _mulle_swap_free_intent,
+   _mulle_swap_checkin_intent,
+   _mulle_swap_lock_intent,
+   _mulle_swap_unlock_intent
+};
+
+
+enum
+{
+   _mulle_aba_world_modify,
+   _mulle_aba_world_reuse,
+   _mulle_aba_world_discard  // always returns 0
+};
+
+
+struct _mulle_aba_callback_info
+{
+   struct _mulle_aba_world   *new_world;
+   struct _mulle_aba_world   *old_world;
+   int                       old_bit;
+   int                       new_bit;
+   int                       old_locked;
+   int                       new_locked; // only used by copy_change_world for now
+};
+
+
+_mulle_aba_world_pointer_t
+_mulle_aba_storage_try_set_lock_world_pointer( struct _mulle_aba_storage *q,
+                                               _mulle_aba_world_pointer_t old_world_p,
+                                               int bit);
+
+
+static inline _mulle_aba_world_pointer_t
+_mulle_aba_storage_try_lock_world_pointer( struct _mulle_aba_storage *q,
+                                           _mulle_aba_world_pointer_t old_world_p)
+{
+   return( _mulle_aba_storage_try_set_lock_world_pointer( q, old_world_p, 1));
+}
+
+static inline _mulle_aba_world_pointer_t
+_mulle_aba_storage_try_unlock_world_pointer( struct _mulle_aba_storage *q,
+                                             _mulle_aba_world_pointer_t old_world_p)
+{
+   return( _mulle_aba_storage_try_set_lock_world_pointer( q, old_world_p, 0));
+}
+
+
+
+struct _mulle_aba_world_pointers
+_mulle_aba_storage_change_world_pointer_2( struct _mulle_aba_storage *q,
+                                           enum _mulle_swap_intent intention,
+                                           _mulle_aba_world_pointer_t  old_world_p,
+                                           int (*callback)( int, struct _mulle_aba_callback_info *, void *),
+                                           void *userinfo);
+
+struct _mulle_aba_world_pointers
+_mulle_aba_storage_change_world_pointer( struct _mulle_aba_storage *q,
+                                         enum _mulle_swap_intent intention,
+                                         _mulle_aba_world_pointer_t  old_world_p,
+                                         int (*callback)( int, struct _mulle_aba_callback_info *, void *),
+                                         void *userinfo);
+
+struct _mulle_aba_world_pointers
+_mulle_aba_storage_copy_lock_world_pointer( struct _mulle_aba_storage *q,
+                                            int (*callback)( int, struct _mulle_aba_callback_info *, void *),
+                                            void *userinfo,
+                                            struct _mulle_aba_world **dealloced);
+
+struct _mulle_aba_world_pointers
+_mulle_aba_storage_copy_change_world_pointer( struct _mulle_aba_storage *q,
+                                              enum _mulle_swap_intent intention,
+                                              _mulle_aba_world_pointer_t old_world_p,
+                                              int (*callback)( int, struct _mulle_aba_callback_info *, void *),
+                                              void *userinfo);
+
+struct _mulle_aba_world_pointers
+_mulle_aba_storage_grow_world_pointer( struct _mulle_aba_storage *q,
+                                       unsigned int target_size,
+                                       int (*callback)( int, struct _mulle_aba_callback_info *, void *),
+                                       void *userinfo);
+
+
+void   _mulle_aba_world_check_timerange( struct _mulle_aba_world *world,
+                                         uintptr_t old,
+                                         uintptr_t new,
+                                         struct _mulle_aba_storage *q);
+
+unsigned int  _mulle_aba_world_reuse_storages( struct _mulle_aba_world *world);
+unsigned int  _mulle_aba_world_available_count_reusable_storages( struct _mulle_aba_world *world);
+
+
+#endif /* defined(__test_delayed_deallocator_storage__delayed_deallocator_storage__) */

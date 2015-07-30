@@ -1,0 +1,29 @@
+digraph
+{
+	
+	"process start" -> "mulle_aba_init"      [color="red"];
+
+	"mulle_aba_init" 			 [color="goldenrod3"];
+	"mulle_aba_init" ->  "thread create"     [color="goldenrod3"];
+	"mulle_aba_init" ->  "thread create"     [color="goldenrod3"];
+	"mulle_aba_done" 			 [color="goldenrod3"];
+	"mulle_aba_done" ->  "process end"       [color="red"];
+	"mulle_aba_done" ->  "mulle_aba_init"    [color="red"];
+
+	"thread join" -> "mulle_aba_done"        [color="goldenrod3"];
+	"thread join" -> "mulle_aba_done"        [color="goldenrod3"];
+	"thread create" ->  "mulle_aba_register" [color="red"];
+
+	"mulle_aba_register" [color="blue"];
+	"mulle_aba_register" -> "mulle_aba_checkin";
+	"mulle_aba_register" -> "mulle_aba_free";
+	"mulle_aba_free" -> "mulle_aba_checkin";
+	"mulle_aba_checkin" -> "mulle_aba_free";
+	"mulle_aba_checkin" -> "mulle_aba_unregister";
+	"mulle_aba_free" -> "mulle_aba_unregister";
+	"mulle_aba_register" -> "mulle_aba_unregister";
+	"mulle_aba_unregister" -> "mulle_aba_register" [color="purple"];
+
+	"mulle_aba_unregister" ->  "thread join" [color="purple"];
+
+}
