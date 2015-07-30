@@ -1,0 +1,7 @@
+.DS_Store
+*[Bb]uild/
+.idea/
+mintomic/
+
+xcuserdata/
+project.xcworkspace/
