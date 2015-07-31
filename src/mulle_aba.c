@@ -50,6 +50,7 @@ extern char  *pthread_name( void);
 
 static pthread_key_t   timestamp_thread_key;
 struct _mulle_aba      *global;
+struct _mulle_aba      global_space;
 
 static int   _mulle_aba_unregister_thread( struct _mulle_aba *p, pthread_t thread);
    
@@ -1062,6 +1063,12 @@ void   mulle_aba_unregister()
 
 void   mulle_aba_init( struct _mulle_allocator *allocator)
 {
+   if( ! allocator)
+      allocator = &mulle_malloc_allocator;
+      
+   if( ! global)
+      global = &global_space;
+   
    assert( global);
    if( _mulle_aba_init( global, allocator, sched_yield))
    {
