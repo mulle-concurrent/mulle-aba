@@ -27,20 +27,30 @@ Edge style
 
 ## mulle_aba_init
 
-`void mulle_aba_init( struct _mulle_aba *aba)`
+`void mulle_aba_init( struct _mulle_allocator *allocator)`
 
 *Available in state 1 (red)*
 
-Call this function to initialize **mulle-aba**. Don't call any other **mulle-aba** function before calling this. In terms of the diagram you are in State 1 (red).
+Call this function to initialize **mulle-aba**. Don't call any other **mulle-aba** function before calling this. In terms of the diagram you are in State 1 (red). The allocator 
+will be used to allocate memory for the **mulle-aba** system. It is a struct
+defined like this:
+
+```
+struct _mulle_allocator
+{
+   void   *(*calloc)( size_t, size_t);
+   void   (*free)( void *);
+};
+```
+
+If you pass in NULL, standard `calloc` and `free` will be used.
 
 This function is not thread safe (red).
 
 Ex.
 
 ```
-static struct _mulle_aba   my_aba;
-
-mulle_aba_init( &aba);
+mulle_aba_init( NULL);
 ```
 
 
