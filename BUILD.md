@@ -14,27 +14,27 @@
 
 **mulle-aba** needs [mintomic](https://mintomic.github.io/) as a prerequisite. Install it in the top directory besides <tt>src</tt> and <tt>dox</tt>.
 
-~~~
+```
 git clone https://github.com/mintomic/mintomic
-~~~
+```
 
 ## Building
 
 ### With cmake
 
-~~~
+```
 mkdir build
 cd build
 cmake ..
 make
-~~~
+```
 
 
 ### With Xcode
 
-~~~
+```
 xcodebuild -alltargets  
-~~~
+```
 
 
 ### Compile Flags
