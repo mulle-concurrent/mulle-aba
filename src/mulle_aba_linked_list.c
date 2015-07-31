@@ -73,8 +73,6 @@ void  _mulle_aba_linked_list_add( struct _mulle_aba_linked_list *list,
       assert( head != entry);
       
       UNPLEASANT_RACE_YIELD();
-      // now eons may have gone by, other threads have also taken the list
-      // head pointer used it and placed it back, no problem
       entry->_next = head;
    }
    while( ! _mulle_atomic_compare_and_swap_pointer( &list->_head, entry, head));

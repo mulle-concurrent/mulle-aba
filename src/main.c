@@ -174,10 +174,7 @@ static void   reset_memory()
 #if TRACE
          fprintf( stderr, "%s: leak %p\n", pthread_name(), p);
 #endif
-#if DEBUG
          abort();
-#endif
-         free( p);
       }
    }
    _pointer_array_enumerator_done( &rover);

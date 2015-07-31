@@ -16,11 +16,11 @@ if (CMAKE_CXX_COMPILER_ID MATCHES "AppleClang")
 endif()
 
 
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O0 -g -DDEBUG -DTRACE_LIST -DTRACE_SWAP")
-#set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O3 -g")
+#set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O0 -g -DDEBUG -DTRACE_LIST -DTRACE_SWAP")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O3 -g -DNDEBUG")
 
 
-add_library(mulle-aba
+add_library(mulle_aba
 src/mulle_callback_types.c
 src/mulle_aba_linked_list.c
 src/mulle_aba_storage.c
@@ -29,12 +29,18 @@ mintomic/src/mintomic/mintomic_gcc.c
 )
 
 
-add_executable(mulle-aba-test
+add_executable(mulle_aba_test
 src/main.c)
 
+add_executable(mulle_aba_ll_test
+src/ll_main.c)
+
 include_directories( AFTER SYSTEM mintomic/include)
-target_include_directories( mulle-aba-test PUBLIC mintomic/include)
+target_include_directories( mulle_aba_test PUBLIC mintomic/include)
+target_include_directories( mulle_aba_ll_test PUBLIC mintomic/include)
 
 link_directories(${CMAKE_BINARY_DIR})
-target_link_libraries( mulle-aba-test LINK_PUBLIC mulle-aba
+target_link_libraries( mulle_aba_test LINK_PUBLIC mulle_aba
+pthread)
+target_link_libraries( mulle_aba_ll_test LINK_PUBLIC mulle_aba
 pthread)

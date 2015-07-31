@@ -45,14 +45,6 @@
 struct _mulle_aba_linked_list_entry
 {
    struct _mulle_aba_linked_list_entry   *_next;
-   
-#if DEBUG
-   uintptr_t   _memtype;
-#endif
-   
-   void   (*_free)( void *, void *);  // owner, pointer
-   void   *_owner;
-   void   *_pointer;
 };
 
 
