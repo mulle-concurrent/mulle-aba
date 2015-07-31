@@ -1,5 +1,8 @@
 # mulle_aba
 
+
+*** THIS IS SOME STUFF THAT WILL BE PART OF SOME PROPER EXPLANATION LATER. INCOMPLETE ***
+
 #### Why it is needed
 
 Assume you have a program running with 4 threads each accessing the same memory referenced through a pointer.
@@ -46,7 +49,7 @@ How can that happen ? When you `free` old. This memory block is again up for gra
 
 Second it may crash. Assume that the code is freed, just as another thread has just accessed it. The `strcmp` may then access invalid memory and crash.
 
-This problem is the the [ABA problem](https://en.wikipedia.org/wiki/ABA_problem)
+This problem is called the [ABA problem](https://en.wikipedia.org/wiki/ABA_problem)
 
 #### How it works
 
@@ -72,8 +75,7 @@ Why is that ? Because whenever the value may decrease, due to a thread checking 
 
 Whenever a memory block is added to the delayed storage, the retain count must be saved alongside it. This is actually the complicated part, because threads will be freeing stuff and checking in and out uncontrollably, and we can't use a semaphore to synchronize.
 
-What you do, like in any other block free algorithm is to build up a world.
-
+**** THEORY OF A WORLD NEEDS TO BE EXPLAINED ****
 
 #### Basic Assumptions
 
@@ -82,13 +84,10 @@ What you do, like in any other block free algorithm is to build up a world.
 * it is assumed that malloc/calloc is lock-free (mullocator ? :)
 
 
-#### Rules
+#### Misc
 
 * If running single threaded resources are freed immediately.
 
-* When in no-thread or single-threaded mode, the world does not change.
- Why ? Assume we have a world that gets copied, the old world gets freed immediately. A thread that just registers will access invalid memory. But it's not true, the #threads change. 
- 
  * Getting rid of worlds, is not easy. A world can be accessed by threads, that aren't registered yet. Therefore their retain count is by priniciple unknown (!). Therefore you first need to register to access the world pointer(!)
  
 

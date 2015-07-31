@@ -117,7 +117,7 @@ static int   _mulle_lockfree_deallocator_free_world_chain( struct _mulle_aba *p,
 #if TRACE || TRACE_FREE
       fprintf( stderr,  "\n%s: *** free world delayed %p\n", pthread_name(), tofree);
 #endif
-      next = tofree->_next;
+      next = (struct _mulle_aba_world *) tofree->_link._next;
       assert( next != tofree);
       
       UNPLEASANT_RACE_YIELD();
@@ -155,7 +155,7 @@ static int   _mulle_lockfree_deallocator_free_world_if_needed( struct _mulle_aba
       return( 0);
    }
 
-   assert( ! old_world->_next);
+   assert( ! old_world->_link._next);
    return( _mulle_aba_thread_free_block( p, thread, p, old_world, (void *) _mulle_aba_storage_free_world));
 }
 
@@ -382,7 +382,7 @@ static int   remove_thread( int mode, struct _mulle_aba_callback_info  *info, vo
    info->new_bit             = 0;
    info->new_locked          = 1;
    
-   assert( ! info->new_world->_next);
+   assert( ! info->new_world->_link._next);
    return( 0);
 }
 
@@ -420,7 +420,7 @@ static int   _mulle_aba_unregister_thread( struct _mulle_aba *p, pthread_t threa
       fprintf( stderr, "%s: ::: final check in %ld-%ld\n", pthread_name(), old, new);
 #endif
 #ifndef NDEBUG
-      _mulle_aba_world_sanity_assert( old_world);
+      _mulle_aba_world_assert_sanity( old_world);
 #endif
       
       /* something to do ? */
@@ -438,12 +438,12 @@ static int   _mulle_aba_unregister_thread( struct _mulle_aba *p, pthread_t threa
             return( rval);
          
 #ifndef NDEBUG
-         _mulle_aba_world_sanity_assert( old_world);
+         _mulle_aba_world_assert_sanity( old_world);
 #endif
          _mulle_aba_world_check_timerange( old_world, old, new, &p->storage);
          pthread_setspecific( timestamp_thread_key, (void *) (new + 1));
 #ifndef NDEBUG
-         _mulle_aba_world_sanity_assert( old_world);
+         _mulle_aba_world_assert_sanity( old_world);
 #endif
       }
       
@@ -519,10 +519,10 @@ static int   _mulle_aba_unregister_thread( struct _mulle_aba *p, pthread_t threa
 
       _mulle_aba_storage_free_leak_worlds( &p->storage);
 
-      assert( ! locked_world->_next);
+      assert( ! locked_world->_link._next);
       
       _mulle_aba_storage_free_world( &p->storage, locked_world);
-      _mulle_aba_storage_free_leak_entries( &p->storage);
+      _mulle_aba_storage_free_unused_free_entries( &p->storage);
       
       _mulle_aba_storage_try_unlock_world_pointer( &p->storage, world_ps.new_world_p);
    }
@@ -780,7 +780,7 @@ int   _mulle_aba_thread_free_block( struct _mulle_aba *p,
    _mulle_aba_world_pointer_t            world_p;
    int                                   old_bit;
    struct _mulle_aba_world               *free_worlds;
-   struct _mulle_aba_linked_list_entry   *entry;
+   struct _mulle_aba_free_entry          *entry;
    struct _mulle_aba_world_pointers      world_ps;
    struct _mulle_aba_world               *world;
    struct _mulle_aba_world               *new_world;
@@ -849,7 +849,7 @@ int   _mulle_aba_thread_free_block( struct _mulle_aba *p,
             world_ps = _mulle_aba_storage_copy_change_world_pointer( &p->storage, _mulle_swap_free_intent, world_p, add_storage_and_increment_timestamp, &ctxt);
          }
          else
-            if( _mulle_aba_world_available_count_reusable_storages( world))
+            if( _mulle_aba_world_count_avaiable_reusable_storages( world))
             {
                //
                // try to reorganize our world to make more room, but we
@@ -895,12 +895,12 @@ int   _mulle_aba_thread_free_block( struct _mulle_aba *p,
             {
                // old world needs to be freed later
                assert( old_world != free_worlds);
-               assert( old_world->_next == NULL);
+               assert( old_world->_link._next == NULL);
 #if TRACE || TRACE_FREE
                fprintf( stderr, "%s: add %p to worlds to free world chain\n", pthread_name(), old_world);
 #endif
-               old_world->_next = free_worlds;
-               free_worlds      = old_world;
+               old_world->_link._next = (void *) free_worlds;
+               free_worlds            = old_world;
             }
          }
          
@@ -926,7 +926,7 @@ int   _mulle_aba_thread_free_block( struct _mulle_aba *p,
 #if TRACE
             fprintf( stderr,  "\n%s: *** free old world %p immediately***\n", pthread_name(), free_worlds);
 #endif
-            next = free_worlds->_next;
+            next = (struct _mulle_aba_world *) free_worlds->_link._next;
             (p->storage._allocator.free)( free_worlds);
             free_worlds = next;
          }
@@ -940,17 +940,17 @@ int   _mulle_aba_thread_free_block( struct _mulle_aba *p,
    }
 
 #ifndef NDEBUG
-   _mulle_aba_world_sanity_assert( mulle_aba_world_pointer_get_struct( world_p));
+   _mulle_aba_world_assert_sanity( mulle_aba_world_pointer_get_struct( world_p));
 #endif
-   entry = _mulle_aba_storage_alloc_linked_list_entry( &p->storage);
+   entry = _mulle_aba_storage_alloc_free_entry( &p->storage);
    if( ! entry)
    {
       assert( 0);
       return( -1);
    }
       
-   _mulle_aba_linked_list_entry_set( entry, owner, pointer, p_free);
-   _mulle_aba_linked_list_add( &ts_entry->_block_list, entry);
+   _mulle_aba_free_entry_set( entry, owner, pointer, p_free);
+   _mulle_aba_linked_list_add( &ts_entry->_block_list, &entry->_link);
 #if TRACE || TRACE_LIST
    fprintf( stderr,  "\n%s: *** put pointer %p/%p on linked list %p of ts=%ld rc=%ld***\n", pthread_name(), pointer, owner, &ts_entry->_block_list, timestamp, (intptr_t) _mulle_atomic_read_pointer( &ts_entry->_retain_count_1) + 1);
 #endif
@@ -961,14 +961,14 @@ int   _mulle_aba_thread_free_block( struct _mulle_aba *p,
    //
    while( free_worlds)
    {
-      entry = _mulle_aba_storage_alloc_linked_list_entry( &p->storage);
+      entry = _mulle_aba_storage_alloc_free_entry( &p->storage);
       if( ! entry)
          return( -1);
       
-      next = free_worlds->_next;
-      _mulle_aba_linked_list_entry_set( entry, &p->storage, free_worlds, (void *) _mulle_aba_storage_free_world);
+      next = (struct _mulle_aba_world *) free_worlds->_link._next;
+      _mulle_aba_free_entry_set( entry, &p->storage, free_worlds, (void *) _mulle_aba_storage_free_world);
       
-      _mulle_aba_linked_list_add( &ts_entry->_block_list, entry);
+      _mulle_aba_linked_list_add( &ts_entry->_block_list, &entry->_link);
 #if TRACE || TRACE_LIST
       fprintf( stderr,  "\n%s: *** put old world %p on linked list %p of ts=%ld rc=%ld***\n", pthread_name(), free_worlds, &ts_entry->_block_list, timestamp, (intptr_t) _mulle_atomic_read_pointer( &ts_entry->_retain_count_1) + 1);
 #endif

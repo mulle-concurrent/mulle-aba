@@ -52,22 +52,38 @@ enum
    _mulle_aba_world_memtype             = 0xB16B16B1,
    _mulle_aba_timestamp_storage_memtype = 0x10011001,
    _mulle_aba_timestamp_entry_memtype   = 0x00011000,
-   _mulle_aba_linked_list_entry_memtype = 0x5a775a77
+   _mulle_aba_free_entry_memtype        = 0x5a775a77
 };
 #endif
 
-void   _mulle_aba_linked_list_entry_set( struct _mulle_aba_linked_list_entry *entry,
-                                        void *owner,
-                                        void *pointer,
-                                        void (*free)( void *, void *));
 
-static inline void _mulle_aba_linked_list_entry_free( struct _mulle_aba_linked_list_entry *entry,
-                                                     struct _mulle_allocator *allocator)
+struct _mulle_aba_free_entry
+{
+   struct _mulle_aba_linked_list_entry   _link;
+   
+#if DEBUG
+   uintptr_t   _memtype;
+#endif
+   
+   void   (*_free)( void *, void *);  // owner, pointer
+   void   *_owner;
+   void   *_pointer;
+};
+
+
+
+void   _mulle_aba_free_entry_set( struct _mulle_aba_free_entry *entry,
+                                  void *owner,
+                                  void *pointer,
+                                  void (*free)( void *, void *));
+
+static inline void _mulle_aba_free_entry_free( struct _mulle_aba_free_entry *entry,
+                                               struct _mulle_allocator *allocator)
 {
    (*allocator->free)( entry);
 }
 
-void   _mulle_aba_linked_list_print( struct _mulle_aba_linked_list *p);
+void   _mulle_aba_free_list_print( struct _mulle_aba_linked_list *p);
 
 # pragma mark -
 # pragma mark _mulle_aba_timestamp_entry
@@ -244,14 +260,12 @@ static inline struct _mulle_aba_world_pointers  _mulle_aba_world_pointers_make( 
 }
 
 
-int   _mulle_aba_world_pointer_state( _mulle_aba_world_pointer_t world_p);
-
 # pragma mark -
 # pragma mark _mulle_aba_world
 
 struct _mulle_aba_world
 {
-   struct _mulle_aba_world               *_next;           // chain, used when deallocing/dealloced
+   struct _mulle_aba_linked_list_entry   _link;            // chain, used when deallocing/dealloced
    
 #if DEBUG
    uintptr_t                             _memtype;
@@ -284,6 +298,12 @@ unsigned int
 struct _mulle_aba_timestamp_storage *
    _mulle_aba_world_get_timestamp_storage( struct _mulle_aba_world *world,
                                            uintptr_t timestamp);
+
+static inline size_t _mulle_aba_world_get_size( struct _mulle_aba_world *world)
+{
+   return( (char *) &world->_storage[ world->_size] - (char *) world);
+}
+
 
 static inline struct _mulle_aba_timestamp_storage  *
    _mulle_aba_world_get_timestamp_storage_at_index( struct _mulle_aba_world *world,
@@ -330,23 +350,18 @@ void   _mulle_aba_storage_done( struct _mulle_aba_storage *q);
 # pragma mark -
 # pragma mark world init/free
 
-struct _mulle_aba_linked_list_entry  *
-   _mulle_aba_storage_alloc_linked_list_entry( struct _mulle_aba_storage *q);
+struct _mulle_aba_free_entry  *
+   _mulle_aba_storage_alloc_free_entry( struct _mulle_aba_storage *q);
 
-static inline void   _mulle_aba_storage_free_linked_list_entry( struct _mulle_aba_storage *q,
-                                                                struct _mulle_aba_linked_list_entry  *entry)
-{
-   memset( entry, 0, sizeof( *entry));
-   _mulle_aba_linked_list_add( &q->_free_entries, (void *) entry);
-}
-
+void   _mulle_aba_storage_free_free_entry( struct _mulle_aba_storage *q,
+                                           struct _mulle_aba_free_entry  *entry);
 
 struct _mulle_aba_world  *_mulle_aba_storage_alloc_world( struct _mulle_aba_storage *q,
                                                           unsigned int size);
 void   _mulle_aba_storage_free_world( struct _mulle_aba_storage *q,
                                       struct _mulle_aba_world *world);
 
-void   _mulle_aba_world_sanity_assert( struct _mulle_aba_world *world);
+void   _mulle_aba_world_assert_sanity( struct _mulle_aba_world *world);
 
 static inline _mulle_aba_world_pointer_t   _mulle_aba_storage_get_world_pointer( struct _mulle_aba_storage *q)
 {
@@ -363,17 +378,12 @@ static inline _mulle_aba_world_pointer_t   _mulle_aba_storage_get_world_pointer(
 }
 
 
+// TODO: don't use free_entries for this
 static inline void   _mulle_aba_storage_add_leak_world( struct _mulle_aba_storage *q,
                                                         struct _mulle_aba_world *orphan)
 {
-   struct _mulle_aba_linked_list_entry   *entry;
-
-   entry = _mulle_aba_storage_alloc_linked_list_entry( q);
-   if( ! entry)
-      abort();   // TODO:  weak ENOMEM handling
-
-   _mulle_aba_linked_list_entry_set( entry, q, orphan, (void *) _mulle_aba_storage_free_world);
-   _mulle_aba_linked_list_add( &q->_leaks, (void *) entry);
+   // must not zero orphan
+   _mulle_aba_linked_list_add( &q->_leaks, (void *) orphan);
 #if TRACE
    fprintf( stderr, "%s: add leak world %p to storage %p\n", pthread_name(), orphan, q);
 #endif
@@ -381,7 +391,8 @@ static inline void   _mulle_aba_storage_add_leak_world( struct _mulle_aba_storag
 
 
 void   _mulle_aba_storage_free_leak_worlds( struct _mulle_aba_storage *q);
-void   _mulle_aba_storage_free_leak_entries( struct _mulle_aba_storage *q);
+void   _mulle_aba_storage_free_unused_worlds( struct _mulle_aba_storage *q);
+void   _mulle_aba_storage_free_unused_free_entries( struct _mulle_aba_storage *q);
 
 
 # pragma mark -
@@ -479,7 +490,7 @@ void   _mulle_aba_world_check_timerange( struct _mulle_aba_world *world,
                                          struct _mulle_aba_storage *q);
 
 unsigned int  _mulle_aba_world_reuse_storages( struct _mulle_aba_world *world);
-unsigned int  _mulle_aba_world_available_count_reusable_storages( struct _mulle_aba_world *world);
+unsigned int  _mulle_aba_world_count_avaiable_reusable_storages( struct _mulle_aba_world *world);
 
 
 #endif /* defined(__test_delayed_deallocator_storage__delayed_deallocator_storage__) */

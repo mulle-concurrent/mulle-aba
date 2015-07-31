@@ -188,15 +188,15 @@ static void   reset_memory()
 
 static void    run_thread_gc_free_list_test( void)
 {
-   struct _mulle_aba_linked_list_entry   *entry;
-   unsigned long                         i;
-   void                                  *thread;
+   struct _mulle_aba_free_entry   *entry;
+   unsigned long                  i;
+   void                           *thread;
    
    thread = pthread_name();
    
    for( i = 0; i < (1 + (rand() % 100000)); i++)
    {
-      entry = _mulle_aba_linked_list_remove_one( &list);
+      entry = (void *) _mulle_aba_linked_list_remove_one( &list);
       if( entry)
       {
 #if TRACE
@@ -217,7 +217,7 @@ static void    run_thread_gc_free_list_test( void)
       entry->_pointer = (void *) i;
       entry->_owner   = thread;
 
-      _mulle_aba_linked_list_add( &list, entry);
+      _mulle_aba_linked_list_add( &list, &entry->_link);
    }
 }
 
@@ -260,12 +260,12 @@ static void   *run_test( struct thread_info *info)
 
 static void   finish_test( void)
 {
-   struct _mulle_aba_linked_list_entry   *entry;
+   struct _mulle_aba_free_entry   *entry;
    // remove all from list, so any leak means trouble
    
    while( _mulle_atomic_decrement_pointer( &alloced))
    {
-      entry = _mulle_aba_linked_list_remove_one( &list);
+      entry = (void *) _mulle_aba_linked_list_remove_one( &list);
       assert( entry);
       test_free( entry);
    }

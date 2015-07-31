@@ -42,6 +42,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		41198A7B1B6B7FB40033B390 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		4129A8D41AC416030063C255 /* pointer_array.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = pointer_array.h; sourceTree = "<group>"; };
 		4147852C1ABAF290002DBAE4 /* mulle_aba_test */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = mulle_aba_test; sourceTree = BUILT_PRODUCTS_DIR; };
 		4147852F1ABAF290002DBAE4 /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
@@ -95,6 +96,7 @@
 			isa = PBXGroup;
 			children = (
 				41F14FF21B6902F9002189F1 /* LICENSE */,
+				41198A7B1B6B7FB40033B390 /* README.md */,
 				4158F6F81B5E982B00C5805C /* CMakeLists.txt */,
 				41492C6E1B41898E00CD50E1 /* mintomic */,
 				41B94BF01ACAADFB00A51891 /* mintomic_gcc.c */,
