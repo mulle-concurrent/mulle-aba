@@ -1,14 +1,15 @@
-# mulle_aba
+# mulle-aba
 
 ## Intro
 
-**mulle_aba** is a (pretty much) lock-free solution to the [ABA problem](https://en.wikipedia.org/wiki/ABA_problem) base on [pthreads](https://en.wikipedia.org/wiki/POSIX_Threads) written in C.
+**mulle_aba** is a (pretty much) lock-free solution to the [ABA problem](https://en.wikipedia.org/wiki/ABA_problem) based on [pthreads](https://en.wikipedia.org/wiki/POSIX_Threads) and [mintomic](https://mintomic.github.io/). It is written in C.
 
-Threads have to cooperate for this scheme to work. If a non-registered thread is accessing memory referenced by a **mulle_aba** pointer, your program is likely to crash. If a registered thread is not checking in regularly, your program will bloat. Such is the rule of **mulle_aba**.
+Threads have to cooperate for this scheme to work. If a non-registered thread is accessing memory referenced by a **mulle-aba** pointer, your program is likely to crash. If a registered thread is not checking in regularly, your program will bloat. Such is the rule of **mulle-aba**.
 
-This page gives you the necessary information to use **mulle_aba** in your own programs. 
+This page gives you the necessary information to use **mulle-aba** in your own programs. 
 
-![Mind Map](./dox/process-thread.png "Mind Map")
+![](dox/process-thread.png)
+![](raw/master/dox/process-thread.png)
 
 Node Colors
 
@@ -30,17 +31,17 @@ Edge style
 
 *Available in state 1 (red)*
 
-Call this function to initialize **mulle_aba**. Don't call any other **mulle_aba** function before calling this. In terms of the diagram you are in State 1 (red).
+Call this function to initialize **mulle-aba**. Don't call any other **mulle-aba** function before calling this. In terms of the diagram you are in State 1 (red).
 
 This function is not thread safe (red).
 
 Ex.
 
-~~~
+```
 static struct _mulle_aba   my_aba;
 
 mulle_aba_init( &aba);
-~~~
+```
 
 
 ## mulle_aba_done
@@ -49,7 +50,7 @@ mulle_aba_init( &aba);
 
 *Available in state 2 (red) an 6 (purple)*
 
-Call this function to finish **mulle_aba**. Your process needs to call `mulle_aba_init` again before doing anything with **mulle_aba**. Be very sure that all participating threads have unregistered **and** joined before calling **mulle_aba_done**.
+Call this function to finish **mulle-aba**. Your process needs to call `mulle_aba_init` again before doing anything with **mulle-aba**. Be very sure that all participating threads have unregistered **and** joined before calling **mulle_aba_done**.
 
 This function is not thread safe (red).
 
@@ -68,7 +69,7 @@ This is a soft-blocking (blue) operation.
 
 Ex.
 
-~~~
+```
 static void  run_thread( void *info)
 {
     mulle_aba_register();
@@ -78,7 +79,7 @@ static void  run_thread( void *info)
 ...
 pthread_create( &threads, NULL, (void *) run_thread, "VfL Bochum 1848");
 ...
-~~~
+```
 
 ## mulle_aba_unregister
 
@@ -101,14 +102,14 @@ This is a soft-blocking (blue) operation.
 
 Use this function to free a shared pointer in a delayed way. In a cooperative setting, this guarantees that the freed pointer does not run afoul of the ABA problem. The actual freeing of the pointer is delayed until all threads have checked in.
 
-This operation is lockfree (black). Note that if your **free** operation is locking or blocking, then **mulle_aba**'s main operation is not lockfree.
+This operation is lock-free (black). Note that if your **free** operation is locking or blocking, then **mulle-aba**'s main operation is not lock-free.
 
 Ex.
 
-~~~
+```
     s = some_unused_shared_malloced_resource();
     mulle_aba_free( s, free);
-~~~
+```
 
 
 
@@ -118,12 +119,6 @@ Ex.
 
 *Available in state 4 (black)*
 
-This function must be periodically by all cooperating threads. It acts like a memory barrier and frees delayed pointers, that have been relinquished by all other threads.
+This function must be periodically called by all cooperating threads. It acts like a memory barrier and frees delayed pointers, that have been relinquished by all other threads.
 
-This operation is lockfree (black). If any `free` routine of the pointers blocks or locks, this operation also blocks.
-
-
-
-
-
-
+This operation is lock-free (black). If any `free` routine of the pointers blocks or locks, this operation also blocks.

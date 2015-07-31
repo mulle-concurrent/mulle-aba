@@ -61,6 +61,7 @@
 		419795A11B6A5290005417AA /* mulle_aba_linked_list_test */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = mulle_aba_linked_list_test; sourceTree = BUILT_PRODUCTS_DIR; };
 		419795A21B6A52B5005417AA /* ll_main.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ll_main.c; sourceTree = "<group>"; };
 		41B94BF01ACAADFB00A51891 /* mintomic_gcc.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = mintomic_gcc.c; path = mintomic/src/mintomic/mintomic_gcc.c; sourceTree = "<group>"; };
+		41BE418C1B6BB0F7000C0DD4 /* BUILD.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = BUILD.md; sourceTree = "<group>"; };
 		41F14FE61B68F098002189F1 /* libmulle_aba.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libmulle_aba.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		41F14FF21B6902F9002189F1 /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -97,6 +98,7 @@
 			children = (
 				41F14FF21B6902F9002189F1 /* LICENSE */,
 				41198A7B1B6B7FB40033B390 /* README.md */,
+				41BE418C1B6BB0F7000C0DD4 /* BUILD.md */,
 				4158F6F81B5E982B00C5805C /* CMakeLists.txt */,
 				41492C6E1B41898E00CD50E1 /* mintomic */,
 				41B94BF01ACAADFB00A51891 /* mintomic_gcc.c */,
