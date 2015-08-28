@@ -263,6 +263,9 @@ static inline struct _mulle_aba_world_pointers  _mulle_aba_world_pointers_make( 
 # pragma mark -
 # pragma mark _mulle_aba_world
 
+//
+// this is the world_state but its been abbreviated to world
+//
 struct _mulle_aba_world
 {
    struct _mulle_aba_linked_list_entry   _link;            // chain, used when deallocing/dealloced
