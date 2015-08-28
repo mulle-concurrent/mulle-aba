@@ -6,7 +6,7 @@
 
 Threads have to cooperate for this scheme to work. If a non-registered thread is accessing memory referenced by a **mulle-aba** pointer, your program is likely to crash. If a registered thread is not checking in regularly, your program will bloat. Such is the rule of **mulle-aba**.
 
-This page gives you the necessary information to use **mulle-aba** in your own programs. 
+This page gives you the necessary information to use **mulle-aba** in your own programs. The [blog entries](//www.mulle-kybernetik.com/weblog/2015/mulle_aba_release.html) should give you an overview of its operation.
 
 ![](dox/process-thread.png)
 ![](raw/master/dox/process-thread.png)
