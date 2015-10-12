@@ -4,8 +4,6 @@ digraph
 	"process start" -> "mulle_aba_init"		[color="red" label=" 1" fontcolor="red"];
 
 	"mulle_aba_init"				[color="red"];
-	"mulle_aba_init" ->  "thread create"     	[color="red" label=" 2" fontcolor="red"];
-	"mulle_aba_init" ->  "thread create"		[color="red" ];
 	"mulle_aba_init" ->  "mulle_aba_register"	[color="red" label=" 3" style="dashed" fontcolor="red"];
 	"mulle_aba_init" ->  "mulle_aba_done"		[color="red" label=" 2" fontcolor="red"];
 
@@ -14,27 +12,24 @@ digraph
 	"mulle_aba_done" ->  "mulle_aba_init"    	[color="red" label=" 1" fontcolor="red"];
 
 	"thread join"					[color="gray"];
-	"thread join" -> "mulle_aba_done"        	[color="purple"];
-	"thread join" -> "mulle_aba_done"        	[color="purple" label=" 6" fontcolor="purple"];
 
 	"thread create"					[color="gray"];
-	"thread create" ->  "mulle_aba_register" 	[color="red" label=" 3" fontcolor="red"];
+	"thread create" ->  "mulle_aba_register" 	[color="red" label=" 4" fontcolor="red"];
 
 	"process end" 		                        [color="gray"];		
 	"mulle_aba_register" 			 	[color="blue"];
-	"mulle_aba_register" -> "mulle_aba_checkin"	[label=" 4"];
-	"mulle_aba_register" -> "mulle_aba_free"	[label=" 4"];
-	"mulle_aba_register" -> "mulle_aba_unregister"  [label=" 4"];
+	"mulle_aba_register" -> "mulle_aba_checkin"	[label=" 5"];
+	"mulle_aba_register" -> "mulle_aba_free"	[label=" 5"];
+	"mulle_aba_register" -> "mulle_aba_unregister"  [label=" 5"];
 
-	"mulle_aba_free" -> "mulle_aba_checkin"  	[label=" 4"];
-	"mulle_aba_free" -> "mulle_aba_unregister"      [label=" 4"];
+	"mulle_aba_free" -> "mulle_aba_checkin"  	[label=" 5"];
+	"mulle_aba_free" -> "mulle_aba_unregister"      [label=" 5"];
   
-	"mulle_aba_checkin" -> "mulle_aba_free"	 	[label=" 4"];
-	"mulle_aba_checkin" -> "mulle_aba_unregister"   [label=" 4"];
+	"mulle_aba_checkin" -> "mulle_aba_free"	 	[label=" 5"];
+	"mulle_aba_checkin" -> "mulle_aba_unregister"   [label=" 5"];
 
 	"mulle_aba_unregister" 				[color="blue"];
-	"mulle_aba_unregister" -> "mulle_aba_register"	[color="purple" label=" 5" fontcolor="purple"];
-	"mulle_aba_unregister" -> "thread join"		[color="purple" label=" 5" fontcolor="purple"];
-	"mulle_aba_unregister" -> "mulle_aba_done"	[color="purple" label=" 6" style="dashed" fontcolor="purple"];
-
+	"mulle_aba_unregister" -> "mulle_aba_register"	[color="purple" label=" 6" fontcolor="purple"];
+	"mulle_aba_unregister" -> "thread join"		[color="purple" label=" 6" fontcolor="purple"];
+	"mulle_aba_unregister" -> "mulle_aba_done"	[color="purple" label=" 7" style="dashed" fontcolor="purple"];
 }

@@ -92,8 +92,4 @@ void   mulle_aba_reset( void);
 uintptr_t   mulle_aba_get_thread_timestamp( void);
 void        *_mulle_aba_get_world_pointer( void);
 
-
-
-
-
 #endif /* defined(__test_delayed_deallocator_storage__thread_storage__) */

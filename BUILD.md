@@ -3,37 +3,31 @@
 
 ## What you get
  
-* `libmulle_aba.a`, the mulle-aba` static library
+* `libmulle_aba.a`, the mulle-aba static library
 
-* `mulle_aba_test` is a standalone stress test of mulle-aba`. If it doesn't crash it runs forever.
-* `mulle_aba_ll_test` is a standlone stress test for a part of mulle-aba`. If it doesn't crash it runs forever.
+* `mulle_aba_test` is a standalone stress test of mulle-aba. If it doesn't crash 
+it runs forever.
+* `mulle_aba_ll_test` is a standlone stress test for a part of mulle-aba. If it 
+doesn't crash it runs forever.
 
 ## Prerequisites
 
-### mintomic
+`mulle-aba` is maintained with `mulle-bootstrap` a homegrown dependency manager
+It's easiest to install it with 
 
-mulle-aba` needs [mintomic](https://mintomic.github.io/) as a prerequisite. Install it in the top directory besides <tt>src</tt> and <tt>dox</tt>.
-
-```
-git clone https://github.com/mintomic/mintomic
-```
-
-## Building
-
-### With cmake
-
-```
-mkdir build
-cd build
-cmake ..
-make
+```console
+brew tap mulle-kybernetik/software
+brew install mulle-bootstrap
 ```
 
+Then clone [mulle-aba](http://www.mulle-kybernetik.com/software/git/mulle-aba),
+resolve the dependencies with mulle-bootstrap and build with xcodebuild.
 
-### With Xcode
-
-```
-xcodebuild -alltargets  
+```console
+git clone http://www.mulle-kybernetik.com/software/git/mulle-aba
+cd mulle-aba
+mulle-bootstrap
+xcodebuild  # or cmake
 ```
 
 
@@ -44,7 +38,7 @@ For development use no flags.
 For production use NDEBUG
 
 * DEBUG : turns on some compile time facilities to aid debugging `mulle-aba` itself. 
-* TRACE : turns on a very detailed amount of tracing, which may be too much. There are more detailed TRACE flags available, consult the source.
+* MULLE_ABA_TRACE : turns on a very detailed amount of tracing, which may be too much. There are more detailed MULLE_ABA_TRACE flags available, consult the source.
 
 
 

@@ -5,11 +5,6 @@
 //  Created by Nat! on 19.03.15.
 //  Copyright (c) 2015 Mulle kybernetiK. All rights reserved.
 //
-
-//
-//  Redistribution and use in source and binary forms, with or without
-//  modification, are permitted provided that the following conditions are met:
-//
 //  Redistributions of source code must retain the above copyright notice, this
 //  list of conditions and the following disclaimer.
 //
@@ -35,13 +30,19 @@
 //
 #include "mulle_aba_storage.h"
 #include "mulle_aba.h"
+
+#include <mulle_thread/mulle_atomic.h>
+#include <mulle_thread/mulle_thread.h>
 #include <stdio.h>
 #include <errno.h>
-#include <pthread.h>
 
 
-#define PROGRESS  0
-#define FOREVER   1
+#define PROGRESS     0
+#define FOREVER      1
+#define LOOPS        (1 + (rand() % 100000))
+#define ITERATIONS   400
+#define MAX_THREADS  4
+
 
 #if DEBUG_PRINT
 extern void   mulle_aba_print( void);
@@ -49,8 +50,8 @@ extern void   mulle_aba_print( void);
 # define mulle_aba_print()
 #endif
 
-static pthread_key_t   timestamp_thread_key;
-char  *pthread_name( void);
+static mulle_thread_key_t   timestamp_thread_key;
+char  *mulle_aba_thread_name( void);
 
 #pragma mark -
 #pragma mark track allocations
@@ -59,7 +60,7 @@ char  *pthread_name( void);
 
 
 struct _pointer_array    allocations;
-pthread_mutex_t          alloc_lock;
+mulle_thread_mutex_t          alloc_lock;
 
 //void  *test_realloc( void *q, size_t size)
 //{
@@ -70,7 +71,7 @@ pthread_mutex_t          alloc_lock;
 //   if( ! p)
 //      return( p);
 //
-//   if( pthread_mutex_lock( &alloc_lock))
+//   if( mulle_thread_mutex_lock( &alloc_lock))
 //      abort();
 //   
 //   if( q)
@@ -84,7 +85,7 @@ pthread_mutex_t          alloc_lock;
 //   }
 //   else
 //      _pointer_array_add( &allocations, p, realloc);
-//   pthread_mutex_unlock( &alloc_lock);
+//   mulle_thread_mutex_unlock( &alloc_lock);
 //
 //   return( p);
 //}
@@ -97,18 +98,18 @@ void  *test_calloc( size_t n, size_t size)
    p = calloc( n, size);
    if( ! p)
    {
-#if TRACE
+#if MULLE_ABA_TRACE
       abort();
 #endif
       return( p);
    }
    
-   if( pthread_mutex_lock( &alloc_lock))
+   if( mulle_thread_mutex_lock( &alloc_lock))
       abort();
    _pointer_array_add( &allocations, p, realloc);
-   pthread_mutex_unlock( &alloc_lock);
-#if TRACE
-   fprintf( stderr,  "%s: *** alloc( %p) ***\n", pthread_name(), p);
+   mulle_thread_mutex_unlock( &alloc_lock);
+#if MULLE_ABA_TRACE
+   fprintf( stderr,  "%s: *** alloc( %p) ***\n", mulle_aba_thread_name(), p);
 #endif
    return( p);
 }
@@ -121,18 +122,18 @@ void  test_free( void *p)
    if( ! p)
       return;
    
-#if TRACE || TRACE_FREE
-   fprintf( stderr,  "%s: *** free( %p) ***\n", pthread_name(), p);
+#if MULLE_ABA_TRACE || MULLE_ABA_TRACE_FREE
+   fprintf( stderr,  "%s: *** free( %p) ***\n", mulle_aba_thread_name(), p);
 #endif
 
-   if( pthread_mutex_lock( &alloc_lock))
+   if( mulle_thread_mutex_lock( &alloc_lock))
       abort();
    
    i = _pointer_array_index( &allocations, p);
    assert( i != -1);  // if assert, this is a double free or not a malloc block
    _pointer_array_set( &allocations, i, NULL);
    
-   pthread_mutex_unlock( &alloc_lock);
+   mulle_thread_mutex_unlock( &alloc_lock);
    
    free( p);
 }
@@ -153,7 +154,7 @@ static void   reset_memory()
    struct  _pointer_array_enumerator   rover;
    void                                *p;
 
-#if TRACE
+#if MULLE_ABA_TRACE
    fprintf( stderr, "\n================================================\n");
 #endif
 
@@ -163,8 +164,8 @@ static void   reset_memory()
       if( p)
       {
          fprintf( stdout, "*");
-#if TRACE
-         fprintf( stderr, "%s: leak %p\n", pthread_name(), p);
+#if MULLE_ABA_TRACE
+         fprintf( stderr, "%s: leak %p\n", mulle_aba_thread_name(), p);
 #endif
 #if DEBUG
          abort();
@@ -192,24 +193,24 @@ static void    run_thread_gc_free_list_test( void)
    unsigned long                  i;
    void                           *thread;
    
-   thread = pthread_name();
+   thread = mulle_aba_thread_name();
    
-   for( i = 0; i < (1 + (rand() % 100000)); i++)
+   for( i = 0; i < LOOPS; i++)
    {
       entry = (void *) _mulle_aba_linked_list_remove_one( &list);
       if( entry)
       {
-#if TRACE
-         fprintf( stderr, "%s: reused %p (%p) from %p\n", pthread_name(), entry, entry->_next, &list);
+#if MULLE_ABA_TRACE
+         fprintf( stderr, "%s: reused %p (%p) from %p\n", mulle_aba_thread_name(), entry, entry->_next, &list);
 #endif
-         assert( ! entry->_next);
+         assert( ! entry->_link._next);
       }
       else
       {
          entry = test_calloc( 1, sizeof( *entry));
          _mulle_atomic_increment_pointer( &alloced);
-#if TRACE            
-         fprintf( stderr, "%s: allocated %p (%p)\n", pthread_name(), entry, entry->_next);
+#if MULLE_ABA_TRACE            
+         fprintf( stderr, "%s: allocated %p (%p)\n", mulle_aba_thread_name(), entry, entry->_next);
 #endif
       }
       
@@ -247,14 +248,14 @@ struct thread_info
 };
 
 
-static void   *run_test( struct thread_info *info)
+static mulle_thread_rval_t   run_test( struct thread_info *info)
 {
-   pthread_setspecific( timestamp_thread_key, strdup( info->name));
+   mulle_thread_setspecific( timestamp_thread_key, strdup( info->name));
 
    _wait_around( info->n_threads);
    multi_threaded_test_each_thread();
 
-   return( NULL);
+   return( 0);
 }
 
 
@@ -275,15 +276,15 @@ static void   finish_test( void)
 void  multi_threaded_test( intptr_t n)
 {
    int                  i;
-   pthread_t            *threads;
+   mulle_thread_t       *threads;
    struct thread_info   *info;
    mulle_atomic_ptr_t   n_threads;
    
-#if TRACE
+#if MULLE_ABA_TRACE
    fprintf( stderr, "////////////////////////////////\n");
    fprintf( stderr, "multi_threaded_test( %ld) starts\n", n); 
 #endif
-   threads = alloca( n * sizeof( pthread_t));
+   threads = alloca( n * sizeof( mulle_thread_t));
    assert( threads);
    
    n_threads._nonatomic = (void *) n;
@@ -294,7 +295,7 @@ void  multi_threaded_test( intptr_t n)
       info[ i].n_threads = &n_threads;
       sprintf( info[ i].name, "thread #%d", i);
       
-      if( pthread_create( &threads[ i], NULL, (void *) run_test, &info[ i]))
+      if( mulle_thread_create( (void *) run_test, &info[ i], &threads[ i]))
          abort();
    }
    
@@ -303,23 +304,23 @@ void  multi_threaded_test( intptr_t n)
    run_test( &info[ 0]);
 
    for( i = 1; i < n; i++)
-      if( pthread_join( threads[ i], NULL))
+      if( mulle_thread_join( threads[ i]))
       {
-         perror( "pthread_join");
+         perror( "mulle_thread_join");
          abort();
       }
    
    finish_test();
    
-#if TRACE
-   fprintf( stderr, "%s: multi_threaded_test( %ld) ends\n", pthread_name(), n);
+#if MULLE_ABA_TRACE
+   fprintf( stderr, "%s: multi_threaded_test( %ld) ends\n", mulle_aba_thread_name(), n);
 #endif
 }
 
 
-char  *pthread_name( void)
+char  *mulle_aba_thread_name( void)
 {
-   return( pthread_getspecific( timestamp_thread_key));
+   return( mulle_thread_getspecific( timestamp_thread_key));
 }
 
 
@@ -337,8 +338,7 @@ static void  __enable_core_dumps(void)
 }
 #endif
 
-
-int   main(int argc, const char * argv[])
+int   _main(int argc, const char * argv[])
 {
    unsigned int   i;
    unsigned int   j;
@@ -346,17 +346,17 @@ int   main(int argc, const char * argv[])
    
    srand( (unsigned int) time( NULL));
    
-   rval = pthread_mutex_init( &alloc_lock, NULL);
+   rval = mulle_thread_mutex_init( &alloc_lock);
    assert( ! rval);
    
-   rval = pthread_key_create( &timestamp_thread_key, free);
+   rval = mulle_thread_key_create( &timestamp_thread_key, free);
    assert( ! rval);
    
-   rval = pthread_setspecific( timestamp_thread_key, strdup( "main"));
+   rval = mulle_thread_setspecific( timestamp_thread_key, strdup( "main"));
    assert( ! rval);
    
-#if TRACE
-   fprintf( stderr, "%s\n", pthread_name());
+#if MULLE_ABA_TRACE
+   fprintf( stderr, "%s\n", mulle_aba_thread_name());
 #endif
    
 
@@ -369,16 +369,16 @@ forever:
    // eventually
    //
    
-   for( i = 0; i < 400; i++)
+   for( i = 0; i < ITERATIONS; i++)
    {
-#if TRACE || PROGRESS
-# if TRACE
+#if MULLE_ABA_TRACE || PROGRESS
+# if MULLE_ABA_TRACE
       fprintf( stderr, "iteration %d\n", i);
 # else
       fprintf( stdout, "iteration %d\n", i);
 # endif
 #endif
-      for( j = 2; j <= 4; j += j)
+      for( j = 1; j <= MAX_THREADS; j += j)
       {
          multi_threaded_test( j);
          reset_memory();
@@ -389,7 +389,15 @@ forever:
    goto forever;
 #endif
 
-   pthread_mutex_destroy( &alloc_lock);
+   mulle_thread_mutex_destroy( &alloc_lock);
 
    return( 0);
 }
+
+
+#ifndef NO_MAIN
+int   main(int argc, const char * argv[])
+{
+   return( _main( argc, argv));
+}
+#endif
