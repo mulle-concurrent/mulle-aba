@@ -1361,6 +1361,31 @@ struct _mulle_aba_world_pointers
 }
 
 
+int   _mulle_aba_timestamp_storage_set_usage_bit( struct _mulle_aba_timestamp_storage *ts_storage, unsigned int index, int bit)
+{
+   uintptr_t   i_mask;
+   uintptr_t   usage;
+   uintptr_t   expect;
+   
+   do
+   {
+      usage  = (uintptr_t) _mulle_atomic_read_pointer( &ts_storage->_usage_bits);
+      expect = usage;
+      i_mask = 1UL << index;
+      usage  = (usage & ~(i_mask)) | (bit ? i_mask : 0);
+      UNPLEASANT_RACE_YIELD();
+   }
+   while( ! _mulle_atomic_compare_and_swap_pointer( &ts_storage->_usage_bits, (void *) usage, (void *) expect));
+   
+#if MULLE_ABA_TRACE
+   fprintf( stderr, "%s: set usage bit (%d/%d) for storage %p: %p -> %p\n", mulle_aba_thread_name(), index, bit, ts_storage, (void *) expect, (void *) usage);
+#endif
+   
+   return( usage != 0);
+}
+
+
+
 void   _mulle_aba_world_check_timerange( struct _mulle_aba_world *world,
                                          uintptr_t old,
                                          uintptr_t new,
