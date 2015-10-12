@@ -20,6 +20,10 @@
 		413832051BCAC618009D1ABE /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 413832041BCAC618009D1ABE /* UIKit.framework */; };
 		414785301ABAF290002DBAE4 /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = 4147852F1ABAF290002DBAE4 /* main.c */; };
 		417260DA1BCB07110049ED48 /* ll_main.c in Sources */ = {isa = PBXBuildFile; fileRef = 419795A21B6A52B5005417AA /* ll_main.c */; };
+		417E67761BCC018700AA0322 /* mulle_aba_defines.h in Headers */ = {isa = PBXBuildFile; fileRef = 4164C77C1AC6094C00A8A1C4 /* mulle_aba_defines.h */; };
+		417E67771BCC018700AA0322 /* mulle_aba_linked_list.h in Headers */ = {isa = PBXBuildFile; fileRef = 4177B15B1B447C4E0073EA65 /* mulle_aba_linked_list.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		417E67781BCC018700AA0322 /* mulle_aba_storage.h in Headers */ = {isa = PBXBuildFile; fileRef = 414AC1B31AC2C56100DCA3CC /* mulle_aba_storage.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		417E67791BCC018700AA0322 /* mulle_aba.h in Headers */ = {isa = PBXBuildFile; fileRef = 4147853B1ABB13D7002DBAE4 /* mulle_aba.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4197959C1B6A5290005417AA /* libmulle_aba.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 41F14FE61B68F098002189F1 /* libmulle_aba.a */; };
 		419795A31B6A52B5005417AA /* ll_main.c in Sources */ = {isa = PBXBuildFile; fileRef = 419795A21B6A52B5005417AA /* ll_main.c */; };
 		41F14FEC1B68F0AE002189F1 /* mulle_aba_linked_list.c in Sources */ = {isa = PBXBuildFile; fileRef = 4177B15A1B447C4E0073EA65 /* mulle_aba_linked_list.c */; };
@@ -205,6 +209,20 @@
 		};
 /* End PBXGroup section */
 
+/* Begin PBXHeadersBuildPhase section */
+		417E67751BCC017000AA0322 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				417E67771BCC018700AA0322 /* mulle_aba_linked_list.h in Headers */,
+				417E67781BCC018700AA0322 /* mulle_aba_storage.h in Headers */,
+				417E67791BCC018700AA0322 /* mulle_aba.h in Headers */,
+				417E67761BCC018700AA0322 /* mulle_aba_defines.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
 /* Begin PBXNativeTarget section */
 		4116D2281BB7FAE200EE88F2 /* run-on-ipad */ = {
 			isa = PBXNativeTarget;
@@ -280,6 +298,7 @@
 			buildPhases = (
 				41F14FE21B68F098002189F1 /* Sources */,
 				41F14FE31B68F098002189F1 /* Frameworks */,
+				417E67751BCC017000AA0322 /* Headers */,
 			);
 			buildRules = (
 			);
