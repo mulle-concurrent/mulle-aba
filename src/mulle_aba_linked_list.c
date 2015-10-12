@@ -34,7 +34,7 @@
 
 #include "mulle_aba_linked_list.h"
 
-#include "mulle_atomic.h"
+#include <mulle_thread/mulle_atomic.h>
 #include "mulle_aba_defines.h"
 #include <assert.h> 
 

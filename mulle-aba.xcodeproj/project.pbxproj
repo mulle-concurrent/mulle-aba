@@ -7,17 +7,21 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4116D22E1BB7FAE200EE88F2 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 4116D22D1BB7FAE200EE88F2 /* main.m */; };
+		4116D2311BB7FAE200EE88F2 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 4116D2301BB7FAE200EE88F2 /* AppDelegate.m */; };
+		4116D2341BB7FAE200EE88F2 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4116D2331BB7FAE200EE88F2 /* ViewController.m */; };
+		4116D2371BB7FAE200EE88F2 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4116D2351BB7FAE200EE88F2 /* Main.storyboard */; };
+		4116D2391BB7FAE200EE88F2 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4116D2381BB7FAE200EE88F2 /* Images.xcassets */; };
+		4116D23C1BB7FAE200EE88F2 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4116D23A1BB7FAE200EE88F2 /* LaunchScreen.xib */; };
+		413831F81BCABCAA009D1ABE /* mulle_aba_linked_list.c in Sources */ = {isa = PBXBuildFile; fileRef = 4177B15A1B447C4E0073EA65 /* mulle_aba_linked_list.c */; };
+		413831F91BCABCAA009D1ABE /* mulle_aba_storage.c in Sources */ = {isa = PBXBuildFile; fileRef = 414AC1B41AC2C56100DCA3CC /* mulle_aba_storage.c */; };
+		413831FA1BCABCAA009D1ABE /* mulle_aba.c in Sources */ = {isa = PBXBuildFile; fileRef = 4147853A1ABB13D7002DBAE4 /* mulle_aba.c */; };
+		413832021BCABCD9009D1ABE /* libmulle_aba (iOS).a in Frameworks */ = {isa = PBXBuildFile; fileRef = 413831FF1BCABCAA009D1ABE /* libmulle_aba (iOS).a */; };
+		413832051BCAC618009D1ABE /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 413832041BCAC618009D1ABE /* UIKit.framework */; };
 		414785301ABAF290002DBAE4 /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = 4147852F1ABAF290002DBAE4 /* main.c */; };
+		417260DA1BCB07110049ED48 /* ll_main.c in Sources */ = {isa = PBXBuildFile; fileRef = 419795A21B6A52B5005417AA /* ll_main.c */; };
 		4197959C1B6A5290005417AA /* libmulle_aba.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 41F14FE61B68F098002189F1 /* libmulle_aba.a */; };
 		419795A31B6A52B5005417AA /* ll_main.c in Sources */ = {isa = PBXBuildFile; fileRef = 419795A21B6A52B5005417AA /* ll_main.c */; };
-		419795A41B6A52E2005417AA /* mulle_atomic.h in Headers */ = {isa = PBXBuildFile; fileRef = 414785391ABAF326002DBAE4 /* mulle_atomic.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		419795A51B6A52E2005417AA /* mulle_callback_types.h in Headers */ = {isa = PBXBuildFile; fileRef = 414AC1AA1AC2C45800DCA3CC /* mulle_callback_types.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		419795A61B6A52E2005417AA /* mulle_aba_defines.h in Headers */ = {isa = PBXBuildFile; fileRef = 4164C77C1AC6094C00A8A1C4 /* mulle_aba_defines.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		419795A71B6A52E2005417AA /* mulle_aba_linked_list.h in Headers */ = {isa = PBXBuildFile; fileRef = 4177B15B1B447C4E0073EA65 /* mulle_aba_linked_list.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		419795A81B6A52E2005417AA /* mulle_aba_storage.h in Headers */ = {isa = PBXBuildFile; fileRef = 414AC1B31AC2C56100DCA3CC /* mulle_aba_storage.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		419795A91B6A52E2005417AA /* mulle_aba.h in Headers */ = {isa = PBXBuildFile; fileRef = 4147853B1ABB13D7002DBAE4 /* mulle_aba.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		41F14FEA1B68F0AE002189F1 /* mintomic_gcc.c in Sources */ = {isa = PBXBuildFile; fileRef = 41B94BF01ACAADFB00A51891 /* mintomic_gcc.c */; };
-		41F14FEB1B68F0AE002189F1 /* mulle_callback_types.c in Sources */ = {isa = PBXBuildFile; fileRef = 414AC1AB1AC2C45800DCA3CC /* mulle_callback_types.c */; };
 		41F14FEC1B68F0AE002189F1 /* mulle_aba_linked_list.c in Sources */ = {isa = PBXBuildFile; fileRef = 4177B15A1B447C4E0073EA65 /* mulle_aba_linked_list.c */; };
 		41F14FED1B68F0AE002189F1 /* mulle_aba_storage.c in Sources */ = {isa = PBXBuildFile; fileRef = 414AC1B41AC2C56100DCA3CC /* mulle_aba_storage.c */; };
 		41F14FEE1B68F0AE002189F1 /* mulle_aba.c in Sources */ = {isa = PBXBuildFile; fileRef = 4147853A1ABB13D7002DBAE4 /* mulle_aba.c */; };
@@ -25,6 +29,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		413832001BCABCD2009D1ABE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 414785241ABAF290002DBAE4 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 413831F51BCABCAA009D1ABE;
+			remoteInfo = "mulle_aba (iOS)";
+		};
 		419795981B6A5290005417AA /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 414785241ABAF290002DBAE4 /* Project object */;
@@ -42,16 +53,24 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		4116D2291BB7FAE200EE88F2 /* run-on-ipad.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "run-on-ipad.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		4116D22C1BB7FAE200EE88F2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		4116D22D1BB7FAE200EE88F2 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		4116D22F1BB7FAE200EE88F2 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		4116D2301BB7FAE200EE88F2 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		4116D2321BB7FAE200EE88F2 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
+		4116D2331BB7FAE200EE88F2 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		4116D2361BB7FAE200EE88F2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		4116D2381BB7FAE200EE88F2 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		4116D23B1BB7FAE200EE88F2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		41198A7B1B6B7FB40033B390 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		4129A8D41AC416030063C255 /* pointer_array.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = pointer_array.h; sourceTree = "<group>"; };
+		413831FF1BCABCAA009D1ABE /* libmulle_aba (iOS).a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libmulle_aba (iOS).a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		413832041BCAC618009D1ABE /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS9.0.sdk/System/Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
 		4147852C1ABAF290002DBAE4 /* mulle_aba_test */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = mulle_aba_test; sourceTree = BUILT_PRODUCTS_DIR; };
 		4147852F1ABAF290002DBAE4 /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
-		414785391ABAF326002DBAE4 /* mulle_atomic.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = mulle_atomic.h; sourceTree = "<group>"; };
 		4147853A1ABB13D7002DBAE4 /* mulle_aba.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = mulle_aba.c; sourceTree = "<group>"; };
 		4147853B1ABB13D7002DBAE4 /* mulle_aba.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mulle_aba.h; sourceTree = "<group>"; };
-		41492C6E1B41898E00CD50E1 /* mintomic */ = {isa = PBXFileReference; lastKnownFileType = folder; name = mintomic; path = mintomic/include/mintomic; sourceTree = "<group>"; };
-		414AC1AA1AC2C45800DCA3CC /* mulle_callback_types.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mulle_callback_types.h; sourceTree = "<group>"; };
-		414AC1AB1AC2C45800DCA3CC /* mulle_callback_types.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = mulle_callback_types.c; sourceTree = "<group>"; };
 		414AC1B31AC2C56100DCA3CC /* mulle_aba_storage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mulle_aba_storage.h; sourceTree = "<group>"; };
 		414AC1B41AC2C56100DCA3CC /* mulle_aba_storage.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = mulle_aba_storage.c; sourceTree = "<group>"; };
 		4158F6F81B5E982B00C5805C /* CMakeLists.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = CMakeLists.txt; sourceTree = "<group>"; };
@@ -60,13 +79,28 @@
 		4177B15B1B447C4E0073EA65 /* mulle_aba_linked_list.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mulle_aba_linked_list.h; sourceTree = "<group>"; };
 		419795A11B6A5290005417AA /* mulle_aba_linked_list_test */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = mulle_aba_linked_list_test; sourceTree = BUILT_PRODUCTS_DIR; };
 		419795A21B6A52B5005417AA /* ll_main.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ll_main.c; sourceTree = "<group>"; };
-		41B94BF01ACAADFB00A51891 /* mintomic_gcc.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = mintomic_gcc.c; path = mintomic/src/mintomic/mintomic_gcc.c; sourceTree = "<group>"; };
 		41BE418C1B6BB0F7000C0DD4 /* BUILD.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = BUILD.md; sourceTree = "<group>"; };
 		41F14FE61B68F098002189F1 /* libmulle_aba.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libmulle_aba.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		41F14FF21B6902F9002189F1 /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		4116D2261BB7FAE200EE88F2 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				413832051BCAC618009D1ABE /* UIKit.framework in Frameworks */,
+				413832021BCABCD9009D1ABE /* libmulle_aba (iOS).a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		413831FB1BCABCAA009D1ABE /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		414785291ABAF290002DBAE4 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -93,6 +127,31 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4116D22A1BB7FAE200EE88F2 /* run-on-ipad */ = {
+			isa = PBXGroup;
+			children = (
+				4116D22F1BB7FAE200EE88F2 /* AppDelegate.h */,
+				4116D2301BB7FAE200EE88F2 /* AppDelegate.m */,
+				4116D2321BB7FAE200EE88F2 /* ViewController.h */,
+				4116D2331BB7FAE200EE88F2 /* ViewController.m */,
+				4116D2351BB7FAE200EE88F2 /* Main.storyboard */,
+				4116D2381BB7FAE200EE88F2 /* Images.xcassets */,
+				4116D23A1BB7FAE200EE88F2 /* LaunchScreen.xib */,
+				413832041BCAC618009D1ABE /* UIKit.framework */,
+				4116D22B1BB7FAE200EE88F2 /* Supporting Files */,
+			);
+			path = "run-on-ipad";
+			sourceTree = "<group>";
+		};
+		4116D22B1BB7FAE200EE88F2 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				4116D22C1BB7FAE200EE88F2 /* Info.plist */,
+				4116D22D1BB7FAE200EE88F2 /* main.m */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
 		414785231ABAF290002DBAE4 = {
 			isa = PBXGroup;
 			children = (
@@ -100,9 +159,9 @@
 				41BE418C1B6BB0F7000C0DD4 /* BUILD.md */,
 				41F14FF21B6902F9002189F1 /* LICENSE */,
 				4158F6F81B5E982B00C5805C /* CMakeLists.txt */,
-				41492C6E1B41898E00CD50E1 /* mintomic */,
-				41B94BF01ACAADFB00A51891 /* mintomic_gcc.c */,
 				4147852E1ABAF290002DBAE4 /* src */,
+				415930B61BAC50A900B1FB1D /* tests */,
+				4116D22A1BB7FAE200EE88F2 /* run-on-ipad */,
 				4147852D1ABAF290002DBAE4 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -113,6 +172,8 @@
 				4147852C1ABAF290002DBAE4 /* mulle_aba_test */,
 				41F14FE61B68F098002189F1 /* libmulle_aba.a */,
 				419795A11B6A5290005417AA /* mulle_aba_linked_list_test */,
+				4116D2291BB7FAE200EE88F2 /* run-on-ipad.app */,
+				413831FF1BCABCAA009D1ABE /* libmulle_aba (iOS).a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -120,12 +181,6 @@
 		4147852E1ABAF290002DBAE4 /* src */ = {
 			isa = PBXGroup;
 			children = (
-				4147852F1ABAF290002DBAE4 /* main.c */,
-				419795A21B6A52B5005417AA /* ll_main.c */,
-				4129A8D41AC416030063C255 /* pointer_array.h */,
-				414785391ABAF326002DBAE4 /* mulle_atomic.h */,
-				414AC1AA1AC2C45800DCA3CC /* mulle_callback_types.h */,
-				414AC1AB1AC2C45800DCA3CC /* mulle_callback_types.c */,
 				4164C77C1AC6094C00A8A1C4 /* mulle_aba_defines.h */,
 				4177B15B1B447C4E0073EA65 /* mulle_aba_linked_list.h */,
 				4177B15A1B447C4E0073EA65 /* mulle_aba_linked_list.c */,
@@ -137,25 +192,54 @@
 			path = src;
 			sourceTree = "<group>";
 		};
+		415930B61BAC50A900B1FB1D /* tests */ = {
+			isa = PBXGroup;
+			children = (
+				4147852F1ABAF290002DBAE4 /* main.c */,
+				419795A21B6A52B5005417AA /* ll_main.c */,
+				4129A8D41AC416030063C255 /* pointer_array.h */,
+			);
+			name = tests;
+			path = src;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
-/* Begin PBXHeadersBuildPhase section */
-		41F14FE41B68F098002189F1 /* Headers */ = {
-			isa = PBXHeadersBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				419795A41B6A52E2005417AA /* mulle_atomic.h in Headers */,
-				419795A51B6A52E2005417AA /* mulle_callback_types.h in Headers */,
-				419795A61B6A52E2005417AA /* mulle_aba_defines.h in Headers */,
-				419795A71B6A52E2005417AA /* mulle_aba_linked_list.h in Headers */,
-				419795A81B6A52E2005417AA /* mulle_aba_storage.h in Headers */,
-				419795A91B6A52E2005417AA /* mulle_aba.h in Headers */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXHeadersBuildPhase section */
-
 /* Begin PBXNativeTarget section */
+		4116D2281BB7FAE200EE88F2 /* run-on-ipad */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 4116D24D1BB7FAE200EE88F2 /* Build configuration list for PBXNativeTarget "run-on-ipad" */;
+			buildPhases = (
+				4116D2251BB7FAE200EE88F2 /* Sources */,
+				4116D2261BB7FAE200EE88F2 /* Frameworks */,
+				4116D2271BB7FAE200EE88F2 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				413832011BCABCD2009D1ABE /* PBXTargetDependency */,
+			);
+			name = "run-on-ipad";
+			productName = "run-on-ipad";
+			productReference = 4116D2291BB7FAE200EE88F2 /* run-on-ipad.app */;
+			productType = "com.apple.product-type.application";
+		};
+		413831F51BCABCAA009D1ABE /* mulle_aba (iOS) */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 413831FC1BCABCAA009D1ABE /* Build configuration list for PBXNativeTarget "mulle_aba (iOS)" */;
+			buildPhases = (
+				413831F61BCABCAA009D1ABE /* Sources */,
+				413831FB1BCABCAA009D1ABE /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "mulle_aba (iOS)";
+			productName = mulle_aba;
+			productReference = 413831FF1BCABCAA009D1ABE /* libmulle_aba (iOS).a */;
+			productType = "com.apple.product-type.library.static";
+		};
 		4147852B1ABAF290002DBAE4 /* mulle_aba_test */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 414785331ABAF290002DBAE4 /* Build configuration list for PBXNativeTarget "mulle_aba_test" */;
@@ -196,7 +280,6 @@
 			buildPhases = (
 				41F14FE21B68F098002189F1 /* Sources */,
 				41F14FE31B68F098002189F1 /* Frameworks */,
-				41F14FE41B68F098002189F1 /* Headers */,
 			);
 			buildRules = (
 			);
@@ -213,9 +296,13 @@
 		414785241ABAF290002DBAE4 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0620;
+				LastUpgradeCheck = 0640;
 				ORGANIZATIONNAME = "Mulle kybernetiK";
 				TargetAttributes = {
+					4116D2281BB7FAE200EE88F2 = {
+						CreatedOnToolsVersion = 6.4;
+						DevelopmentTeam = SFE8DMVLC7;
+					};
 					4147852B1ABAF290002DBAE4 = {
 						CreatedOnToolsVersion = 6.2;
 					};
@@ -230,20 +317,57 @@
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
+				Base,
 			);
 			mainGroup = 414785231ABAF290002DBAE4;
 			productRefGroup = 4147852D1ABAF290002DBAE4 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
+				41F14FE51B68F098002189F1 /* mulle_aba */,
 				4147852B1ABAF290002DBAE4 /* mulle_aba_test */,
 				419795961B6A5290005417AA /* mulle_aba_linked_list_test */,
-				41F14FE51B68F098002189F1 /* mulle_aba */,
+				4116D2281BB7FAE200EE88F2 /* run-on-ipad */,
+				413831F51BCABCAA009D1ABE /* mulle_aba (iOS) */,
 			);
 		};
 /* End PBXProject section */
 
+/* Begin PBXResourcesBuildPhase section */
+		4116D2271BB7FAE200EE88F2 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4116D2371BB7FAE200EE88F2 /* Main.storyboard in Resources */,
+				4116D23C1BB7FAE200EE88F2 /* LaunchScreen.xib in Resources */,
+				4116D2391BB7FAE200EE88F2 /* Images.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
+		4116D2251BB7FAE200EE88F2 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4116D2341BB7FAE200EE88F2 /* ViewController.m in Sources */,
+				4116D2311BB7FAE200EE88F2 /* AppDelegate.m in Sources */,
+				417260DA1BCB07110049ED48 /* ll_main.c in Sources */,
+				4116D22E1BB7FAE200EE88F2 /* main.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		413831F61BCABCAA009D1ABE /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				413831F81BCABCAA009D1ABE /* mulle_aba_linked_list.c in Sources */,
+				413831F91BCABCAA009D1ABE /* mulle_aba_storage.c in Sources */,
+				413831FA1BCABCAA009D1ABE /* mulle_aba.c in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		414785281ABAF290002DBAE4 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -264,8 +388,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				41F14FEA1B68F0AE002189F1 /* mintomic_gcc.c in Sources */,
-				41F14FEB1B68F0AE002189F1 /* mulle_callback_types.c in Sources */,
 				41F14FEC1B68F0AE002189F1 /* mulle_aba_linked_list.c in Sources */,
 				41F14FED1B68F0AE002189F1 /* mulle_aba_storage.c in Sources */,
 				41F14FEE1B68F0AE002189F1 /* mulle_aba.c in Sources */,
@@ -275,6 +397,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		413832011BCABCD2009D1ABE /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 413831F51BCABCAA009D1ABE /* mulle_aba (iOS) */;
+			targetProxy = 413832001BCABCD2009D1ABE /* PBXContainerItemProxy */;
+		};
 		419795971B6A5290005417AA /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 41F14FE51B68F098002189F1 /* mulle_aba */;
@@ -287,19 +414,113 @@
 		};
 /* End PBXTargetDependency section */
 
+/* Begin PBXVariantGroup section */
+		4116D2351BB7FAE200EE88F2 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				4116D2361BB7FAE200EE88F2 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		4116D23A1BB7FAE200EE88F2 /* LaunchScreen.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				4116D23B1BB7FAE200EE88F2 /* Base */,
+			);
+			name = LaunchScreen.xib;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
 /* Begin XCBuildConfiguration section */
+		4116D2491BB7FAE200EE88F2 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				GCC_C_LANGUAGE_STANDARD = c11;
+				INFOPLIST_FILE = "run-on-ipad/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				OTHER_CFLAGS = (
+					"-H",
+					"-D__STDC_NO_THREADS__",
+					"-DNO_MAIN",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		4116D24A1BB7FAE200EE88F2 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				GCC_C_LANGUAGE_STANDARD = c11;
+				INFOPLIST_FILE = "run-on-ipad/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				OTHER_CFLAGS = (
+					"-H",
+					"-D__STDC_NO_THREADS__",
+					"-DNO_MAIN",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		413831FD1BCABCAA009D1ABE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				EXECUTABLE_PREFIX = lib;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
+				PRIVATE_HEADERS_FOLDER_PATH = "/usr/local/include/${PRODUCT_NAME}";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PUBLIC_HEADERS_FOLDER_PATH = "/usr/local/include/${PRODUCT_NAME}";
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		413831FE1BCABCAA009D1ABE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				EXECUTABLE_PREFIX = lib;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
+				PRIVATE_HEADERS_FOLDER_PATH = "/usr/local/include/${PRODUCT_NAME}";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PUBLIC_HEADERS_FOLDER_PATH = "/usr/local/include/${PRODUCT_NAME}";
+				SDKROOT = iphoneos;
+			};
+			name = Release;
+		};
 		414785311ABAF290002DBAE4 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
-				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				COPY_PHASE_STRIP = NO;
-				GCC_C_LANGUAGE_STANDARD = gnu89;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEPENDENCIES_DIR = "$(PROJECT_DIR)/dependencies";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(DEPENDENCIES_DIR)/Frameworks/$(LIBRARY_CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)",
+					"$(DEPENDENCIES_DIR)/Frameworks/$(LIBRARY_CONFIGURATION)",
+					"$(DEPENDENCIES_DIR)/Frameworks/Release$(EFFECTIVE_PLATFORM_NAME)",
+					"$(DEPENDENCIES_DIR)/Frameworks/Release",
+					"$(DEPENDENCIES_DIR)/Frameworks",
+					"$(inherited)",
+				);
+				GCC_C_LANGUAGE_STANDARD = c11;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = DEBUG;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -308,13 +529,27 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = (
+					"$(DEPENDENCIES_DIR)/include",
+					/usr/local/include,
 					"$(inherited)",
-					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
-					./mintomic/include,
+					"/include\\ /usr/local/include\\ ",
+				);
+				LIBRARY_CONFIGURATION = Debug;
+				LIBRARY_SEARCH_PATHS = (
+					"$(DEPENDENCIES_DIR)/lib/$(LIBRARY_CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)",
+					"$(DEPENDENCIES_DIR)/lib/$(LIBRARY_CONFIGURATION)",
+					"$(DEPENDENCIES_DIR)/lib/Release$(EFFECTIVE_PLATFORM_NAME)",
+					"$(DEPENDENCIES_DIR)/lib/Release",
+					"$(DEPENDENCIES_DIR)/lib",
+					/usr/local/lib,
+					"$(inherited)",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.4;
-				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CFLAGS = (
+					"-H",
+					"-D__STDC_NO_THREADS__",
+				);
 			};
 			name = Debug;
 		};
@@ -322,16 +557,23 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
-				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEPENDENCIES_DIR = "$(PROJECT_DIR)/dependencies";
 				ENABLE_NS_ASSERTIONS = NO;
-				GCC_C_LANGUAGE_STANDARD = gnu89;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(DEPENDENCIES_DIR)/Frameworks/$(LIBRARY_CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)",
+					"$(DEPENDENCIES_DIR)/Frameworks/$(LIBRARY_CONFIGURATION)",
+					"$(DEPENDENCIES_DIR)/Frameworks/Release$(EFFECTIVE_PLATFORM_NAME)",
+					"$(DEPENDENCIES_DIR)/Frameworks/Release",
+					"$(DEPENDENCIES_DIR)/Frameworks",
+					"$(inherited)",
+				);
+				GCC_C_LANGUAGE_STANDARD = c11;
 				GCC_PREPROCESSOR_DEFINITIONS = NDEBUG;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
@@ -339,12 +581,26 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = (
+					"$(DEPENDENCIES_DIR)/include",
+					/usr/local/include,
 					"$(inherited)",
-					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
-					./mintomic/include,
+					"/include\\ /usr/local/include\\ ",
+				);
+				LIBRARY_CONFIGURATION = Release;
+				LIBRARY_SEARCH_PATHS = (
+					"$(DEPENDENCIES_DIR)/lib/$(LIBRARY_CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)",
+					"$(DEPENDENCIES_DIR)/lib/$(LIBRARY_CONFIGURATION)",
+					"$(DEPENDENCIES_DIR)/lib/Release$(EFFECTIVE_PLATFORM_NAME)",
+					"$(DEPENDENCIES_DIR)/lib/Release",
+					"$(DEPENDENCIES_DIR)/lib",
+					/usr/local/lib,
+					"$(inherited)",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.4;
-				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_CFLAGS = (
+					"-H",
+					"-D__STDC_NO_THREADS__",
+				);
 			};
 			name = Release;
 		};
@@ -379,23 +635,47 @@
 		41F14FE81B68F098002189F1 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
 				EXECUTABLE_PREFIX = lib;
 				GCC_PREPROCESSOR_DEFINITIONS = DEBUG;
+				PRIVATE_HEADERS_FOLDER_PATH = "/usr/local/include/${PRODUCT_NAME}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PUBLIC_HEADERS_FOLDER_PATH = "/usr/local/include/${PRODUCT_NAME}";
 			};
 			name = Debug;
 		};
 		41F14FE91B68F098002189F1 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
 				EXECUTABLE_PREFIX = lib;
+				PRIVATE_HEADERS_FOLDER_PATH = "/usr/local/include/${PRODUCT_NAME}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PUBLIC_HEADERS_FOLDER_PATH = "/usr/local/include/${PRODUCT_NAME}";
 			};
 			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		4116D24D1BB7FAE200EE88F2 /* Build configuration list for PBXNativeTarget "run-on-ipad" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4116D2491BB7FAE200EE88F2 /* Debug */,
+				4116D24A1BB7FAE200EE88F2 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		413831FC1BCABCAA009D1ABE /* Build configuration list for PBXNativeTarget "mulle_aba (iOS)" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				413831FD1BCABCAA009D1ABE /* Debug */,
+				413831FE1BCABCAA009D1ABE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		414785271ABAF290002DBAE4 /* Build configuration list for PBXProject "mulle-aba" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

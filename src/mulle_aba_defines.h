@@ -66,6 +66,10 @@ while( 0)
 
 #endif
 
+#if MULLE_ABA_TRACE
+extern char  *mulle_aba_thread_name( void);
+#endif
+
 #endif
 
 

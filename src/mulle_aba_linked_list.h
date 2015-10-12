@@ -35,7 +35,7 @@
 #ifndef mulle_aba_linked_list_h__
 #define mulle_aba_linked_list_h__
 
-#include "mulle_atomic.h"
+#include <mulle_thread/mulle_atomic.h>
 
 #include <string.h>
 #include <assert.h>

@@ -5,3 +5,7 @@ mintomic/
 
 xcuserdata/
 project.xcworkspace/
+.bootstrap.auto/
+.bootstrap.local/
+dependencies/
+.repos/

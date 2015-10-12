@@ -35,12 +35,13 @@
 #ifndef mulle_aba_storage_h__
 #define mulle_aba_storage_h__
 
-#include "mulle_callback_types.h"
-#include "mulle_aba_linked_list.h"
 #include "mulle_aba_defines.h"
 
+#include <mulle_containers/mulle_callback_types.h>
+#include "mulle_aba_linked_list.h"
+
+#include <mulle_thread/mulle_atomic.h>
 #include <assert.h>
-#include <pthread.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -137,8 +138,6 @@ static inline unsigned int
 }
 
 
-extern char  *pthread_name( void);
-
 
 static inline int   _mulle_aba_timestamp_storage_set_usage_bit( struct _mulle_aba_timestamp_storage *ts_storage, unsigned int index, int bit)
 {
@@ -156,8 +155,8 @@ static inline int   _mulle_aba_timestamp_storage_set_usage_bit( struct _mulle_ab
    }
    while( ! _mulle_atomic_compare_and_swap_pointer( &ts_storage->_usage_bits, (void *) usage, (void *) expect));
    
-#if TRACE
-   fprintf( stderr, "%s: set usage bit (%d/%d) for storage %p: %p -> %p\n", pthread_name(), index, bit, ts_storage, (void *) expect, (void *) usage);
+#if MULLE_ABA_TRACE
+      fprintf( stderr, "%s: set usage bit (%d/%d) for storage %p: %p -> %p\n", mulle_aba_thread_name(), index, bit, ts_storage, (void *) expect, (void *) usage);
 #endif
    
    return( usage != 0);
@@ -369,13 +368,13 @@ void   _mulle_aba_world_assert_sanity( struct _mulle_aba_world *world);
 static inline _mulle_aba_world_pointer_t   _mulle_aba_storage_get_world_pointer( struct _mulle_aba_storage *q)
 {
    _mulle_aba_world_pointer_t   world_p;
-   extern char  *pthread_name( void);
+   extern char  *mulle_aba_thread_name( void);
    
    // if your thread isn't registered yet, you must not read the struct
    // it may be dealloced already
    world_p = (_mulle_aba_world_pointer_t) _mulle_atomic_read_pointer( &q->_world);
-#if TRACE
-   fprintf( stderr, "%s: read world as %p\n", pthread_name(), world_p);
+#if MULLE_ABA_TRACE
+   fprintf( stderr, "%s: read world as %p\n", mulle_aba_thread_name(), world_p);
 #endif
    return( world_p);
 }
@@ -387,8 +386,8 @@ static inline void   _mulle_aba_storage_add_leak_world( struct _mulle_aba_storag
 {
    // must not zero orphan
    _mulle_aba_linked_list_add( &q->_leaks, (void *) orphan);
-#if TRACE
-   fprintf( stderr, "%s: add leak world %p to storage %p\n", pthread_name(), orphan, q);
+#if MULLE_ABA_TRACE
+   fprintf( stderr, "%s: add leak world %p to storage %p\n", mulle_aba_thread_name(), orphan, q);
 #endif
 }
 
