@@ -44,7 +44,7 @@ Call this function to initialize **mulle-aba**. Don't call any other
 State 1 (red). The allocator will be used to allocate memory for the 
 **mulle-aba** system. It is a struct defined like this:
 
-```
+```c
 struct _mulle_allocator
 {
    void   *(*calloc)( size_t, size_t);
@@ -58,7 +58,7 @@ This function is not thread safe (red).
 
 Ex.
 
-```
+```c
 mulle_aba_init( NULL);
 ```
 
@@ -95,7 +95,7 @@ This is a soft-blocking (blue) operation.
 
 Ex.
 
-```
+```c
 static void  run_thread( void *info)
 {
     mulle_aba_register();
@@ -106,6 +106,18 @@ static void  run_thread( void *info)
 mulle_thread_create( &threads, NULL, (void *) run_thread, "VfL Bochum 1848");
 ...
 ```
+
+
+## mulle_aba_is_registered
+
+`int   mulle_aba_is_registered( void)`
+
+*Always available*
+
+You can check if the current thread is registered with this function.
+Returns 0, if not registerd.
+
+
 
 ## mulle_aba_unregister
 

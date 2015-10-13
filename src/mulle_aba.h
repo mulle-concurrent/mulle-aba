@@ -36,7 +36,7 @@
 #define mulle_aba_h__
 
 #include <stdio.h>
-
+#include <mulle_thread/mulle_thread.h>
 #include "mulle_aba_storage.h"
 
 //
@@ -81,15 +81,38 @@ int   mulle_aba_free( void *block, void (*free)( void *));
 int   mulle_aba_free_owned_pointer( void *owner, void *pointer, void (*p_free)( void *owner, void *pointer));
 
 
-// useful for testing and setting things up
-int   _mulle_aba_init( struct _mulle_aba *p,
-                       struct _mulle_allocator *allocator,
-                       int (*yield)( void));
-
-
 // only really useful for testing
 void   mulle_aba_reset( void);
 uintptr_t   mulle_aba_get_thread_timestamp( void);
 void        *_mulle_aba_get_world_pointer( void);
+
+int   mulle_aba_is_registered( void);
+/*
+ *
+ * functions you need when dealing with multiple aba instances 
+ *
+ */
+
+static inline int   _mulle_aba_is_setup( struct _mulle_aba *p)
+{
+   return( _mulle_aba_storage_is_setup( &p->storage));
+}
+
+
+int   _mulle_aba_init( struct _mulle_aba *p,
+                       struct _mulle_allocator *allocator,
+                       int (*yield)( void));
+void   _mulle_aba_done( struct _mulle_aba *p);
+
+int   _mulle_aba_unregister_thread( struct _mulle_aba *p, mulle_thread_t thread);
+int   _mulle_aba_register_thread( struct _mulle_aba *p, mulle_thread_t thread);
+
+
+int   _mulle_aba_thread_free_block( struct _mulle_aba *p,
+                                    mulle_thread_t thread,
+                                    void *owner,
+                                    void *pointer,
+                                    void (*p_free)( void *, void *));
+int   _mulle_aba_checkin_thread( struct _mulle_aba *p, mulle_thread_t thread);
 
 #endif /* defined(__test_delayed_deallocator_storage__thread_storage__) */

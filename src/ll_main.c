@@ -31,7 +31,6 @@
 #include "mulle_aba_storage.h"
 #include "mulle_aba.h"
 
-#include <mulle_thread/mulle_atomic.h>
 #include <mulle_thread/mulle_thread.h>
 #include <stdio.h>
 #include <errno.h>
