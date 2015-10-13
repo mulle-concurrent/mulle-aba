@@ -37,7 +37,6 @@
 #include "mulle_aba_defines.h"
 
 #include <mulle_thread/mulle_thread.h>
-#include <mulle_thread/mulle_atomic.h>
 #include <assert.h>
 #include <errno.h>
 #include <pthread.h>
@@ -51,11 +50,10 @@ extern char  *mulle_aba_thread_name( void);
 # pragma mark globals
 
 static mulle_thread_key_t   timestamp_thread_key;
-struct _mulle_aba      *global;
-struct _mulle_aba      global_space;
+struct _mulle_aba           *global;
+struct _mulle_aba           global_space;
 
-static int   _mulle_aba_unregister_thread( struct _mulle_aba *p, mulle_thread_t thread);
-   
+  
 static void   thread_destructor( void *value)
 {
    _mulle_aba_unregister_thread( global, mulle_thread_self());
@@ -80,7 +78,7 @@ int   _mulle_aba_init( struct _mulle_aba *p,
 {
    int   rval;
    
-   rval = _mulle_aba_storage_init( &p->storage, allocator);
+   rval = _mulle_aba_storage_init( &p->storage, allocator, yield);
    assert( ! rval);
 #if DEBUG_SINGLE_THREADED
    if( ! rval)
@@ -97,7 +95,7 @@ int   _mulle_aba_init( struct _mulle_aba *p,
 }
 
 
-static void   _mulle_aba_done( struct _mulle_aba *p)
+void   _mulle_aba_done( struct _mulle_aba *p)
 {
    _mulle_aba_storage_done( &p->storage);
 }
@@ -105,9 +103,6 @@ static void   _mulle_aba_done( struct _mulle_aba *p)
 
 # pragma mark -
 # pragma mark get rid of old worlds
-
-static int   _mulle_aba_thread_free_block( struct _mulle_aba *p, mulle_thread_t thread, void *owner, void *pointer, void (*p_free)( void *, void *));
-
 
 static int   _mulle_lockfree_deallocator_free_world_chain( struct _mulle_aba *p, mulle_thread_t thread, struct _mulle_aba_world   *old_world)
 {
@@ -195,10 +190,13 @@ static int   add_thread( int mode, struct _mulle_aba_callback_info  *info, void 
 }
 
 
-static int   _mulle_aba_thread_free_block( struct _mulle_aba *p, mulle_thread_t thread, void *owner, void *pointer, void (*p_free)( void *, void *));
+int   mulle_aba_is_registered( void)
+{
+   return( mulle_thread_getspecific( timestamp_thread_key) != NULL);
+}
 
 
-static int   _mulle_aba_register_thread( struct _mulle_aba *p, mulle_thread_t thread)
+int   _mulle_aba_register_thread( struct _mulle_aba *p, mulle_thread_t thread)
 {
    intptr_t   timestamp;
    struct _mulle_aba_world            *new_world;
@@ -264,8 +262,9 @@ static int   set_bit( int mode, struct _mulle_aba_callback_info  *info, void *us
    info->new_bit = 1;
    return( 0);
 }
-       
-static int   _mulle_aba_checkin_thread( struct _mulle_aba *p, mulle_thread_t thread)
+
+
+int   _mulle_aba_checkin_thread( struct _mulle_aba *p, mulle_thread_t thread)
 {
    _mulle_aba_world_pointer_t         old_world_p;
    int                                rval;
@@ -274,6 +273,7 @@ static int   _mulle_aba_checkin_thread( struct _mulle_aba *p, mulle_thread_t thr
    struct _mulle_aba_world            *old_world;
    struct _mulle_aba_world_pointers   world_ps;
    
+
    //
    // if old == 0, thread is not configured...
    // and hasn't freed anything. Therefore is not counted as an active thread
@@ -288,6 +288,11 @@ static int   _mulle_aba_checkin_thread( struct _mulle_aba *p, mulle_thread_t thr
    
    if( old > new)
       return( 0);
+
+   // Ok we promise not to read the old stuff anymore
+   // and with the barrier, that should be enforced
+   // TODO: Voodoo or necessity ? Think about it.
+   mulle_atomic_memory_barrier();
    
    world_ps = _mulle_aba_storage_change_world_pointer_2( &p->storage, _mulle_swap_checkin_intent, old_world_p, set_bit, NULL);
    if( ! world_ps.new_world_p)
@@ -390,7 +395,7 @@ static int   remove_thread( int mode, struct _mulle_aba_callback_info  *info, vo
 }
 
        
-static int   _mulle_aba_unregister_thread( struct _mulle_aba *p, mulle_thread_t thread)
+int   _mulle_aba_unregister_thread( struct _mulle_aba *p, mulle_thread_t thread)
 {
    _mulle_aba_world_pointer_t         locked_world_p;
    _mulle_aba_world_pointer_t         old_world_p;
@@ -1004,16 +1009,11 @@ void   mulle_aba_checkin( void)
 {
    assert( global);
 
-   // Ok we promise not to read the old stuff anymore
-   // and with the barrier, that should be enforced
-   // TODO: Voodoo or necessity ? Think about it.
-   mulle_atomic_memory_barrier();
-
    _mulle_aba_checkin_thread( global, mulle_thread_self());
 }
 
 
-static void    just_free( void *owner, void *pointer)
+static void    _mulle_aba_no_owner_free( void *owner, void *pointer)
 {
    void   (*p_free)( void *);
    
@@ -1029,18 +1029,18 @@ int   mulle_aba_free( void *block, void (*p_free)( void *))
    if( ! block)
       return( 0);
    
-   return( _mulle_aba_thread_free_block( global, mulle_thread_self(), p_free, block, just_free));
+   return( _mulle_aba_thread_free_block( global, mulle_thread_self(), p_free, block, _mulle_aba_no_owner_free));
 }
 
 
 int   mulle_aba_free_owned_pointer( void *owner, void *block, void (*p_free)( void *, void *))
 {
    assert( global);
-   assert( p_free);
    
    if( ! block)
       return( 0);
    
+   assert( p_free);
 //   if( ! mulle_aba_get_thread_timestamp())
 //      mulle_aba_register_current_thread();
    
@@ -1066,7 +1066,7 @@ void   mulle_aba_unregister()
 void   mulle_aba_init( struct _mulle_allocator *allocator)
 {
    if( ! allocator)
-      allocator = &mulle_malloc_allocator;
+      allocator = &mulle_stdlib_allocator;
       
    if( ! global)
       global = &global_space;

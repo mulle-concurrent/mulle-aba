@@ -11,14 +11,11 @@ project (mulle-aba)
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O3 -g -DNDEBUG")
 
 set(HEADERS
-src/mulle_callback_types.h
-src/mulle_aba_defines.h
 src/mulle_aba_linked_list.h
 src/mulle_aba_storage.h
 src/mulle_aba.h)
 
 add_library(mulle_aba
-src/mulle_callback_types.c
 src/mulle_aba_linked_list.c
 src/mulle_aba_storage.c
 src/mulle_aba.c
@@ -37,5 +34,6 @@ target_link_libraries( mulle_aba_ll_test LINK_PUBLIC mulle_aba
 pthread)
 
 
+INSTALL(TARGETS mulle_aba DESTINATION "lib")
 INSTALL(FILES ${HEADERS} DESTINATION "include/mulle_aba")
 

@@ -352,9 +352,14 @@ void   _mulle_aba_world_assert_sanity( struct _mulle_aba_world *world)
 #pragma mark init/done
 
 int   _mulle_aba_storage_init( struct _mulle_aba_storage *q,
-                               struct _mulle_allocator *allocator)
+                               struct _mulle_allocator *allocator,
+                               int (*yield)( void))
 {
    struct _mulle_aba_world   *world;
+   
+   assert( q);
+   assert( allocator);
+   assert( yield);
    
    memset( q, 0, sizeof( *q));
    
@@ -371,6 +376,8 @@ int   _mulle_aba_storage_init( struct _mulle_aba_storage *q,
    }
    
    q->_world._nonatomic = world;
+   q->yield             = yield;
+   
    return( 0);
 }
 
@@ -1065,7 +1072,7 @@ struct _mulle_aba_world_pointers
       if( new_world_p)
          return( _mulle_aba_world_pointers_make( new_world_p, old_world_p));
       
-      sched_yield();
+      q->yield();
    }
 }
 

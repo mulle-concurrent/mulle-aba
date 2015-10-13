@@ -1,4 +1,6 @@
 .DS_Store
+
+*~.*
 *[Bb]uild/
 .idea/
 mintomic/

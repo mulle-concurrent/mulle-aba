@@ -37,8 +37,8 @@
 
 #include "mulle_aba_linked_list.h"
 
-#include <mulle_containers/mulle_callback_types.h>
-#include <mulle_thread/mulle_atomic.h>
+#include <mulle_container/mulle_container.h>
+#include <mulle_thread/mulle_thread.h>
 #include <assert.h>
 #include <stdint.h>
 #include <stdio.h>
@@ -278,9 +278,11 @@ struct _mulle_aba_timestamp_storage *
    _mulle_aba_world_get_timestamp_storage( struct _mulle_aba_world *world,
                                            uintptr_t timestamp);
 
-static inline size_t _mulle_aba_world_get_size( struct _mulle_aba_world *world)
+static inline size_t   _mulle_aba_world_get_size( struct _mulle_aba_world *world)
 {
-   return( (char *) &world->_storage[ world->_size] - (char *) world);
+   /* casty cast madness, code looks like c++ */
+   
+   return( (size_t) ((char *) &world->_storage[ world->_size] - (char *) world));
 }
 
 
@@ -313,6 +315,8 @@ struct _mulle_aba_storage
    struct _mulle_aba_linked_list   _leaks;
    struct _mulle_aba_linked_list   _free_entries;
    struct _mulle_aba_linked_list   _free_worlds;
+   
+   int                              (*yield)( void);
 };
 
 
@@ -320,10 +324,16 @@ struct _mulle_aba_storage
 # pragma mark storage init/done
 
 int   _mulle_aba_storage_init( struct _mulle_aba_storage *q,
-                               struct _mulle_allocator *allocator);
+                               struct _mulle_allocator *allocator,
+                               int    (*yield)( void));
 
 void   _mulle_aba_storage_done( struct _mulle_aba_storage *q);
 
+
+static inline int   _mulle_aba_storage_is_setup( struct _mulle_aba_storage *q)
+{
+   return( q->_world._nonatomic != NULL);
+}
 
 
 # pragma mark -
