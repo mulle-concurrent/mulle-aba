@@ -1,3 +1,10 @@
+---
+layout: post
+author: Nat!
+title: 
+open_comments: true
+date: 2015-10-25 16:34
+---
 # mulle-aba
 
 ## Intro
@@ -33,9 +40,7 @@ Edge style
 
 # API
 
-## mulle_aba_init
-
-`void mulle_aba_init( struct _mulle_allocator *allocator)`
+### `void mulle_aba_init( struct _mulle_allocator *allocator)`
 
 *Available in state 1 (red)*
 
@@ -48,11 +53,12 @@ State 1 (red). The allocator will be used to allocate memory for the
 struct _mulle_allocator
 {
    void   *(*calloc)( size_t, size_t);
+   void   *(*realloc)( void *, size_t);
    void   (*free)( void *);
 };
 ```
 
-If you pass in NULL, standard `calloc` and `free` will be used.
+If you pass in NULL, standard `calloc`, `realloc`, `free` will be used.
 
 This function is not thread safe (red).
 
@@ -63,9 +69,7 @@ mulle_aba_init( NULL);
 ```
 
 
-## mulle_aba_done
-
-`void mulle_aba_done( void)`
+## `void mulle_aba_done( void)`
 
 *Available in state 2 (red) an 6 (purple)*
 
@@ -77,9 +81,7 @@ that all participating threads have unregistered **and** joined before calling
 This function is not thread safe (red).
 
 
-## mulle_aba_register
-
-`void   mulle_aba_register( void)`
+## `void   mulle_aba_register( void)`
 
 *Available in states 3 (red) and 5 (purple)*
 
@@ -108,9 +110,7 @@ mulle_thread_create( &threads, NULL, (void *) run_thread, "VfL Bochum 1848");
 ```
 
 
-## mulle_aba_is_registered
-
-`int   mulle_aba_is_registered( void)`
+### `int   mulle_aba_is_registered( void)`
 
 *Always available*
 
@@ -119,9 +119,7 @@ Returns 0, if not registerd.
 
 
 
-## mulle_aba_unregister
-
-`void   mulle_aba_unregister( void)`
+### `void   mulle_aba_unregister( void)`
 
 *Available in state 4 (black)*
 
@@ -135,9 +133,7 @@ will be looping. You don't have to call checkin before calling
 This is a soft-blocking (blue) operation. 
 
 
-## mulle_aba_free
-
-`int   mulle_aba_free( void *pointer, void (*free)( void *))`
+### `int   mulle_aba_free( void *pointer, void (*free)( void *))`
 
 *Available in state 4 (black)*
 
@@ -151,16 +147,14 @@ locking or blocking, then **mulle-aba**'s main operation is not lock-free.
 
 Ex.
 
-```
+```c
     s = some_unused_shared_malloced_resource();
     mulle_aba_free( s, free);
 ```
 
 
 
-## mulle_aba_checkin
-
-`void   mulle_aba_checkin( void)`
+### `void   mulle_aba_checkin( void)`
 
 *Available in state 4 (black)*
 

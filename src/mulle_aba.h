@@ -84,7 +84,7 @@ int   mulle_aba_free_owned_pointer( void *owner, void *pointer, void (*p_free)( 
 // only really useful for testing
 void   mulle_aba_reset( void);
 uintptr_t   mulle_aba_get_thread_timestamp( void);
-void        *_mulle_aba_get_world_pointer( void);
+void        *_mulle_aba_get_worldpointer( void);
 
 int   mulle_aba_is_registered( void);
 /*
@@ -111,8 +111,9 @@ int   _mulle_aba_register_thread( struct _mulle_aba *p, mulle_thread_t thread);
 int   _mulle_aba_thread_free_block( struct _mulle_aba *p,
                                     mulle_thread_t thread,
                                     void *owner,
-                                    void *pointer,
-                                    void (*p_free)( void *, void *));
+                                    void (*p_free)( void *, void *),
+                                    void *pointer);
+                                    
 int   _mulle_aba_checkin_thread( struct _mulle_aba *p, mulle_thread_t thread);
 
 #endif /* defined(__test_delayed_deallocator_storage__thread_storage__) */

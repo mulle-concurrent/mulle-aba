@@ -1,5 +1,5 @@
 //
-//  mulle_aba_linked_list.c
+//  mulle_aba_linkedlist.c
 //  mulle-aba
 //
 //  Created by Nat! on 01.07.15.
@@ -32,8 +32,8 @@
 //  POSSIBILITY OF SUCH DAMAGE.
 //
 
-#ifndef mulle_aba_linked_list_h__
-#define mulle_aba_linked_list_h__
+#ifndef mulle_aba_linkedlist_h__
+#define mulle_aba_linkedlist_h__
 
 #include <mulle_thread/mulle_thread.h>
 
@@ -41,27 +41,27 @@
 #include <assert.h>
 
 
-struct _mulle_aba_linked_list_entry
+struct _mulle_aba_linkedlist_entry
 {
-   struct _mulle_aba_linked_list_entry   *_next;
+   struct _mulle_aba_linkedlist_entry   *_next;
 };
 
 
-struct _mulle_aba_linked_list
+struct _mulle_aba_linkedlist
 {
-   mulle_atomic_ptr_t   _head;
+   mulle_atomic_pointer_t   _head;
 };
 
 
-static inline void    _mulle_aba_linked_list_init( struct _mulle_aba_linked_list *p)
+static inline void    _mulle_aba_linkedlist_init( struct _mulle_aba_linkedlist *p)
 {
    memset( p, 0, sizeof( *p));
 }
 
 
-static inline void   _mulle_aba_linked_list_done( struct _mulle_aba_linked_list *p)
+static inline void   _mulle_aba_linkedlist_done( struct _mulle_aba_linkedlist *p)
 {
-   assert( ! p->_head._nonatomic);
+   assert( ! _mulle_atomic_pointer_nonatomic_read( &p->_head));
 }
 
 
@@ -69,18 +69,18 @@ static inline void   _mulle_aba_linked_list_done( struct _mulle_aba_linked_list 
 // limited functionality, add to back (single)
 // remove all
 //
-void  _mulle_aba_linked_list_add( struct _mulle_aba_linked_list *list, struct _mulle_aba_linked_list_entry  *entry);
-struct _mulle_aba_linked_list_entry  *_mulle_aba_linked_list_remove_all( struct _mulle_aba_linked_list *list);
+void  _mulle_aba_linkedlist_add( struct _mulle_aba_linkedlist *list, struct _mulle_aba_linkedlist_entry  *entry);
+struct _mulle_aba_linkedlist_entry  *_mulle_aba_linkedlist_remove_all( struct _mulle_aba_linkedlist *list);
 
 // based on remove all 
-struct _mulle_aba_linked_list_entry  *_mulle_aba_linked_list_remove_one( struct _mulle_aba_linked_list *list);
+struct _mulle_aba_linkedlist_entry  *_mulle_aba_linkedlist_remove_one( struct _mulle_aba_linkedlist *list);
 
 //
 // NOT THREADSAFE AT ALL
 //
-int   _mulle_aba_linked_list_walk( struct _mulle_aba_linked_list *list,
-                                     int (*callback)( struct _mulle_aba_linked_list_entry *,
-                                                      struct _mulle_aba_linked_list_entry *,
+int   _mulle_aba_linkedlist_walk( struct _mulle_aba_linkedlist *list,
+                                     int (*callback)( struct _mulle_aba_linkedlist_entry *,
+                                                      struct _mulle_aba_linkedlist_entry *,
                                                      void *),
                                      void *userinfo);
 
