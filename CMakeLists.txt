@@ -11,12 +11,12 @@ project (mulle-aba)
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O3 -g -DNDEBUG")
 
 set(HEADERS
-src/mulle_aba_linked_list.h
+src/mulle_aba_linkedlist.h
 src/mulle_aba_storage.h
 src/mulle_aba.h)
 
 add_library(mulle_aba
-src/mulle_aba_linked_list.c
+src/mulle_aba_linkedlist.c
 src/mulle_aba_storage.c
 src/mulle_aba.c
 )

@@ -49,7 +49,7 @@ extern void   mulle_aba_print( void);
 # define mulle_aba_print()
 #endif
 
-static mulle_thread_key_t   timestamp_thread_key;
+static mulle_thread_tss_t   timestamp_thread_key;
 char  *mulle_aba_thread_name( void);
 
 #pragma mark -
@@ -141,8 +141,8 @@ void  test_free( void *p)
 #pragma mark -
 #pragma mark global variables
 
-static struct _mulle_aba_linked_list   list;     // common
-static mulle_atomic_ptr_t              alloced;  // common
+static struct _mulle_aba_linkedlist   list;     // common
+static mulle_atomic_pointer_t          alloced;  // common
 
 
 #pragma mark -
@@ -188,7 +188,7 @@ static void   reset_memory()
 
 static void    run_thread_gc_free_list_test( void)
 {
-   struct _mulle_aba_free_entry   *entry;
+   struct _mulle_aba_freeentry   *entry;
    unsigned long                  i;
    void                           *thread;
    
@@ -196,7 +196,7 @@ static void    run_thread_gc_free_list_test( void)
    
    for( i = 0; i < LOOPS; i++)
    {
-      entry = (void *) _mulle_aba_linked_list_remove_one( &list);
+      entry = (void *) _mulle_aba_linkedlist_remove_one( &list);
       if( entry)
       {
 #if MULLE_ABA_TRACE
@@ -207,7 +207,7 @@ static void    run_thread_gc_free_list_test( void)
       else
       {
          entry = test_calloc( 1, sizeof( *entry));
-         _mulle_atomic_increment_pointer( &alloced);
+         _mulle_atomic_pointer_increment( &alloced);
 #if MULLE_ABA_TRACE            
          fprintf( stderr, "%s: allocated %p (%p)\n", mulle_aba_thread_name(), entry, entry->_next);
 #endif
@@ -217,7 +217,7 @@ static void    run_thread_gc_free_list_test( void)
       entry->_pointer = (void *) i;
       entry->_owner   = thread;
 
-      _mulle_aba_linked_list_add( &list, &entry->_link);
+      _mulle_aba_linkedlist_add( &list, &entry->_link);
    }
 }
 
@@ -231,25 +231,25 @@ void  multi_threaded_test_each_thread()
 }
 
 
-static void   _wait_around( mulle_atomic_ptr_t *n_threads)
+static void   _wait_around( mulle_atomic_pointer_t *n_threads)
 {
    // wait for all threads to materialize
-   _mulle_atomic_decrement_pointer( n_threads);
-   while( _mulle_atomic_read_pointer( n_threads) != 0)
+   _mulle_atomic_pointer_decrement( n_threads);
+   while( _mulle_atomic_pointer_read( n_threads) != 0)
       sched_yield();
 }
 
 
 struct thread_info
 {
-   char                  name[ 64];
-   mulle_atomic_ptr_t    *n_threads;
+   char                     name[ 64];
+   mulle_atomic_pointer_t   *n_threads;
 };
 
 
 static mulle_thread_rval_t   run_test( struct thread_info *info)
 {
-   mulle_thread_setspecific( timestamp_thread_key, strdup( info->name));
+   mulle_thread_tss_set( timestamp_thread_key, strdup( info->name));
 
    _wait_around( info->n_threads);
    multi_threaded_test_each_thread();
@@ -260,12 +260,12 @@ static mulle_thread_rval_t   run_test( struct thread_info *info)
 
 static void   finish_test( void)
 {
-   struct _mulle_aba_free_entry   *entry;
+   struct _mulle_aba_freeentry   *entry;
    // remove all from list, so any leak means trouble
    
-   while( _mulle_atomic_decrement_pointer( &alloced))
+   while( _mulle_atomic_pointer_decrement( &alloced))
    {
-      entry = (void *) _mulle_aba_linked_list_remove_one( &list);
+      entry = (void *) _mulle_aba_linkedlist_remove_one( &list);
       assert( entry);
       test_free( entry);
    }
@@ -277,7 +277,7 @@ void  multi_threaded_test( intptr_t n)
    int                  i;
    mulle_thread_t       *threads;
    struct thread_info   *info;
-   mulle_atomic_ptr_t   n_threads;
+   mulle_atomic_pointer_t   n_threads;
    
 #if MULLE_ABA_TRACE
    fprintf( stderr, "////////////////////////////////\n");
@@ -286,7 +286,7 @@ void  multi_threaded_test( intptr_t n)
    threads = alloca( n * sizeof( mulle_thread_t));
    assert( threads);
    
-   n_threads._nonatomic = (void *) n;
+   _mulle_atomic_non_atomic_write_pointer( &n_threads, (void *) n);
    info = alloca( sizeof(struct thread_info) * n);
 
    for( i = 1; i < n; i++)
@@ -319,7 +319,7 @@ void  multi_threaded_test( intptr_t n)
 
 char  *mulle_aba_thread_name( void)
 {
-   return( mulle_thread_getspecific( timestamp_thread_key));
+   return( mulle_thread_tss_get( timestamp_thread_key));
 }
 
 
@@ -348,10 +348,10 @@ int   _main(int argc, const char * argv[])
    rval = mulle_thread_mutex_init( &alloc_lock);
    assert( ! rval);
    
-   rval = mulle_thread_key_create( &timestamp_thread_key, free);
+   rval = mulle_thread_tss_create( &timestamp_thread_key, free);
    assert( ! rval);
    
-   rval = mulle_thread_setspecific( timestamp_thread_key, strdup( "main"));
+   rval = mulle_thread_tss_set( timestamp_thread_key, strdup( "main"));
    assert( ! rval);
    
 #if MULLE_ABA_TRACE
