@@ -54,24 +54,24 @@ int   mulle_aba_set_global( struct _mulle_aba *p);
 //
 // call this before doing anything
 //
-void   mulle_aba_init( struct _mulle_allocator *allocator);
+void   mulle_aba_init( struct mulle_allocator *allocator);
 void   mulle_aba_done( void);
 
 //
 // your foundation must call this at the start of each thread once
 //
-void   mulle_aba_register();
+void   mulle_aba_register( void);
 
 //
 // your foundation should call this occasionally, a good place is
 // -[NSAutoreleasePool finalize]
 //
-void   mulle_aba_checkin();
+void   mulle_aba_checkin( void);
 
 // this will be automatically called on thread destruction, as
 // thread_delayed_deallocator_register sees to this
 // so... you shouldn't call this!
-void   mulle_aba_unregister();
+void   mulle_aba_unregister( void);
 
 
 // everybody frees through this
@@ -100,7 +100,7 @@ static inline int   _mulle_aba_is_setup( struct _mulle_aba *p)
 
 
 int   _mulle_aba_init( struct _mulle_aba *p,
-                       struct _mulle_allocator *allocator,
+                       struct mulle_allocator *allocator,
                        int (*yield)( void));
 void   _mulle_aba_done( struct _mulle_aba *p);
 
@@ -115,5 +115,11 @@ int   _mulle_aba_thread_free_block( struct _mulle_aba *p,
                                     void *pointer);
                                     
 int   _mulle_aba_checkin_thread( struct _mulle_aba *p, mulle_thread_t thread);
+
+#if DEBUG
+void   mulle_aba_print( void);
+void   _mulle_aba_print_worldpointer( _mulle_aba_worldpointer_t world_p);
+#endif
+
 
 #endif /* defined(__test_delayed_deallocator_storage__thread_storage__) */

@@ -40,7 +40,7 @@ Edge style
 
 # API
 
-### `void mulle_aba_init( struct _mulle_allocator *allocator)`
+### `void mulle_aba_init( struct mulle_allocator *allocator)`
 
 *Available in state 1 (red)*
 
@@ -50,7 +50,7 @@ State 1 (red). The allocator will be used to allocate memory for the
 **mulle-aba** system. It is a struct defined like this:
 
 ```c
-struct _mulle_allocator
+struct mulle_allocator
 {
    void   *(*calloc)( size_t, size_t);
    void   *(*realloc)( void *, size_t);

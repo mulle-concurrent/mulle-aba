@@ -36,6 +36,7 @@
 #include "mulle_aba_storage.h"
 #include "mulle_aba.h"
 #include <mulle_thread/mulle_thread.h>
+#include <mulle_test_allocator/mulle_test_allocator.h>
 #include <stdio.h>
 #include <errno.h>
 
@@ -52,107 +53,10 @@ extern void   mulle_aba_print( void);
 static mulle_thread_tss_t   timestamp_thread_key;
 char  *mulle_aba_thread_name( void);
 
-#pragma mark -
-#pragma mark track allocations
-
-#include "pointer_array.h"
-
-
-struct _pointer_array    allocations;
-mulle_thread_mutex_t          alloc_lock;
-
-//void  *test_realloc( void *q, size_t size)
-//{
-//   void           *p;
-//   unsigned int   i;
-//   
-//   p = realloc( q, size);
-//   if( ! p)
-//      return( p);
-//
-//   if( mulle_thread_mutex_lock( &alloc_lock))
-//      abort();
-//   
-//   if( q)
-//   {
-//      if( p != q)
-//      {
-//         i = _pointer_array_index( &allocations, q);  // analayzer it's ok, just a pointer comparison
-//         assert( i != -1);
-//         _pointer_array_set( &allocations, i, p);
-//      }
-//   }
-//   else
-//      _pointer_array_add( &allocations, p, realloc);
-//   mulle_thread_mutex_unlock( &alloc_lock);
-//
-//   return( p);
-//}
-
-
-void  *test_calloc( size_t n, size_t size)
-{
-   void   *p;
-   
-   p = calloc( n, size);
-   if( ! p)
-   {
-#if MULLE_ABA_TRACE
-      abort();
-#endif
-      return( p);
-   }
-   
-   if( mulle_thread_mutex_lock( &alloc_lock))
-      abort();
-   _pointer_array_add( &allocations, p, realloc);
-   mulle_thread_mutex_unlock( &alloc_lock);
-#if MULLE_ABA_TRACE
-   fprintf( stderr,  "%s: *** alloc( %p) ***\n", mulle_aba_thread_name(), p);
-#endif
-   return( p);
-}
-
-
-void  *test_realloc( void *p, size_t size)
-{
-   abort();  // unused in tests
-}
-
-
-void  test_free( void *p)
-{
-   unsigned int   i;
-   
-   if( ! p)
-      return;
-   
-#if MULLE_ABA_TRACE || MULLE_ABA_TRACE_FREE
-   fprintf( stderr,  "%s: *** free( %p) ***\n", mulle_aba_thread_name(), p);
-#endif
-
-   if( mulle_thread_mutex_lock( &alloc_lock))
-      abort();
-   
-   i = _pointer_array_index( &allocations, p);
-   assert( i != -1);  // if assert, this is a double free or not a malloc block
-   _pointer_array_set( &allocations, i, NULL);
-   
-   mulle_thread_mutex_unlock( &alloc_lock);
-   
-   free( p);
-}
-
 
 #pragma mark -
 #pragma mark global variables
 
-static struct _mulle_allocator   test_allocator =
-{
-      test_calloc,
-      test_realloc,
-      test_free
-};
 
 static struct _mulle_aba   test_global;
 
@@ -163,8 +67,6 @@ static struct _mulle_aba   test_global;
 static void   reset_memory()
 {
    extern void  mulle_aba_reset( void);
-   struct  _pointer_array_enumerator   rover;
-   void                                *p;
 
    mulle_aba_done();
    
@@ -172,24 +74,9 @@ static void   reset_memory()
    fprintf( stderr, "\n================================================\n");
 #endif
 
-   rover = _pointer_array_enumerate( &allocations);
-   while( (p = _pointer_array_enumerator_next( &rover)) != (void *) -1)
-   {
-      if( p)
-      {
-         fprintf( stdout, "*");
-#if MULLE_ABA_TRACE
-         fprintf( stderr, "%s: leak %p\n", mulle_aba_thread_name(), p);
-#endif
-         abort();
-      }
-   }
-   _pointer_array_enumerator_done( &rover);
-
-   _pointer_array_done( &allocations, free);
-   memset( &allocations, 0, sizeof( allocations));
-
-   _mulle_aba_init( &test_global, &test_allocator, sched_yield);
+   mulle_test_allocator_reset_memory();
+   
+   _mulle_aba_init( &test_global, &mulle_default_allocator, sched_yield);
 }
 
 
@@ -336,7 +223,7 @@ static void    run_thread_gc_free_list_test( void)
 }
 
 
-void  single_threaded_test()
+static void  single_threaded_test( void)
 {
 #if PROGRESS
    fprintf( stdout,  "."); fflush( stdout);
@@ -346,7 +233,7 @@ void  single_threaded_test()
 
 
 
-void  multi_threaded_test_each_thread()
+static void  multi_threaded_test_each_thread( void)
 {
 #if PROGRESS
    fprintf( stdout,  "."); fflush( stdout);
@@ -404,7 +291,7 @@ static mulle_thread_rval_t   run_test( struct thread_info *info)
 }
 
 
-void  multi_threaded_test( intptr_t n)
+static void  multi_threaded_test( intptr_t n)
 {
    int                  i;
    mulle_thread_t            *threads;
@@ -469,7 +356,7 @@ static void  __enable_core_dumps(void)
 #endif
 
 
-int   _main(int argc, const char * argv[])
+static int   _main(int argc, const char * argv[])
 {
    unsigned int   i;
    unsigned int   j;
@@ -477,9 +364,6 @@ int   _main(int argc, const char * argv[])
    
    srand( (unsigned int) time( NULL));
    
-   rval = mulle_thread_mutex_init( &alloc_lock);
-   assert( ! rval);
-
    rval = mulle_thread_tss_create( &timestamp_thread_key, free);
    assert( ! rval);
    
@@ -490,7 +374,7 @@ int   _main(int argc, const char * argv[])
    fprintf( stderr, "%s\n", mulle_aba_thread_name());
 #endif
    
-   _mulle_aba_init( &test_global, &test_allocator, sched_yield);
+   _mulle_aba_init( &test_global, &mulle_default_allocator, sched_yield);
    if( mulle_aba_set_global( &test_global))
    {
       perror( "mulle_aba_set_global");
@@ -528,7 +412,6 @@ forever:
 #if FOREVER
    goto forever;
 #endif
-   mulle_thread_mutex_destroy( &alloc_lock);
 #if STATE_STATS
    {
       extern void   mulle_transitions_count_print_dot( void);

@@ -77,9 +77,9 @@ void   _mulle_aba_freeentry_set( struct _mulle_aba_freeentry *entry,
                                   void (*free)( void *, void *));
 
 static inline void _mulle_aba_freeentry_free( struct _mulle_aba_freeentry *entry,
-                                               struct _mulle_allocator *allocator)
+                                              struct mulle_allocator *allocator)
 {
-   (*allocator->free)( entry);
+   mulle_allocator_free( allocator, entry);
 }
 
 void   _mulle_aba_free_list_print( struct _mulle_aba_linkedlist *p);
@@ -122,7 +122,7 @@ struct _mulle_aba_timestampstorage
 };
 
 
-struct _mulle_aba_timestampstorage *_mulle_aba_timestampstorage_alloc( struct _mulle_allocator *allocator);
+struct _mulle_aba_timestampstorage *_mulle_aba_timestampstorage_alloc( struct mulle_allocator *allocator);
 
 
 static inline unsigned int
@@ -158,9 +158,9 @@ static inline struct _mulle_aba_timestampentry  *_mulle_aba_timestampstorage_get
    return( &ts_storage->_entries[ index]);
 }
 
-void   __mulle_aba_timestampstorage_free( struct _mulle_aba_timestampstorage *ts_storage, struct _mulle_allocator *allocator);
+void   __mulle_aba_timestampstorage_free( struct _mulle_aba_timestampstorage *ts_storage, struct mulle_allocator *allocator);
 
-void   _mulle_aba_timestampstorage_free( struct _mulle_aba_timestampstorage *ts_storage, struct _mulle_allocator *allocator);
+void   _mulle_aba_timestampstorage_free( struct _mulle_aba_timestampstorage *ts_storage, struct mulle_allocator *allocator);
 
 
 
@@ -288,11 +288,11 @@ static inline size_t   _mulle_aba_world_get_size( struct _mulle_aba_world *world
 
 static inline struct _mulle_aba_timestampstorage  *
    _mulle_aba_world_get_timestampstorage_at_index( struct _mulle_aba_world *world,
-                                                    unsigned int ts_index)
+                                                   unsigned int ts_index)
 {
    struct _mulle_aba_timestampstorage  *ts_storage;
    
-   assert( ts_index != -1 && ts_index < world->_n);
+   assert( ts_index != (unsigned int) -1 && ts_index < world->_n);
    ts_storage = world->_storage[ ts_index];
    assert( ts_storage);
    return( ts_storage);
@@ -311,7 +311,7 @@ struct _mulle_aba_storage
 #if DEBUG
    uintptr_t                      _memtype;
 #endif
-   struct _mulle_allocator        _allocator;
+   struct mulle_allocator        _allocator;
    struct _mulle_aba_linkedlist   _leaks;
    struct _mulle_aba_linkedlist   _free_entries;
    struct _mulle_aba_linkedlist   _free_worlds;
@@ -324,7 +324,7 @@ struct _mulle_aba_storage
 # pragma mark storage init/done
 
 int   _mulle_aba_storage_init( struct _mulle_aba_storage *q,
-                               struct _mulle_allocator *allocator,
+                               struct mulle_allocator *allocator,
                                int    (*yield)( void));
 
 void   _mulle_aba_storage_done( struct _mulle_aba_storage *q);
@@ -441,6 +441,9 @@ _mulle_aba_storage_try_unlock_worldpointer( struct _mulle_aba_storage *q,
 }
 
 
+struct _mulle_aba_worldpointers
+   _mulle_aba_storage_lock_worldpointer( struct _mulle_aba_storage *q);
+
 
 struct _mulle_aba_worldpointers
 _mulle_aba_storage_change_worldpointer_2( struct _mulle_aba_storage *q,
@@ -484,5 +487,8 @@ void   _mulle_aba_world_check_timerange( struct _mulle_aba_world *world,
 unsigned int  _mulle_aba_world_reuse_storages( struct _mulle_aba_world *world);
 unsigned int  _mulle_aba_world_count_avaiable_reusable_storages( struct _mulle_aba_world *world);
 
+#if DEBUG
+void   _mulle_aba_linkedlist_print( struct _mulle_aba_linkedlist *p);
+#endif
 
 #endif /* defined(__test_delayed_deallocator_storage__delayed_deallocator_storage__) */
