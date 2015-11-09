@@ -61,6 +61,7 @@ void   _mulle_aba_freeentry_set( struct _mulle_aba_freeentry *entry,
 }
 
 
+#if DEBUG
 static int   print( struct _mulle_aba_freeentry   *entry,
                     struct _mulle_aba_freeentry   *prev,
                     void *userinfo)
@@ -78,18 +79,18 @@ void   _mulle_aba_linkedlist_print( struct _mulle_aba_linkedlist *p)
 {
    _mulle_aba_linkedlist_walk( p, (void *)  print, NULL);
 }
-
+#endif
 
 
 #pragma mark -
 #pragma mark timestamp storage
 
-struct _mulle_aba_timestampstorage *_mulle_aba_timestampstorage_alloc( struct _mulle_allocator *allocator)
+struct _mulle_aba_timestampstorage *_mulle_aba_timestampstorage_alloc( struct mulle_allocator *allocator)
 {
    struct _mulle_aba_timestampstorage   *ts_storage;
    unsigned int                          i;
    
-   ts_storage = (*allocator->calloc)( 1, sizeof( *ts_storage));
+   ts_storage = mulle_allocator_calloc( allocator, 1, sizeof( *ts_storage));
    if( ! ts_storage)
       return( ts_storage);
 #if DEBUG
@@ -108,7 +109,7 @@ struct _mulle_aba_timestampstorage *_mulle_aba_timestampstorage_alloc( struct _m
 }
 
 
-void  _mulle_aba_timestampstorage_empty_assert( struct _mulle_aba_timestampstorage *ts_storage)
+static void  _mulle_aba_timestampstorage_empty_assert( struct _mulle_aba_timestampstorage *ts_storage)
 {
    unsigned int   i;
    
@@ -119,7 +120,7 @@ void  _mulle_aba_timestampstorage_empty_assert( struct _mulle_aba_timestampstora
    }
 }
 
-void   __mulle_aba_timestampstorage_free( struct _mulle_aba_timestampstorage *ts_storage, struct _mulle_allocator *allocator)
+void   __mulle_aba_timestampstorage_free( struct _mulle_aba_timestampstorage *ts_storage, struct mulle_allocator *allocator)
 {
    if( ! ts_storage)
       return;
@@ -128,12 +129,12 @@ void   __mulle_aba_timestampstorage_free( struct _mulle_aba_timestampstorage *ts
    fprintf( stderr, "%s: free ts_storage %p\n", mulle_aba_thread_name(), ts_storage);
 #endif
    
-   (*allocator->free)( ts_storage);
+   mulle_allocator_free( allocator, ts_storage);
 }
 
 
 void   _mulle_aba_timestampstorage_free( struct _mulle_aba_timestampstorage *ts_storage,
-                                          struct _mulle_allocator *allocator)
+                                          struct mulle_allocator *allocator)
 {
    if( ! ts_storage)
       return;
@@ -143,7 +144,7 @@ void   _mulle_aba_timestampstorage_free( struct _mulle_aba_timestampstorage *ts_
 #endif
    
    _mulle_aba_timestampstorage_empty_assert( ts_storage);
-   (*allocator->free)( ts_storage);
+   mulle_allocator_free( allocator, ts_storage);
 }
 
 
@@ -252,7 +253,7 @@ struct _mulle_aba_timestampstorage  *
    unsigned int   ts_index;
    
    ts_index = _mulle_aba_world_get_timestampstorage_index( world, timestamp);
-   if( ts_index == -1)
+   if( ts_index == (unsigned int) -1)
       return( NULL);
    return( _mulle_aba_world_get_timestampstorage_at_index( world, ts_index));
 }
@@ -355,7 +356,7 @@ void   _mulle_aba_world_assert_sanity( struct _mulle_aba_world *world)
 #pragma mark init/done
 
 int   _mulle_aba_storage_init( struct _mulle_aba_storage *q,
-                               struct _mulle_allocator *allocator,
+                               struct mulle_allocator *allocator,
                                int (*yield)( void))
 {
    struct _mulle_aba_world   *world;
@@ -429,7 +430,7 @@ struct _mulle_aba_freeentry
    }
    else
    {
-      entry = (*q->_allocator.calloc)( 1, sizeof( *entry));
+      entry = mulle_allocator_calloc( &q->_allocator, 1, sizeof( *entry));
       if( ! entry)
          return( NULL);
       
@@ -480,7 +481,7 @@ static int  free_block_and_entry( struct _mulle_aba_freeentry *entry,
 }
 
 
-void   _mulle_aba_storage_linkedlist_free( struct _mulle_aba_storage *q,
+static void   _mulle_aba_storage_linkedlist_free( struct _mulle_aba_storage *q,
                                             struct _mulle_aba_linkedlist  *list)
 {
    assert( q);
@@ -522,7 +523,10 @@ struct _mulle_aba_world   *_mulle_aba_storage_alloc_world( struct _mulle_aba_sto
       (*q->_allocator.free)( world);
    }
    
-   world = (*q->_allocator.calloc)( 1, sizeof( struct _mulle_aba_world) + sizeof( struct _mulle_aba_timestampstorage *) * size);
+   world = mulle_allocator_calloc( &q->_allocator,
+                                   1,
+                                   sizeof( struct _mulle_aba_world) +
+                                   sizeof( struct _mulle_aba_timestampstorage *) * size);
    
    if( world)
    {
@@ -564,13 +568,13 @@ static int  free_world( struct _mulle_aba_world *world,
                         struct _mulle_aba_world *prev,
                         void *userinfo)
 {
-   struct _mulle_allocator   *allocator;
+   struct mulle_allocator   *allocator;
    
    allocator = userinfo;
 #if MULLE_ABA_TRACE || MULLE_ABA_TRACE_LIST || MULLE_ABA_TRACE_FREE
    fprintf( stderr, "%s: free world %p\n", mulle_aba_thread_name(), world);
 #endif
-   (*allocator->free)( world);
+   mulle_allocator_free( allocator, world);
    return( 0);
 }
 
@@ -609,13 +613,13 @@ static int  free_entry( struct _mulle_aba_freeentry *entry,
                        struct _mulle_aba_freeentry *prev,
                        void *userinfo)
 {
-   struct _mulle_allocator   *allocator;
+   struct mulle_allocator   *allocator;
    
    allocator = userinfo;
 #if MULLE_ABA_TRACE || MULLE_ABA_TRACE_LIST || MULLE_ABA_TRACE_FREE
    fprintf( stderr, "%s: free unused linked list entry %p\n", mulle_aba_thread_name(), entry);
 #endif
-   (*allocator->free)( entry);
+   mulle_allocator_free( allocator, entry);
    return( 0);
 }
 
@@ -1068,7 +1072,6 @@ _mulle_aba_worldpointer_t
 }
 
 
-
 struct _mulle_aba_worldpointers
    _mulle_aba_storage_lock_worldpointer( struct _mulle_aba_storage *q)
 {
@@ -1391,6 +1394,9 @@ int   _mulle_aba_timestampstorage_set_usage_bit( struct _mulle_aba_timestampstor
       i_mask = 1UL << index;
       usage  = (usage & ~(i_mask)) | (bit ? i_mask : 0);
       UNPLEASANT_RACE_YIELD();
+
+      if( usage == expect)
+         break;
    }
    while( ! _mulle_atomic_pointer_compare_and_swap( &ts_storage->_usage_bits, (void *) usage, (void *) expect));
    
