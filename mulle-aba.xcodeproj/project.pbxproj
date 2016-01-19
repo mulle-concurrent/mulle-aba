@@ -207,8 +207,6 @@
 		414785231ABAF290002DBAE4 = {
 			isa = PBXGroup;
 			children = (
-				414945B01BEAB89C00C92587 /* libmulle_test_allocator.a */,
-				417C02771BD84377005A3751 /* libmulle_container.a */,
 				417C026D1BD84102005A3751 /* mulle-configuration */,
 				41198A7B1B6B7FB40033B390 /* README.md */,
 				4170B7001BDD2C26008614DC /* RELEASENOTES.md */,
@@ -218,6 +216,7 @@
 				4147852E1ABAF290002DBAE4 /* src */,
 				415930B61BAC50A900B1FB1D /* tests */,
 				4116D22A1BB7FAE200EE88F2 /* run-on-ipad */,
+				414B4D031C4E6A320068A724 /* Libraries */,
 				4147852D1ABAF290002DBAE4 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -246,6 +245,15 @@
 				4147853A1ABB13D7002DBAE4 /* mulle_aba.c */,
 			);
 			path = src;
+			sourceTree = "<group>";
+		};
+		414B4D031C4E6A320068A724 /* Libraries */ = {
+			isa = PBXGroup;
+			children = (
+				414945B01BEAB89C00C92587 /* libmulle_test_allocator.a */,
+				417C02771BD84377005A3751 /* libmulle_container.a */,
+			);
+			name = Libraries;
 			sourceTree = "<group>";
 		};
 		415930B61BAC50A900B1FB1D /* tests */ = {
@@ -726,6 +734,7 @@
 				414945B61BEABB4700C92587 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		4197959E1B6A5290005417AA /* Build configuration list for PBXNativeTarget "mulle_aba_linked_list_test" */ = {
 			isa = XCConfigurationList;
