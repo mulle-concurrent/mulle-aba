@@ -37,8 +37,11 @@ For development use no flags.
 
 For production use NDEBUG
 
-* DEBUG : turns on some compile time facilities to aid debugging `mulle-aba` itself.
-* MULLE_ABA_TRACE : turns on a very detailed amount of tracing, which may be too much. There are more detailed MULLE_ABA_TRACE flags available, consult the source.
+* DEBUG : turns on some compile time facilities to aid debugging `mulle-aba`
+          itself.
+* MULLE_ABA_TRACE : turns on a very detailed amount of tracing, which may be
+          too much. There are more detailed MULLE_ABA_TRACE flags available,
+          consult the source.
 
 
 

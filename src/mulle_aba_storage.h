@@ -48,7 +48,7 @@
 #if DEBUG
 enum
 {
-   _mulle_aba_world_memtype             = 0xB16B16B1,
+   _mulle_aba_world_memtype            = 0xB16B16B1,
    _mulle_aba_timestampstorage_memtype = 0x10011001,
    _mulle_aba_timestampentry_memtype   = 0x00011000,
    _mulle_aba_freeentry_memtype        = 0x5a775a77
@@ -72,9 +72,9 @@ struct _mulle_aba_freeentry
 
 
 void   _mulle_aba_freeentry_set( struct _mulle_aba_freeentry *entry,
-                                  void *owner,
-                                  void *pointer,
-                                  void (*free)( void *, void *));
+                                 void *owner,
+                                 void *pointer,
+                                 void (*free)( void *, void *));
 
 static inline void _mulle_aba_freeentry_free( struct _mulle_aba_freeentry *entry,
                                               struct mulle_allocator *allocator)
@@ -83,6 +83,7 @@ static inline void _mulle_aba_freeentry_free( struct _mulle_aba_freeentry *entry
 }
 
 void   _mulle_aba_free_list_print( struct _mulle_aba_linkedlist *p);
+
 
 # pragma mark -
 # pragma mark _mulle_aba_timestampentry
