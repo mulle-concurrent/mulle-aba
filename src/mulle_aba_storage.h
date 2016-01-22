@@ -37,7 +37,7 @@
 
 #include "mulle_aba_linkedlist.h"
 
-#include <mulle_container/mulle_container.h>
+#include <mulle_allocator/mulle_allocator.h>
 #include <mulle_thread/mulle_thread.h>
 #include <assert.h>
 #include <stdint.h>
@@ -174,7 +174,7 @@ struct _mulle_aba_worldpointers
 {
    _mulle_aba_worldpointer_t            new_world_p;
    _mulle_aba_worldpointer_t            old_world_p;
-   struct _mulle_aba_linkedlist_entry    *free_worlds;
+   struct _mulle_aba_linkedlist_entry   *free_worlds;
 };
 
 struct _mulle_aba_world;
