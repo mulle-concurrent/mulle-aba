@@ -41,9 +41,9 @@
 #include <assert.h>
 
 
-struct _mulle_aba_linkedlist_entry
+struct _mulle_aba_linkedlistentry
 {
-   struct _mulle_aba_linkedlist_entry   *_next;
+   struct _mulle_aba_linkedlistentry   *_next;
 };
 
 
@@ -69,19 +69,19 @@ static inline void   _mulle_aba_linkedlist_done( struct _mulle_aba_linkedlist *p
 // limited functionality, add to back (single)
 // remove all
 //
-void  _mulle_aba_linkedlist_add( struct _mulle_aba_linkedlist *list, struct _mulle_aba_linkedlist_entry  *entry);
-struct _mulle_aba_linkedlist_entry  *_mulle_aba_linkedlist_remove_all( struct _mulle_aba_linkedlist *list);
+void  _mulle_aba_linkedlist_add( struct _mulle_aba_linkedlist *list, struct _mulle_aba_linkedlistentry  *entry);
+struct _mulle_aba_linkedlistentry  *_mulle_aba_linkedlist_remove_all( struct _mulle_aba_linkedlist *list);
 
 // based on remove all 
-struct _mulle_aba_linkedlist_entry  *_mulle_aba_linkedlist_remove_one( struct _mulle_aba_linkedlist *list);
+struct _mulle_aba_linkedlistentry  *_mulle_aba_linkedlist_remove_one( struct _mulle_aba_linkedlist *list);
 
 //
 // NOT THREADSAFE AT ALL
 //
 int   _mulle_aba_linkedlist_walk( struct _mulle_aba_linkedlist *list,
-                                     int (*callback)( struct _mulle_aba_linkedlist_entry *,
-                                                      struct _mulle_aba_linkedlist_entry *,
-                                                     void *),
-                                     void *userinfo);
+                                  int (*callback)( struct _mulle_aba_linkedlistentry *,
+                                                   struct _mulle_aba_linkedlistentry *,
+                                                  void *),
+                                  void *userinfo);
 
 #endif

@@ -39,6 +39,8 @@
 #include <mulle_thread/mulle_thread.h>
 #include "mulle_aba_storage.h"
 
+
+#define MULLE_ABA_VERSION     ((0 << 22) | (3 << 8) | 0)  // maj, min, patch
 //
 // THIS IS THREADSAFE, except where noted
 //

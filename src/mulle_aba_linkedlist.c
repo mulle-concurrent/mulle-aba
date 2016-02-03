@@ -39,9 +39,9 @@
 #include <assert.h> 
 
 
-struct _mulle_aba_linkedlist_entry  *_mulle_aba_linkedlist_remove_all( struct _mulle_aba_linkedlist *list)
+struct _mulle_aba_linkedlistentry  *_mulle_aba_linkedlist_remove_all( struct _mulle_aba_linkedlist *list)
 {
-   struct _mulle_aba_linkedlist_entry  *head;
+   struct _mulle_aba_linkedlistentry  *head;
 
    assert( list);
    
@@ -59,9 +59,9 @@ struct _mulle_aba_linkedlist_entry  *_mulle_aba_linkedlist_remove_all( struct _m
 
 
 void  _mulle_aba_linkedlist_add( struct _mulle_aba_linkedlist *list,
-                                  struct _mulle_aba_linkedlist_entry  *entry)
+                                  struct _mulle_aba_linkedlistentry  *entry)
 {
-   struct _mulle_aba_linkedlist_entry  *head;
+   struct _mulle_aba_linkedlistentry  *head;
 
    assert( list);
    assert( entry);
@@ -87,13 +87,13 @@ void  _mulle_aba_linkedlist_add( struct _mulle_aba_linkedlist *list,
 // then lop one off, and keep removing and chaining stuff from the original list
 // until we can finally place the whole chain back into an empty list
 //
-struct _mulle_aba_linkedlist_entry  *_mulle_aba_linkedlist_remove_one( struct _mulle_aba_linkedlist *list)
+struct _mulle_aba_linkedlistentry  *_mulle_aba_linkedlist_remove_one( struct _mulle_aba_linkedlist *list)
 {
-   struct _mulle_aba_linkedlist_entry   *prev_chain;
-   struct _mulle_aba_linkedlist_entry   *chain;
-   struct _mulle_aba_linkedlist_entry   *next;
-   struct _mulle_aba_linkedlist_entry   *tail;
-   struct _mulle_aba_linkedlist_entry   *entry;
+   struct _mulle_aba_linkedlistentry   *prev_chain;
+   struct _mulle_aba_linkedlistentry   *chain;
+   struct _mulle_aba_linkedlistentry   *next;
+   struct _mulle_aba_linkedlistentry   *tail;
+   struct _mulle_aba_linkedlistentry   *entry;
 
    assert( list);
    
@@ -140,14 +140,14 @@ struct _mulle_aba_linkedlist_entry  *_mulle_aba_linkedlist_remove_one( struct _m
 
 
 int   _mulle_aba_linkedlist_walk( struct _mulle_aba_linkedlist *list,
-                                   int (*callback)( struct _mulle_aba_linkedlist_entry *,
-                                                    struct _mulle_aba_linkedlist_entry *,
+                                   int (*callback)( struct _mulle_aba_linkedlistentry *,
+                                                    struct _mulle_aba_linkedlistentry *,
                                                    void *),
                                    void *userinfo)
 {
-   struct _mulle_aba_linkedlist_entry   *entry;
-   struct _mulle_aba_linkedlist_entry   *prev;
-   struct _mulle_aba_linkedlist_entry   *next;
+   struct _mulle_aba_linkedlistentry   *entry;
+   struct _mulle_aba_linkedlistentry   *prev;
+   struct _mulle_aba_linkedlistentry   *next;
    int                                   rval;
    
    assert( list);

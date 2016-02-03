@@ -49,7 +49,7 @@ void   _mulle_aba_freeentry_set( struct _mulle_aba_freeentry *entry,
                                   void *pointer,
                                   void (*free)( void *, void *))
 {
-#if DEBUG
+#if MULLE_ABA_MEMTYPE_DEBUG
    entry->_memtype = _mulle_aba_freeentry_memtype;
 #endif
    entry->_owner   = owner;
@@ -93,7 +93,7 @@ struct _mulle_aba_timestampstorage *_mulle_aba_timestampstorage_alloc( struct mu
    ts_storage = mulle_allocator_calloc( allocator, 1, sizeof( *ts_storage));
    if( ! ts_storage)
       return( ts_storage);
-#if DEBUG
+#if MULLE_ABA_MEMTYPE_DEBUG
    ts_storage->_memtype = _mulle_aba_timestampstorage_memtype;
 #endif
    
@@ -291,7 +291,7 @@ static void   _mulle_aba_world_copy( struct _mulle_aba_world *dst,
    memcpy( (&dst->_link._next + 1), (&src->_link._next + 1), bytes);
 
    dst->_link._next       = 0;
-#if DEBUG
+#if MULLE_ABA_MEMTYPE_DEBUG
    dst->_generation = src->_generation + 1;
 #endif
 }
@@ -443,7 +443,7 @@ struct _mulle_aba_freeentry
       assert( entry->_pointer == NULL);
    }
    
-#if DEBUG
+#if MULLE_ABA_MEMTYPE_DEBUG
    entry->_memtype = _mulle_aba_freeentry_memtype;
 #endif
    return( entry);
@@ -530,7 +530,7 @@ struct _mulle_aba_world   *_mulle_aba_storage_alloc_world( struct _mulle_aba_sto
    
    if( world)
    {
-#if DEBUG
+#if MULLE_ABA_MEMTYPE_DEBUG
       world->_memtype = _mulle_aba_world_memtype;
 #endif      
       world->_size = size;
@@ -582,7 +582,7 @@ static int  free_world( struct _mulle_aba_world *world,
 void   _mulle_aba_storage_free_leak_worlds( struct _mulle_aba_storage *q)
 {
    struct _mulle_aba_linkedlist        list;
-   struct _mulle_aba_linkedlist_entry  *entry;
+   struct _mulle_aba_linkedlistentry  *entry;
    
 #if MULLE_ABA_TRACE
    fprintf( stderr, "%s: freeing leaked worlds %p of storage %p\n", mulle_aba_thread_name(), &q->_leaks, q);
@@ -597,7 +597,7 @@ void   _mulle_aba_storage_free_leak_worlds( struct _mulle_aba_storage *q)
 void   _mulle_aba_storage_free_unused_worlds( struct _mulle_aba_storage *q)
 {
    struct _mulle_aba_linkedlist        list;
-   struct _mulle_aba_linkedlist_entry  *entry;
+   struct _mulle_aba_linkedlistentry  *entry;
    
 #if MULLE_ABA_TRACE || MULLE_ABA_TRACE_LIST || MULLE_ABA_TRACE_FREE
    fprintf( stderr, "%s: freeing unused worlds %p of storage %p\n", mulle_aba_thread_name(), &q->_free_worlds, q);
@@ -627,7 +627,7 @@ static int  free_entry( struct _mulle_aba_freeentry *entry,
 void   _mulle_aba_storage_free_unused_free_entries( struct _mulle_aba_storage *q)
 {
    struct _mulle_aba_linkedlist        list;
-   struct _mulle_aba_linkedlist_entry  *entry;
+   struct _mulle_aba_linkedlistentry  *entry;
    
 #if MULLE_ABA_TRACE || MULLE_ABA_TRACE_LIST || MULLE_ABA_TRACE_FREE
    fprintf( stderr, "%s: freeing unused entries %p of storage %p\n", mulle_aba_thread_name(), &q->_free_entries, q);
@@ -816,9 +816,11 @@ static inline void  assert_swap_worlds( enum _mulle_swap_intent intention,
    {
 #if DEBUG
       assert( ! new_world->_link._next || (new_world == old_world && intention == _mulle_swap_checkin_intent));
+      assert( new_world->_n_threads < 16 && old_world->_n_threads < 16);
+#endif
+#if MULLE_ABA_MEMTYPE_DEBUG
       assert( new_world->_memtype == _mulle_aba_world_memtype);
       assert( old_world->_memtype == _mulle_aba_world_memtype);
-      assert( new_world->_n_threads < 16 && old_world->_n_threads < 16);
       assert( new_world->_generation == old_world->_generation + 1 || new_world == old_world);
 #endif
       

@@ -1,10 +1,4 @@
----
-layout: post
-author: Nat!
-title: 
-open_comments: true
-date: 2015-10-25 16:34
----
+
 # mulle-aba
 
 ## Intro
