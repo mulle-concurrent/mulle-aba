@@ -45,7 +45,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#if DEBUG
+#if MULLE_ABA_MEMTYPE_DEBUG
 enum
 {
    _mulle_aba_world_memtype            = 0xB16B16B1,
@@ -58,9 +58,9 @@ enum
 
 struct _mulle_aba_freeentry
 {
-   struct _mulle_aba_linkedlist_entry   _link;
+   struct _mulle_aba_linkedlistentry   _link;
    
-#if DEBUG
+#if MULLE_ABA_MEMTYPE_DEBUG
    uintptr_t   _memtype;
 #endif
    
@@ -91,7 +91,7 @@ void   _mulle_aba_free_list_print( struct _mulle_aba_linkedlist *p);
 struct _mulle_aba_timestampentry
 {
    mulle_atomic_pointer_t         _retain_count_1;  // really an inptr_t ...
-#if DEBUG
+#if MULLE_ABA_MEMTYPE_DEBUG
    uintptr_t                      _memtype;
 #endif
    struct _mulle_aba_linkedlist   _block_list;
@@ -116,7 +116,7 @@ enum
 struct _mulle_aba_timestampstorage
 {
    mulle_atomic_pointer_t             _usage_bits;
-#if DEBUG
+#if MULLE_ABA_MEMTYPE_DEBUG
    uintptr_t                          _memtype;
 #endif
    struct _mulle_aba_timestampentry   _entries[ _mulle_aba_timestampstorage_n_entries];
@@ -174,7 +174,7 @@ struct _mulle_aba_worldpointers
 {
    _mulle_aba_worldpointer_t            new_world_p;
    _mulle_aba_worldpointer_t            old_world_p;
-   struct _mulle_aba_linkedlist_entry   *free_worlds;
+   struct _mulle_aba_linkedlistentry   *free_worlds;
 };
 
 struct _mulle_aba_world;
@@ -245,9 +245,9 @@ static inline struct _mulle_aba_worldpointers  _mulle_aba_worldpointers_make( _m
 //
 struct _mulle_aba_world
 {
-   struct _mulle_aba_linkedlist_entry   _link;            // chain, used when deallocing/dealloced
+   struct _mulle_aba_linkedlistentry   _link;            // chain, used when deallocing/dealloced
    
-#if DEBUG
+#if MULLE_ABA_MEMTYPE_DEBUG
    uintptr_t                             _memtype;
    uintptr_t                             _generation;      // debugging
 #endif
@@ -309,7 +309,7 @@ struct _mulle_aba_timestampentry   *
 struct _mulle_aba_storage
 {
    mulle_atomic_pointer_t         _world;  // really a _mulle_aba_worldpointer_t
-#if DEBUG
+#if MULLE_ABA_MEMTYPE_DEBUG
    uintptr_t                      _memtype;
 #endif
    struct mulle_allocator        _allocator;
