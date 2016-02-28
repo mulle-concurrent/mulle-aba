@@ -109,12 +109,11 @@ void   _mulle_aba_done( struct _mulle_aba *p);
 int   _mulle_aba_unregister_thread( struct _mulle_aba *p, mulle_thread_t thread);
 int   _mulle_aba_register_thread( struct _mulle_aba *p, mulle_thread_t thread);
 
-
-int   _mulle_aba_thread_free_block( struct _mulle_aba *p,
-                                    mulle_thread_t thread,
-                                    void *owner,
-                                    void (*p_free)( void *, void *),
-                                    void *pointer);
+int   _mulle_aba_free_block( struct _mulle_aba *p,
+                             mulle_thread_t thread,
+                             void *owner,
+                             void (*p_free)( void *, void *),
+                             void *pointer);
                                     
 int   _mulle_aba_checkin_thread( struct _mulle_aba *p, mulle_thread_t thread);
 

@@ -318,6 +318,13 @@ static struct _mulle_aba_timestamp_range
 {
    struct _mulle_aba_timestamp_range   range;
    
+/*   if( ! world->_n)
+   {
+      range.start  = 0;
+      range.length = 0;
+      return( range);
+   }
+*/   
    range.start  = world->_offset;
    range.length = world->_n * _mulle_aba_timestampstorage_n_entries;
    if( ! world->_offset)
@@ -1527,7 +1534,7 @@ unsigned int  _mulle_aba_world_reuse_storages( struct _mulle_aba_world *world)
 }
 
 
-unsigned int  _mulle_aba_world_count_avaiable_reusable_storages( struct _mulle_aba_world *world)
+unsigned int  _mulle_aba_world_count_available_reusable_storages( struct _mulle_aba_world *world)
 {
    return( __mulle_aba_world_reuse_storages( world, 1));
 }

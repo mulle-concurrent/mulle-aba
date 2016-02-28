@@ -1,3 +1,7 @@
+0.4
+===
+   Renamed _mulle_aba_thread_free_block to just _mulle_aba_free_block.
+   
 0.3
 ===
    Remove "fragile" #if DEBUG struct member and replace with something,

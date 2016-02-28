@@ -252,7 +252,7 @@ struct _mulle_aba_world
    uintptr_t                             _generation;      // debugging
 #endif
    uintptr_t                             _timestamp;       // current timestamp
-   uintptr_t                             _n_threads;       // currently active threads
+   intptr_t                              _n_threads;       // currently active threads
    
    // storage for registered threads
    uintptr_t                             _offset;          // _min_timestamp / _mulle_aba_timestampstorage_n_entries
@@ -486,7 +486,7 @@ void   _mulle_aba_world_check_timerange( struct _mulle_aba_world *world,
                                          struct _mulle_aba_storage *q);
 
 unsigned int  _mulle_aba_world_reuse_storages( struct _mulle_aba_world *world);
-unsigned int  _mulle_aba_world_count_avaiable_reusable_storages( struct _mulle_aba_world *world);
+unsigned int  _mulle_aba_world_count_available_reusable_storages( struct _mulle_aba_world *world);
 
 #if DEBUG
 void   _mulle_aba_linkedlist_print( struct _mulle_aba_linkedlist *p);
