@@ -122,7 +122,7 @@ static int   _mulle_lockfree_deallocator_free_world_chain( struct _mulle_aba *p,
       // sic! this looks weird, because 'p' looks like its freed, but its just
       // the first parameter to _mulle_aba_storage_free_world
       //
-      rval = _mulle_aba_thread_free_block( p, thread, p, (void *) _mulle_aba_storage_free_world, tofree);
+      rval = _mulle_aba_free_block( p, thread, p, (void *) _mulle_aba_storage_free_world, tofree);
       if( rval)
          return( rval);
       UNPLEASANT_RACE_YIELD();
@@ -153,7 +153,7 @@ static int   _mulle_lockfree_deallocator_free_world_if_needed( struct _mulle_aba
    }
 
    assert( ! old_world->_link._next);
-   return( _mulle_aba_thread_free_block( p, thread, p, (void *) _mulle_aba_storage_free_world, old_world));
+   return( _mulle_aba_free_block( p, thread, p, (void *) _mulle_aba_storage_free_world, old_world));
 }
 
 
@@ -272,7 +272,6 @@ int   _mulle_aba_checkin_thread( struct _mulle_aba *p, mulle_thread_t thread)
    struct _mulle_aba_world           *old_world;
    struct _mulle_aba_worldpointers   world_ps;
    
-
    //
    // if old == 0, thread is not configured...
    // and hasn't freed anything. Therefore is not counted as an active thread
@@ -365,6 +364,7 @@ static int   remove_thread( int mode, struct _mulle_aba_callback_info  *info, vo
    
    if( --info->new_world->_n_threads)
    {
+      assert( info->new_world->_n_threads > 0);
       info->new_bit = 1;
       return( 0);
    }
@@ -776,11 +776,11 @@ static int   reorganize_storage_and_increment_timestamp( int mode, struct _mulle
 
 
 
-int   _mulle_aba_thread_free_block( struct _mulle_aba *p,
-                                    mulle_thread_t thread,
-                                    void *owner,
-                                    void (*p_free)( void *, void *),
-                                    void *pointer)
+int   _mulle_aba_free_block( struct _mulle_aba *p,
+                             mulle_thread_t thread,
+                             void *owner,
+                             void (*p_free)( void *, void *),
+                             void *pointer)
 {
    _mulle_aba_worldpointer_t          world_p;
    int                                old_bit;
@@ -854,7 +854,7 @@ int   _mulle_aba_thread_free_block( struct _mulle_aba *p,
             world_ps = _mulle_aba_storage_copy_change_worldpointer( &p->storage, _mulle_swap_free_intent, world_p, add_storage_and_increment_timestamp, &ctxt);
          }
          else
-            if( _mulle_aba_world_count_avaiable_reusable_storages( world))
+            if( _mulle_aba_world_count_available_reusable_storages( world))
             {
                //
                // try to reorganize our world to make more room, but we
@@ -1028,11 +1028,11 @@ int   mulle_aba_free( void *block, void (*p_free)( void *))
       return( 0);
 
    assert( p_free);
-   return( _mulle_aba_thread_free_block( global,
-                                         mulle_thread_self(),
-                                         p_free,
-                                         _mulle_aba_no_owner_free,
-                                         block));
+   return( _mulle_aba_free_block( global,
+                                  mulle_thread_self(),
+                                  p_free,
+                                  _mulle_aba_no_owner_free,
+                                  block));
 }
 
 
@@ -1047,7 +1047,7 @@ int   mulle_aba_free_owned_pointer( void *owner, void *block, void (*p_free)( vo
 //   if( ! mulle_aba_get_thread_timestamp())
 //      mulle_aba_register_current_thread();
    
-   return( _mulle_aba_thread_free_block( global, mulle_thread_self(), owner, block, p_free));
+   return( _mulle_aba_free_block( global, mulle_thread_self(), owner, block, p_free));
 }
 
 
