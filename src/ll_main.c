@@ -71,7 +71,7 @@ static void   reset_memory()
 #endif
 
    // use library to track allocations
-   mulle_test_allocator_reset_memory();
+   mulle_test_allocator_reset();
   
    memset( &alloced, 0, sizeof( alloced));
    memset( &list, 0, sizeof( list));
@@ -251,6 +251,9 @@ static int   _main(int argc, const char * argv[])
    fprintf( stderr, "%s\n", mulle_aba_thread_name());
 #endif
    
+#if FOREVER
+   fprintf( stderr, "This test runs forever, waiting for a crash\n");
+#endif
 
 forever:
    reset_memory();

@@ -39,6 +39,7 @@
 
 #include <mulle_allocator/mulle_allocator.h>
 #include <mulle_thread/mulle_thread.h>
+
 #include <assert.h>
 #include <stdint.h>
 #include <stdio.h>
@@ -94,7 +95,7 @@ struct _mulle_aba_timestampentry
 #if MULLE_ABA_MEMTYPE_DEBUG
    uintptr_t                      _memtype;
 #endif
-   struct _mulle_aba_linkedlist   _block_list;
+   struct _mulle_aba_linkedlist   _pointer_list;
 };
 
 

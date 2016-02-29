@@ -44,8 +44,6 @@
 		4197959C1B6A5290005417AA /* libmulle_aba.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 41F14FE61B68F098002189F1 /* libmulle_aba.a */; };
 		419795A31B6A52B5005417AA /* ll_main.c in Sources */ = {isa = PBXBuildFile; fileRef = 419795A21B6A52B5005417AA /* ll_main.c */; };
 		41B2CC5A1C512033006CA7BB /* libmulle_allocator.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 41B2CC591C512033006CA7BB /* libmulle_allocator.a */; };
-		41B2CC5B1C512062006CA7BB /* libmulle_allocator.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 41B2CC591C512033006CA7BB /* libmulle_allocator.a */; };
-		41B2CC5C1C512065006CA7BB /* libmulle_allocator.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 41B2CC591C512033006CA7BB /* libmulle_allocator.a */; };
 		41B2CC5D1C5120B9006CA7BB /* libmulle_allocator.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 41B2CC591C512033006CA7BB /* libmulle_allocator.a */; };
 		41F14FEC1B68F0AE002189F1 /* mulle_aba_linkedlist.c in Sources */ = {isa = PBXBuildFile; fileRef = 4177B15A1B447C4E0073EA65 /* mulle_aba_linkedlist.c */; };
 		41F14FED1B68F0AE002189F1 /* mulle_aba_storage.c in Sources */ = {isa = PBXBuildFile; fileRef = 414AC1B41AC2C56100DCA3CC /* mulle_aba_storage.c */; };
@@ -158,7 +156,6 @@
 			files = (
 				41F14FF11B68F0CA002189F1 /* libmulle_aba.a in Frameworks */,
 				414945B21BEAB9C800C92587 /* libmulle_test_allocator.a in Frameworks */,
-				41B2CC5B1C512062006CA7BB /* libmulle_allocator.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -167,7 +164,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				4197959C1B6A5290005417AA /* libmulle_aba.a in Frameworks */,
-				41B2CC5C1C512065006CA7BB /* libmulle_allocator.a in Frameworks */,
 				414945B11BEAB89C00C92587 /* libmulle_test_allocator.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -395,7 +391,7 @@
 		414785241ABAF290002DBAE4 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0700;
+				LastUpgradeCheck = 0720;
 				ORGANIZATIONNAME = "Mulle kybernetiK";
 				TargetAttributes = {
 					4116D2281BB7FAE200EE88F2 = {
@@ -664,7 +660,8 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 417C02751BD84102005A3751 /* StaticLibraryOSX.xcconfig */;
 			buildSettings = {
-				CURRENT_PROJECT_VERSION = 0.3;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1.0;
 			};
 			name = Debug;
 		};
@@ -672,7 +669,8 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 417C02751BD84102005A3751 /* StaticLibraryOSX.xcconfig */;
 			buildSettings = {
-				CURRENT_PROJECT_VERSION = 0.3;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1.0;
 			};
 			name = Release;
 		};

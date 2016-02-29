@@ -57,7 +57,7 @@ char  *mulle_aba_thread_name( void);
 #pragma mark -
 #pragma mark global variables
 
-
+// own global: (?), probably useless now
 static struct _mulle_aba   test_global;
 
 
@@ -74,7 +74,7 @@ static void   reset_memory()
    fprintf( stderr, "\n================================================\n");
 #endif
 
-   mulle_test_allocator_reset_memory();
+   mulle_test_allocator_reset();
    
    _mulle_aba_init( &test_global, &mulle_default_allocator, sched_yield);
 }
@@ -137,7 +137,7 @@ static void    run_thread_gc_free_list_test( void)
          if( ! registered)
             continue;
 #if MULLE_ABA_TRACE
-         fprintf( stderr,  "\n------------------------------\n%s: (%lu) %p -> free block %p\n", mulle_aba_thread_name(), mulle_aba_get_thread_timestamp(),
+         fprintf( stderr,  "\n------------------------------\n%s: (%lu) %p -> free pointer %p\n", mulle_aba_thread_name(), mulle_aba_get_thread_timestamp(),
                _mulle_aba_get_worldpointer(),
                  (void *) i);
 #endif
@@ -147,7 +147,7 @@ static void    run_thread_gc_free_list_test( void)
             abort();
          }
 #if MULLE_ABA_TRACE
-            fprintf( stderr,  "\n%s: (%lu) %p <- freed block:%ld\n------------------------------\n", mulle_aba_thread_name(), mulle_aba_get_thread_timestamp(),
+            fprintf( stderr,  "\n%s: (%lu) %p <- freed pointer:%ld\n------------------------------\n", mulle_aba_thread_name(), mulle_aba_get_thread_timestamp(),
                     _mulle_aba_get_worldpointer(),
                     i);
          mulle_aba_print();
@@ -374,12 +374,12 @@ static int   _main(int argc, const char * argv[])
    fprintf( stderr, "%s\n", mulle_aba_thread_name());
 #endif
    
+   mulle_aba_set_global( &test_global);
    _mulle_aba_init( &test_global, &mulle_default_allocator, sched_yield);
-   if( mulle_aba_set_global( &test_global))
-   {
-      perror( "mulle_aba_set_global");
-      abort();
-   }
+
+#if FOREVER
+   fprintf( stderr, "This test runs forever, waiting for a crash\n");
+#endif
 
 forever:
    reset_memory();

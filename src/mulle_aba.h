@@ -35,22 +35,33 @@
 #ifndef mulle_aba_h__
 #define mulle_aba_h__
 
+#define MULLE_ABA_VERSION     ((1 << 22) | (0 << 8) | 0)  // maj, min, patch
+
 #include <stdio.h>
-#include <mulle_thread/mulle_thread.h>
 #include "mulle_aba_storage.h"
 
+#if MULLE_ALLOCATOR_VERSION < ((0 << 20) | (1 << 8) | 0)
+# error "mulle_allocator is too old"
+#endif
+#if MULLE_THREAD_VERSION < ((0 << 20) | (2 << 8) | 0)
+# error "mulle_thread is too old"
+#endif
 
-#define MULLE_ABA_VERSION     ((0 << 22) | (3 << 8) | 0)  // maj, min, patch
 //
 // THIS IS THREADSAFE, except where noted
 //
 struct _mulle_aba
 {
-   struct _mulle_aba_storage   storage;
+   struct _mulle_aba_storage       storage;
+   mulle_thread_tss_t              timestamp_thread_key;
 };
 
 
-int   mulle_aba_set_global( struct _mulle_aba *p);
+//
+// you must call this before mulle_aba_init if you want to change the
+// global. Hint: rarely useful.
+//
+void   mulle_aba_set_global( struct _mulle_aba *p);
 
 
 //
@@ -60,41 +71,51 @@ void   mulle_aba_init( struct mulle_allocator *allocator);
 void   mulle_aba_done( void);
 
 //
-// your foundation must call this at the start of each thread once
+// your code must call this at the start of each thread once
 //
 void   mulle_aba_register( void);
 
 //
-// your foundation should call this occasionally, a good place is
-// -[NSAutoreleasePool finalize]
+// your code should call this occasionally, a good place could be
+// before `select`. You may even want to `mulle_aba_unregister` before
+// `select` and `mulle_aba_register` again afterwards. Reason
+// being, that this would fix the "getchar" misery.
 //
 void   mulle_aba_checkin( void);
 
 // this will be automatically called on thread destruction, as
 // thread_delayed_deallocator_register sees to this
-// so... you shouldn't call this!
+// so... you shouldn't call this at the end of your thread.
 void   mulle_aba_unregister( void);
 
 
 // everybody frees through this
-int   mulle_aba_free( void *block, void (*free)( void *));
+int   mulle_aba_free( void *pointer, void (*free)( void *));
 
 // same as above but owner, will be first parameter for p_free
-int   mulle_aba_free_owned_pointer( void *owner, void *pointer, void (*p_free)( void *owner, void *pointer));
+int   mulle_aba_free_owned_pointer( void *owner, void (*p_free)( void *owner, void *pointer), void *pointer);
 
+
+#pragma mark -
+#pragma mark test support
 
 // only really useful for testing
-void   mulle_aba_reset( void);
-uintptr_t   mulle_aba_get_thread_timestamp( void);
-void        *_mulle_aba_get_worldpointer( void);
+void        mulle_aba_reset( void);
 
-int   mulle_aba_is_registered( void);
+// act on global
+void       *mulle_aba_get_worldpointer( void);
+int         mulle_aba_is_registered( void);
+uintptr_t   mulle_aba_current_thread_get_timestamp( void);
+
+
+#pragma mark -
+#pragma mark multiple aba support
+
 /*
  *
  * functions you need when dealing with multiple aba instances 
  *
  */
-
 static inline int   _mulle_aba_is_setup( struct _mulle_aba *p)
 {
    return( _mulle_aba_storage_is_setup( &p->storage));
@@ -104,23 +125,34 @@ static inline int   _mulle_aba_is_setup( struct _mulle_aba *p)
 int   _mulle_aba_init( struct _mulle_aba *p,
                        struct mulle_allocator *allocator,
                        int (*yield)( void));
-void   _mulle_aba_done( struct _mulle_aba *p);
+void  _mulle_aba_done( struct _mulle_aba *p);
 
-int   _mulle_aba_unregister_thread( struct _mulle_aba *p, mulle_thread_t thread);
-int   _mulle_aba_register_thread( struct _mulle_aba *p, mulle_thread_t thread);
+//
+// If you are not using the "global" API, you must unregister your thread
+// manually. The automatic destruction won't be happening.
+//
+int   _mulle_aba_unregister_current_thread( struct _mulle_aba *p);
+int   _mulle_aba_register_current_thread( struct _mulle_aba *p);
 
-int   _mulle_aba_free_block( struct _mulle_aba *p,
-                             mulle_thread_t thread,
-                             void *owner,
-                             void (*p_free)( void *, void *),
-                             void *pointer);
-                                    
-int   _mulle_aba_checkin_thread( struct _mulle_aba *p, mulle_thread_t thread);
+int   _mulle_aba_free_pointer( struct _mulle_aba *p,
+                               void (*p_free)( void *),
+                               void *pointer);
 
-#if DEBUG
-void   mulle_aba_print( void);
-void   _mulle_aba_print_worldpointer( _mulle_aba_worldpointer_t world_p);
-#endif
+int   _mulle_aba_free_owned_pointer( struct _mulle_aba *p,
+                                     void *owner,
+                                     void (*p_free)( void *, void *),
+                                     void *pointer);
+
+int   _mulle_aba_checkin_current_thread( struct _mulle_aba *p);
+
+int   _mulle_aba_is_current_thread_registered( struct _mulle_aba *p);
+
+
+#pragma mark -
+#pragma mark test support
+
+uintptr_t   _mulle_aba_current_thread_get_timestamp( struct _mulle_aba *p);
+void        *_mulle_aba_get_worldpointer( struct _mulle_aba *p);
 
 
 #endif /* defined(__test_delayed_deallocator_storage__thread_storage__) */
