@@ -116,7 +116,7 @@ static void  _mulle_aba_timestampstorage_empty_assert( struct _mulle_aba_timesta
    for( i = 0; i < _mulle_aba_timestampstorage_n_entries; i++)
    {
 //      assert( ts_storage->_entries[ i]._retain_count_1._nonatomic == (void *) -1);
-      assert( ! _mulle_atomic_pointer_nonatomic_read( &                                                    ts_storage->_entries[ i]._block_list._head));
+      assert( ! _mulle_atomic_pointer_nonatomic_read( &                                                    ts_storage->_entries[ i]._pointer_list._head));
    }
 }
 
@@ -468,9 +468,9 @@ void   _mulle_aba_storage_free_freeentry( struct _mulle_aba_storage *q,
 }
 
 
-static int  free_block_and_entry( struct _mulle_aba_freeentry *entry,
-                                  struct _mulle_aba_freeentry *prev,
-                                  void *userinfo)
+static int  free_pointer_and_entry( struct _mulle_aba_freeentry *entry,
+                                   struct _mulle_aba_freeentry *prev,
+                                   void *userinfo)
 {
    struct _mulle_aba_storage *q;
    
@@ -489,7 +489,7 @@ static int  free_block_and_entry( struct _mulle_aba_freeentry *entry,
 
 
 static void   _mulle_aba_storage_linkedlist_free( struct _mulle_aba_storage *q,
-                                            struct _mulle_aba_linkedlist  *list)
+                                                 struct _mulle_aba_linkedlist  *list)
 {
    assert( q);
    assert( list);
@@ -497,7 +497,7 @@ static void   _mulle_aba_storage_linkedlist_free( struct _mulle_aba_storage *q,
 #if MULLE_ABA_TRACE || MULLE_ABA_TRACE_LIST
    fprintf( stderr, "%s: free linked list %p\n", mulle_aba_thread_name(), list);
 #endif
-   _mulle_aba_linkedlist_walk( list, (void *) free_block_and_entry, q);
+   _mulle_aba_linkedlist_walk( list, (void *) free_pointer_and_entry, q);
 }
 
 
@@ -903,7 +903,7 @@ static inline void  log_swap_worlds( enum _mulle_swap_intent intention,
    
       i = ((uintptr_t) _mulle_atomic_pointer_read( &last_world_ps_index)) & 0x1F;
       last_world_ps[ i].world_p = new_world_p;
-      last_world_ps[ i].thread      = mulle_thread_self();
+      last_world_ps[ i].thread  = mulle_thread_self();
       _mulle_atomic_pointer_increment( &last_world_ps_index);
    }
 }
@@ -1460,22 +1460,22 @@ void   _mulle_aba_world_check_timerange( struct _mulle_aba_world *world,
          continue;
       
       //
-      // snip out block list from entry, remove usage bit
+      // snip out pointer list from entry, remove usage bit
       // now if max_timestamp still points into ts_storage it will get reused
       // so we can't reuse it
       //
 #if MULLE_ABA_TRACE || MULLE_ABA_TRACE_FREE || MULLE_ABA_TRACE_LIST
-      fprintf( stderr,  "\n%s: *** freeing linked list %p of ts=%ld rc=%ld***\n", mulle_aba_thread_name(), &ts_entry->_block_list, timestamp, (intptr_t) _mulle_atomic_pointer_read( &ts_entry->_retain_count_1) + 1);
-      _mulle_aba_linkedlist_print( &ts_entry->_block_list);
+      fprintf( stderr,  "\n%s: *** freeing linked list %p of ts=%ld rc=%ld***\n", mulle_aba_thread_name(), &ts_entry->_pointer_list, timestamp, (intptr_t) _mulle_atomic_pointer_read( &ts_entry->_retain_count_1) + 1);
+      _mulle_aba_linkedlist_print( &ts_entry->_pointer_list);
 #endif
 
       // 
       // atomic not needed as we should be single threaded here in terms
       // of ts_entry (not storage though)
       //
-      free_list = ts_entry->_block_list;
+      free_list = ts_entry->_pointer_list;
       UNPLEASANT_RACE_YIELD();
-      _mulle_atomic_pointer_nonatomic_write( &ts_entry->_block_list._head, NULL);
+      _mulle_atomic_pointer_nonatomic_write( &ts_entry->_pointer_list._head, NULL);
       
       _mulle_aba_timestampstorage_set_usage_bit( ts_storage, index, 0);
       // now conceivably ts_storage may be gone, don't access any more

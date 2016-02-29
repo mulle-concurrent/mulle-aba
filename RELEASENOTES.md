@@ -1,7 +1,13 @@
-0.4
+1.0
 ===
-   Renamed _mulle_aba_thread_free_block to just _mulle_aba_free_block.
-   
+   * Eradicated the use of "block" as a synonym for pointer.
+   * Renamed `_mulle_aba_thread_free_block` to `_mulle_aba_free_pointer`.
+   * `mulle_aba_set_global` now returns only **void**. It MUST be called before
+   `mulle_aba_init`. (And it's probably useless anyway.)
+   * Enables true multiple aba instances by not sharing a global tss key.
+   * Removed useless "thread" parameter from internal API
+   * Added _current_thread to some internal API to confuse me less
+      
 0.3
 ===
    Remove "fragile" #if DEBUG struct member and replace with something,
