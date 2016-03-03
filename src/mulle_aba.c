@@ -61,26 +61,16 @@ void   mulle_aba_set_global( struct _mulle_aba *p)
 # pragma mark -
 # pragma mark init/done
 
-static void   thread_destructor( void *value)
-{
-   assert( global);
-   _mulle_aba_unregister_current_thread( global);
-}
-
-
 int   _mulle_aba_init( struct _mulle_aba *p,
                        struct mulle_allocator *allocator,
                        int (*yield)( void))
 {
    int   rval;
-   void  (*destructor)( void *value);
    
    /*
     * the automatic destruction is only available for the global API
     */
-   destructor = (p == global) ? thread_destructor : NULL;
-   
-   if( mulle_thread_tss_create( &p->timestamp_thread_key, destructor))
+   if( mulle_thread_tss_create( &p->timestamp_thread_key, NULL))
    {
       perror("mulle_thread_tss_create");
       abort();
@@ -411,7 +401,7 @@ static int   remove_thread( int mode, struct _mulle_aba_callback_info  *info, vo
    return( 0);
 }
 
-       
+
 int   _mulle_aba_unregister_current_thread( struct _mulle_aba *p)
 {
    _mulle_aba_worldpointer_t         locked_world_p;
@@ -1034,7 +1024,7 @@ static void    _mulle_aba_no_owner_free( void *owner, void *pointer)
 
 
 
-int   mulle_aba_free( void *pointer, void (*p_free)( void *))
+int   mulle_aba_free( void (*p_free)( void *), void *pointer)
 {
    assert( global);
    
@@ -1140,7 +1130,8 @@ uintptr_t   _mulle_aba_current_thread_get_timestamp( struct _mulle_aba *p)
 
 uintptr_t   mulle_aba_current_thread_get_timestamp( void)
 {
-   assert( global);
+   if( ! global)
+      return( 0);
    return( _mulle_aba_current_thread_get_timestamp( global));
 }
 
@@ -1154,7 +1145,8 @@ void  *_mulle_aba_get_worldpointer( struct _mulle_aba *p)
 
 void  *mulle_aba_get_worldpointer( void)
 {
-   assert( global);
+   if( ! global)
+      return( NULL);
    return( _mulle_aba_get_worldpointer( global));
 }
 

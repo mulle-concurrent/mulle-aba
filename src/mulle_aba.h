@@ -35,7 +35,7 @@
 #ifndef mulle_aba_h__
 #define mulle_aba_h__
 
-#define MULLE_ABA_VERSION     ((1 << 22) | (0 << 8) | 0)  // maj, min, patch
+#define MULLE_ABA_VERSION     ((1 << 22) | (0 << 8) | 1)  // maj, min, patch
 
 #include <stdio.h>
 #include "mulle_aba_storage.h"
@@ -83,14 +83,14 @@ void   mulle_aba_register( void);
 //
 void   mulle_aba_checkin( void);
 
-// this will be automatically called on thread destruction, as
-// thread_delayed_deallocator_register sees to this
-// so... you shouldn't call this at the end of your thread.
+//
+// your code must call this at the end of each thread
+//
 void   mulle_aba_unregister( void);
 
 
 // everybody frees through this
-int   mulle_aba_free( void *pointer, void (*free)( void *));
+int   mulle_aba_free( void (*free)( void *), void *pointer);
 
 // same as above but owner, will be first parameter for p_free
 int   mulle_aba_free_owned_pointer( void *owner, void (*p_free)( void *owner, void *pointer), void *pointer);

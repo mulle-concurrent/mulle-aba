@@ -99,7 +99,7 @@ static void    run_gc_free_list_test( void)
       {
       case 0 :
       case 1 :
-         if( mulle_aba_free( (void *) i, fake_free))
+         if( mulle_aba_free( fake_free, (void *) i))
          {
             perror( "mulle_aba_free");
             abort();
@@ -141,7 +141,7 @@ static void    run_thread_gc_free_list_test( void)
                _mulle_aba_get_worldpointer(),
                  (void *) i);
 #endif
-         if( mulle_aba_free( (void *) i, fake_free))
+         if( mulle_aba_free( fake_free, (void *) i))
          {
             perror( "mulle_aba_free");
             abort();

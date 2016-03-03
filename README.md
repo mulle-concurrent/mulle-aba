@@ -117,8 +117,7 @@ Returns 0, if not registerd.
 
 *Available in state 4 (black)*
 
-You usually don't need to call this function, since it will be called by the 
-thread destructor. You do need to call this if you are the main thread.
+You call this function at the end of your thread. This includes the main thread.
 
 Only one thread can be unregistering (or registering) at once, and other threads 
 will be looping. You don't have to call checkin before calling 
@@ -127,7 +126,7 @@ will be looping. You don't have to call checkin before calling
 This is a soft-blocking (blue) operation. 
 
 
-### `int   mulle_aba_free( void *pointer, void (*free)( void *))`
+### `int   mulle_aba_free( void (*free)( void *), void *pointer)`
 
 *Available in state 4 (black)*
 
@@ -143,7 +142,7 @@ Ex.
 
 ```c
     s = some_unused_shared_malloced_resource();
-    mulle_aba_free( s, free);
+    mulle_aba_free( free, s);
 ```
 
 

@@ -3,10 +3,14 @@
    * Eradicated the use of "block" as a synonym for pointer.
    * Renamed `_mulle_aba_thread_free_block` to `_mulle_aba_free_pointer`.
    * `mulle_aba_set_global` now returns only **void**. It MUST be called before
-   `mulle_aba_init`. (And it's probably useless anyway.)
+   `mulle_aba_init`. (And it's probably of not much use anyway.)
    * Enables true multiple aba instances by not sharing a global tss key.
    * Removed useless "thread" parameter from internal API
-   * Added _current_thread to some internal API to confuse me less
+   * Added `_current_thread` to some internal API to confuse less
+   * Due to limitations in pthreads (the thread local storage is gone in the
+     destructor), the automatic unregistration of threads is no longer
+     supported. This fixes a leak.
+   * Reversed arguments of `mulle_aba_free`. Sorry but better now than never.
       
 0.3
 ===
