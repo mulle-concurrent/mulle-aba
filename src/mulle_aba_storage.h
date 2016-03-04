@@ -317,8 +317,6 @@ struct _mulle_aba_storage
    struct _mulle_aba_linkedlist   _leaks;
    struct _mulle_aba_linkedlist   _free_entries;
    struct _mulle_aba_linkedlist   _free_worlds;
-   
-   int                            (*yield)( void);
 };
 
 
@@ -326,8 +324,7 @@ struct _mulle_aba_storage
 # pragma mark storage init/done
 
 int   _mulle_aba_storage_init( struct _mulle_aba_storage *q,
-                               struct mulle_allocator *allocator,
-                               int    (*yield)( void));
+                               struct mulle_allocator *allocator);
 
 void   _mulle_aba_storage_done( struct _mulle_aba_storage *q);
 

@@ -11,7 +11,8 @@
      destructor), the automatic unregistration of threads is no longer
      supported. This fixes a leak.
    * Reversed arguments of `mulle_aba_free`. Sorry but better now than never.
-      
+   * Removed yield parameter from init functions, will now use mulle_thread_yield.
+
 0.3
 ===
    Remove "fragile" #if DEBUG struct member and replace with something,

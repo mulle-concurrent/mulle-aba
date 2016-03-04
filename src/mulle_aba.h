@@ -123,8 +123,7 @@ static inline int   _mulle_aba_is_setup( struct _mulle_aba *p)
 
 
 int   _mulle_aba_init( struct _mulle_aba *p,
-                       struct mulle_allocator *allocator,
-                       int (*yield)( void));
+                       struct mulle_allocator *allocator);
 void  _mulle_aba_done( struct _mulle_aba *p);
 
 //
