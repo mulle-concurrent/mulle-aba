@@ -50,7 +50,7 @@ extern void   mulle_aba_print( void);
 # define mulle_aba_print()
 #endif
 
-static mulle_thread_tss_t   timestamp_thread_key;
+static mulle_thread_tss_t   threadname_key;
 char  *mulle_aba_thread_name( void);
 
 
@@ -260,7 +260,7 @@ struct thread_info
 
 static mulle_thread_rval_t   run_test( struct thread_info *info)
 {
-   mulle_thread_tss_set( timestamp_thread_key, strdup( info->name));
+   mulle_thread_tss_set( threadname_key, strdup( info->name));
 
 #if MULLE_ABA_TRACE || MULLE_ABA_TRACE_REGISTER
    fprintf( stderr,  "\n------------------------------\n%s: -> register\n", mulle_aba_thread_name());
@@ -336,7 +336,7 @@ static void  multi_threaded_test( intptr_t n)
 
 char  *mulle_aba_thread_name( void)
 {
-   return( mulle_thread_tss_get( timestamp_thread_key));
+   return( mulle_thread_tss_get( threadname_key));
 }
 
 
@@ -364,10 +364,10 @@ static int   _main(int argc, const char * argv[])
    
    srand( (unsigned int) time( NULL));
    
-   rval = mulle_thread_tss_create( &timestamp_thread_key, free);
+   rval = mulle_thread_tss_create( free, &threadname_key);
    assert( ! rval);
    
-   rval = mulle_thread_tss_set( timestamp_thread_key, strdup( "main"));
+   rval = mulle_thread_tss_set( threadname_key, strdup( "main"));
    assert( ! rval);
    
 #if MULLE_ABA_TRACE

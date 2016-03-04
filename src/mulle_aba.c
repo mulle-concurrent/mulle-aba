@@ -70,7 +70,7 @@ int   _mulle_aba_init( struct _mulle_aba *p,
    /*
     * the automatic destruction is only available for the global API
     */
-   if( mulle_thread_tss_create( &p->timestamp_thread_key, NULL))
+   if( mulle_thread_tss_create( NULL, &p->timestamp_thread_key))
    {
       perror("mulle_thread_tss_create");
       abort();
@@ -82,7 +82,7 @@ int   _mulle_aba_init( struct _mulle_aba *p,
    if( ! rval)
    {
       _mulle_aba_worldpointer_t   world_p;
-      struct _mulle_aba_world      *world;
+      struct _mulle_aba_world     *world;
       
       world_p = _mulle_aba_storage_get_worldpointer( &p->storage);
       world   = _mulle_aba_worldpointer_get_struct( world_p);
@@ -108,7 +108,7 @@ static int   _mulle_lockfree_deallocator_free_world_chain( struct _mulle_aba *p,
 {
    struct _mulle_aba_world   *tofree;
    struct _mulle_aba_world   *next;
-   int                                  rval;
+   int                       rval;
    
    for( tofree = old_world; tofree; tofree = next)
    {
