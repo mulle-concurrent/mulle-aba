@@ -53,7 +53,7 @@ static inline void  UNPLEASANT_RACE_YIELD()
          nanosleep( &ms30, NULL);
       }
       else
-         sched_yield();
+         mulle_thread_yield();
    }
 }
 #else

@@ -62,8 +62,7 @@ void   mulle_aba_set_global( struct _mulle_aba *p)
 # pragma mark init/done
 
 int   _mulle_aba_init( struct _mulle_aba *p,
-                       struct mulle_allocator *allocator,
-                       int (*yield)( void))
+                       struct mulle_allocator *allocator)
 {
    int   rval;
    
@@ -76,7 +75,7 @@ int   _mulle_aba_init( struct _mulle_aba *p,
       abort();
    }
    
-   rval = _mulle_aba_storage_init( &p->storage, allocator, yield);
+   rval = _mulle_aba_storage_init( &p->storage, allocator);
    assert( ! rval);
 #if DEBUG_SINGLE_THREADED
    if( ! rval)
@@ -1091,7 +1090,7 @@ void   mulle_aba_init( struct mulle_allocator *allocator)
       global = &global_space;
    
    assert( global);
-   if( _mulle_aba_init( global, allocator, sched_yield))
+   if( _mulle_aba_init( global, allocator))
    {
       perror( "_mulle_aba_unregister_thread");
       abort();
@@ -1118,7 +1117,7 @@ void   mulle_aba_reset()
    allocator = global->storage._allocator;
    
    _mulle_aba_done( global);
-   _mulle_aba_init( global, &allocator, sched_yield);
+   _mulle_aba_init( global, &allocator);
 }
 
 

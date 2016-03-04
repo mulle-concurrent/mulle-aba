@@ -76,7 +76,7 @@ static void   reset_memory()
 
    mulle_test_allocator_reset();
    
-   _mulle_aba_init( &test_global, &mulle_default_allocator, sched_yield);
+   _mulle_aba_init( &test_global, &mulle_default_allocator);
 }
 
 
@@ -111,7 +111,7 @@ static void    run_gc_free_list_test( void)
          break;
       
       default :
-         sched_yield();
+         mulle_thread_yield();
          break;
       }
 }
@@ -203,7 +203,7 @@ static void    run_thread_gc_free_list_test( void)
          break;
          
       default :
-         sched_yield();
+         mulle_thread_yield();
          break;
       }
    
@@ -247,7 +247,7 @@ static void   _wait_around( mulle_atomic_pointer_t *n_threads)
    // wait for all threads to materialize
    _mulle_atomic_pointer_decrement( n_threads);
    while( _mulle_atomic_pointer_read( n_threads) != 0)
-      sched_yield();
+      mulle_thread_yield();
 }
 
 
@@ -375,7 +375,7 @@ static int   _main(int argc, const char * argv[])
 #endif
    
    mulle_aba_set_global( &test_global);
-   _mulle_aba_init( &test_global, &mulle_default_allocator, sched_yield);
+   _mulle_aba_init( &test_global, &mulle_default_allocator);
 
 #if FOREVER
    fprintf( stderr, "This test runs forever, waiting for a crash\n");
