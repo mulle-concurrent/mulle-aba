@@ -1,7 +1,7 @@
 1.0
 ===
    * Eradicated the use of "block" as a synonym for pointer.
-   * Renamed `_mulle_aba_thread_free_block` to `_mulle_aba_free_pointer`.
+   * Renamed `_mulle_aba_thread_free_block` to `_mulle_aba_free`.
    * `mulle_aba_set_global` now returns only **void**. It MUST be called before
    `mulle_aba_init`. (And it's probably of not much use anyway.)
    * Enables true multiple aba instances by not sharing a global tss key.
@@ -12,7 +12,12 @@
      supported. This fixes a leak.
    * Reversed arguments of `mulle_aba_free`. Sorry but better now than never.
    * Removed yield parameter from init functions, will now use mulle_thread_yield.
-
+   * Renamed `struct _mulle_aba` to `struct mulle_aba`, since it's API.
+   * Introduced `mulle_aba_get_global` for some lazy test code cases.
+   * Renamed `_mulle_aba_free_pointer` to `_mulle_aba_free`, so its like the
+   global operating function.
+   * Added an assert to `_mulle_aba_free`, that checks that the current thread
+     is registered.
 0.3
 ===
    Remove "fragile" #if DEBUG struct member and replace with something,
@@ -29,7 +34,7 @@
 
    I changed the call signature of:
 
-   int   _mulle_aba_thread_free_block( struct _mulle_aba *p,
+   int   _mulle_aba_thread_free_block( struct mulle_aba *p,
                                        mulle_thread_t thread,
                                        void *owner,
                                        void (*p_free)( void *, void *),
