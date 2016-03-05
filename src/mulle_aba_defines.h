@@ -41,6 +41,8 @@
 #include <sched.h>
 #include <stdlib.h>
 #include <time.h>
+#include <mulle_thread/mulle_thread.h>
+
 
 static inline void  UNPLEASANT_RACE_YIELD()
 {

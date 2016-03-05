@@ -58,7 +58,7 @@ char  *mulle_aba_thread_name( void);
 #pragma mark global variables
 
 // own global: (?), probably useless now
-static struct _mulle_aba   test_global;
+static struct mulle_aba   test_global;
 
 
 #pragma mark -

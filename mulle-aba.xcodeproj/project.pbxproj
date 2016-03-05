@@ -45,12 +45,12 @@
 		4185028B1C875E22008C77C4 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 4185028A1C875E22008C77C4 /* main.m */; };
 		4197959C1B6A5290005417AA /* libmulle_aba.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 41F14FE61B68F098002189F1 /* libmulle_aba.a */; };
 		419795A31B6A52B5005417AA /* ll_main.c in Sources */ = {isa = PBXBuildFile; fileRef = 419795A21B6A52B5005417AA /* ll_main.c */; };
-		41B2CC5A1C512033006CA7BB /* libmulle_allocator.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 41B2CC591C512033006CA7BB /* libmulle_allocator.a */; };
 		41B2CC5D1C5120B9006CA7BB /* libmulle_allocator.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 41B2CC591C512033006CA7BB /* libmulle_allocator.a */; };
 		41F14FEC1B68F0AE002189F1 /* mulle_aba_linkedlist.c in Sources */ = {isa = PBXBuildFile; fileRef = 4177B15A1B447C4E0073EA65 /* mulle_aba_linkedlist.c */; };
 		41F14FED1B68F0AE002189F1 /* mulle_aba_storage.c in Sources */ = {isa = PBXBuildFile; fileRef = 414AC1B41AC2C56100DCA3CC /* mulle_aba_storage.c */; };
 		41F14FEE1B68F0AE002189F1 /* mulle_aba.c in Sources */ = {isa = PBXBuildFile; fileRef = 4147853A1ABB13D7002DBAE4 /* mulle_aba.c */; };
 		41F14FF11B68F0CA002189F1 /* libmulle_aba.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 41F14FE61B68F098002189F1 /* libmulle_aba.a */; };
+		41F9F33D1C8B2526001E405A /* libmulle_allocator.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 41B2CC591C512033006CA7BB /* libmulle_allocator.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -175,6 +175,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				416F9D921C884F6E005B16FC /* libmulle_aba.a in Frameworks */,
+				41F9F33D1C8B2526001E405A /* libmulle_allocator.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -191,7 +192,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				41B2CC5A1C512033006CA7BB /* libmulle_allocator.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -709,6 +709,10 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 417C02761BD84102005A3751 /* ToolOSX.xcconfig */;
 			buildSettings = {
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/dependencies/lib/Debug-macosx",
+				);
 			};
 			name = Debug;
 		};
@@ -716,6 +720,10 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 417C02761BD84102005A3751 /* ToolOSX.xcconfig */;
 			buildSettings = {
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/dependencies/lib/Debug-macosx",
+				);
 			};
 			name = Release;
 		};
