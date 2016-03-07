@@ -46,14 +46,18 @@ State 1 (red). The allocator will be used to allocate memory for the
 ```c
 struct mulle_allocator
 {
-   void   *(*calloc)( size_t, size_t);
-   void   *(*realloc)( void *, size_t);
-   void   (*free)( void *);
-   int    mode;  // must be 0
+   void   *(*calloc)( size_t n, size_t size);
+   void   *(*realloc)( void *block, size_t size);
+   void   (*free)( void *block);
+   void   (*abafree)( void *aba, void *block);
+   void   *aba;
 };
 ```
 
-If you pass in NULL, standard `calloc`, `realloc`, `free` will be used.
+If you pass in NULL, the `mulle_default_allocator` will be used, that is 
+condfigure to use `calloc`, `realloc`, `free`. If mulle_aba_init detects that
+the allocator is the `mulle_default_allocator` it will augment `abafree` and
+`aba` with values, allowing abafree to work.
 
 This function is not thread safe (red).
 
@@ -71,7 +75,8 @@ mulle_aba_init( NULL);
 Call this function to finish **mulle-aba**. Your process needs to call 
 `mulle_aba_init` again before doing anything with **mulle-aba**. Be very sure 
 that all participating threads have unregistered **and** joined before calling 
-**mulle_aba_done**.
+**mulle_aba_done**. If the  allocator is the `mulle_default_allocator`, then
+this function will remove abafree from the allocator.
 
 This function is not thread safe (red).
 

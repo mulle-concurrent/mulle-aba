@@ -667,6 +667,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 417C026F1BD84102005A3751 /* Debug.xcconfig */;
 			buildSettings = {
+				CURRENT_PROJECT_VERSION = 1.1;
 			};
 			name = Debug;
 		};
@@ -674,6 +675,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 417C02721BD84102005A3751 /* Release.xcconfig */;
 			buildSettings = {
+				CURRENT_PROJECT_VERSION = 1.1;
 			};
 			name = Release;
 		};

@@ -40,7 +40,7 @@
 #include <stdio.h>
 #include "mulle_aba_storage.h"
 
-#if MULLE_ALLOCATOR_VERSION < ((1 << 20) | (0 << 8) | 0)
+#if MULLE_ALLOCATOR_VERSION < ((1 << 20) | (1 << 8) | 0)
 # error "mulle_allocator is too old"
 #endif
 #if MULLE_THREAD_VERSION < ((0 << 20) | (2 << 8) | 0)
@@ -57,7 +57,6 @@
 //
 struct mulle_aba
 {
-   struct mulle_allocator         aba_as_allocator;
    struct _mulle_aba_storage      storage;
    mulle_thread_tss_t             timestamp_thread_key;
 };
@@ -69,14 +68,6 @@ struct mulle_aba
 //
 void                mulle_aba_set_global( struct mulle_aba *p);
 struct mulle_aba   *mulle_aba_get_global( void);
-
-static inline struct mulle_allocator   *_mulle_aba_as_allocator( struct mulle_aba *p)
-{
-   assert( (void *) p == (void *) &p->aba_as_allocator);
-   return( &p->aba_as_allocator);
-}
-
-struct mulle_allocator   *mulle_aba_as_allocator( void);
 
 //
 // call this before doing anything

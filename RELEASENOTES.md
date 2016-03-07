@@ -1,3 +1,8 @@
+1.1
+===
+   * `struct mulle_aba` is no longer compatible to `struct mulle_allocator`, 
+   because the smart mode sucked.
+
 1.0
 ===
    * Eradicated the use of "block" as a synonym for pointer.
