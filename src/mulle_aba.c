@@ -63,6 +63,49 @@ void   mulle_aba_set_global( struct mulle_aba *p)
    global = p;
 }
 
+# pragma mark -
+# pragma mark mulle_aba as allocator
+
+struct mulle_allocator   *mulle_aba_as_allocator( void)
+{
+   assert( global);
+   return( _mulle_aba_as_allocator( global));
+}
+
+
+static void  *mulle_aba_allocator_calloc( struct mulle_allocator *allocator,
+                                          size_t  n,
+                                          size_t  size)
+{
+   struct mulle_aba   *p;
+   
+   p = (struct mulle_aba *) allocator;
+   return( _mulle_allocator_calloc( &p->storage._allocator, n, size));
+}
+
+
+static void  *mulle_aba_allocator_realloc( struct mulle_allocator *allocator,
+                                           void  *block,
+                                           size_t  size)
+{
+   struct mulle_aba   *p;
+   
+   p = (struct mulle_aba *) allocator;
+   return( _mulle_allocator_realloc( &p->storage._allocator, block, size));
+}
+
+
+static void  mulle_aba_allocator_free( struct mulle_allocator *allocator,
+                                       void *pointer)
+{
+   struct mulle_aba   *p;
+   
+   p = (struct mulle_aba *) allocator;
+   _mulle_aba_free( p,
+                    p->storage._allocator.vectors.plain.free,
+                    pointer);
+}
+
 
 # pragma mark -
 # pragma mark init/done
@@ -94,7 +137,21 @@ int   _mulle_aba_init( struct mulle_aba *p,
       world->_retain_count = 1;
    }
 #endif
-
+   
+   if( ! allocator->mode)
+   {
+      p->aba_as_allocator.vectors.smart.calloc  = mulle_aba_allocator_calloc;
+      p->aba_as_allocator.vectors.smart.realloc = mulle_aba_allocator_realloc;
+      p->aba_as_allocator.vectors.smart.free    = mulle_aba_allocator_free;
+      p->aba_as_allocator.mode                  = 1;
+   }
+   else
+   {
+      // can't support smart allocators
+      p->aba_as_allocator.vectors.smart.calloc  = (void *) abort;
+      p->aba_as_allocator.vectors.smart.realloc = (void *) abort;
+      p->aba_as_allocator.vectors.smart.free    = (void *) abort;
+   }
    return( rval);
 }
 
@@ -128,7 +185,7 @@ static int   _mulle_lockfree_deallocator_free_world_chain( struct mulle_aba *p, 
       // sic! this looks weird, because 'p' looks like its freed, but its just
       // the first parameter to _mulle_aba_storage_free_world
       //
-      rval = _mulle_aba_free_owned_pointer( p, p, (void *) _mulle_aba_storage_free_world, tofree);
+      rval = _mulle_aba_free_owned_pointer( p, &p->storage, (void *) _mulle_aba_storage_free_world, tofree);
       if( rval)
          return( rval);
       UNPLEASANT_RACE_YIELD();
@@ -159,7 +216,7 @@ static int   _mulle_lockfree_deallocator_free_world_if_needed( struct mulle_aba 
    }
 
    assert( ! old_world->_link._next);
-   return( _mulle_aba_free_owned_pointer( p, p, (void *) _mulle_aba_storage_free_world, old_world));
+   return( _mulle_aba_free_owned_pointer( p, &p->storage, (void *) _mulle_aba_storage_free_world, old_world));
 }
 
 
@@ -939,7 +996,7 @@ int   _mulle_aba_free_owned_pointer( struct mulle_aba *p,
             fprintf( stderr,  "\n%s: *** free old world %p immediately***\n", mulle_aba_thread_name(), free_worlds);
 #endif
             next = (struct _mulle_aba_world *) free_worlds->_link._next;
-            (p->storage._allocator.free)( free_worlds);
+            _mulle_allocator_free( &p->storage._allocator, free_worlds);
             free_worlds = next;
          }
          return( 0);
@@ -1040,9 +1097,10 @@ int   mulle_aba_free( void (*p_free)( void *), void *pointer)
                                           pointer));
 }
 
+
 int   _mulle_aba_free( struct mulle_aba *p,
-                               void (*p_free)( void *),
-                               void *pointer)
+                       void (*p_free)( void *),
+                       void *pointer)
 {
    return( _mulle_aba_free_owned_pointer( p,
                                           p_free,

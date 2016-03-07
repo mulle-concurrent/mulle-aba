@@ -49,6 +49,7 @@ struct mulle_allocator
    void   *(*calloc)( size_t, size_t);
    void   *(*realloc)( void *, size_t);
    void   (*free)( void *);
+   int    mode;  // must be 0
 };
 ```
 
