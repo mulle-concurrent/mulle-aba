@@ -18,6 +18,8 @@
    global operating function.
    * Added an assert to `_mulle_aba_free`, that checks that the current thread
      is registered.
+   * Experimentally make `struct mulle_aba` compatible to `struct mulle_allocator`.
+
 0.3
 ===
    Remove "fragile" #if DEBUG struct member and replace with something,

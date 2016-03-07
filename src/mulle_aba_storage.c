@@ -523,7 +523,7 @@ struct _mulle_aba_world   *_mulle_aba_storage_alloc_world( struct _mulle_aba_sto
 #if MULLE_ABA_TRACE || MULLE_ABA_TRACE_FREE
       fprintf( stderr, "%s: free too small cached world %p\n", mulle_aba_thread_name(), world);
 #endif     
-      (*q->_allocator.free)( world);
+      _mulle_allocator_free( &q->_allocator, world);
    }
    
    world = mulle_allocator_calloc( &q->_allocator,
@@ -819,7 +819,7 @@ static inline void  assert_swap_worlds( enum _mulle_swap_intent intention,
    {
 #if DEBUG
       assert( ! new_world->_link._next || (new_world == old_world && intention == _mulle_swap_checkin_intent));
-      assert( new_world->_n_threads < 16 && old_world->_n_threads < 16);
+      assert( new_world->_n_threads < 10000 && old_world->_n_threads < 10000); // 2016: 10000 threads ? no way
 #endif
 #if MULLE_ABA_MEMTYPE_DEBUG
       assert( new_world->_memtype == _mulle_aba_world_memtype);

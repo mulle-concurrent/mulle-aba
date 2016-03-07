@@ -59,7 +59,7 @@ struct _mulle_aba_linkedlistentry  *_mulle_aba_linkedlist_remove_all( struct _mu
 
 
 void  _mulle_aba_linkedlist_add( struct _mulle_aba_linkedlist *list,
-                                  struct _mulle_aba_linkedlistentry  *entry)
+                                 struct _mulle_aba_linkedlistentry  *entry)
 {
    struct _mulle_aba_linkedlistentry  *head;
 
