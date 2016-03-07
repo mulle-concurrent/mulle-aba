@@ -37,6 +37,7 @@
 #include "mulle_aba_defines.h"
 
 #include <mulle_thread/mulle_thread.h>
+#include <mulle_allocator/mulle_allocator.h>
 #include <assert.h>
 #include <errno.h>
 #include <pthread.h>
@@ -61,49 +62,6 @@ struct mulle_aba   *mulle_aba_get_global( void)
 void   mulle_aba_set_global( struct mulle_aba *p)
 {
    global = p;
-}
-
-# pragma mark -
-# pragma mark mulle_aba as allocator
-
-struct mulle_allocator   *mulle_aba_as_allocator( void)
-{
-   assert( global);
-   return( _mulle_aba_as_allocator( global));
-}
-
-
-static void  *mulle_aba_allocator_calloc( struct mulle_allocator *allocator,
-                                          size_t  n,
-                                          size_t  size)
-{
-   struct mulle_aba   *p;
-   
-   p = (struct mulle_aba *) allocator;
-   return( _mulle_allocator_calloc( &p->storage._allocator, n, size));
-}
-
-
-static void  *mulle_aba_allocator_realloc( struct mulle_allocator *allocator,
-                                           void  *block,
-                                           size_t  size)
-{
-   struct mulle_aba   *p;
-   
-   p = (struct mulle_aba *) allocator;
-   return( _mulle_allocator_realloc( &p->storage._allocator, block, size));
-}
-
-
-static void  mulle_aba_allocator_free( struct mulle_allocator *allocator,
-                                       void *pointer)
-{
-   struct mulle_aba   *p;
-   
-   p = (struct mulle_aba *) allocator;
-   _mulle_aba_free( p,
-                    p->storage._allocator.vectors.plain.free,
-                    pointer);
 }
 
 
@@ -137,27 +95,19 @@ int   _mulle_aba_init( struct mulle_aba *p,
       world->_retain_count = 1;
    }
 #endif
+
+   // convenience for mulle_default_allocator
+   if( allocator == &mulle_default_allocator)
+      mulle_allocator_set_aba( allocator, p, (void *) _mulle_aba_free);
    
-   if( ! allocator->mode)
-   {
-      p->aba_as_allocator.vectors.smart.calloc  = mulle_aba_allocator_calloc;
-      p->aba_as_allocator.vectors.smart.realloc = mulle_aba_allocator_realloc;
-      p->aba_as_allocator.vectors.smart.free    = mulle_aba_allocator_free;
-      p->aba_as_allocator.mode                  = 1;
-   }
-   else
-   {
-      // can't support smart allocators
-      p->aba_as_allocator.vectors.smart.calloc  = (void *) abort;
-      p->aba_as_allocator.vectors.smart.realloc = (void *) abort;
-      p->aba_as_allocator.vectors.smart.free    = (void *) abort;
-   }
    return( rval);
 }
 
 
 void   _mulle_aba_done( struct mulle_aba *p)
 {
+   if( p->storage._allocator == &mulle_default_allocator)
+      mulle_allocator_set_aba( p->storage._allocator, NULL, NULL);
    _mulle_aba_storage_done( &p->storage);
    mulle_thread_tss_delete( p->timestamp_thread_key);
 }
@@ -592,7 +542,7 @@ int   _mulle_aba_unregister_current_thread( struct mulle_aba *p)
       
       n = locked_world->_size;
       for( i = 0; i < n; i++)
-         __mulle_aba_timestampstorage_free( locked_world->_storage[ i], &p->storage._allocator);
+         __mulle_aba_timestampstorage_free( locked_world->_storage[ i], p->storage._allocator);
 
       _mulle_aba_storage_free_leak_worlds( &p->storage);
 
@@ -888,7 +838,7 @@ int   _mulle_aba_free_owned_pointer( struct mulle_aba *p,
       return( 0);
    }
 
-   ctxt.allocator = &p->storage._allocator;
+   ctxt.allocator = p->storage._allocator;
    ctxt.ts_storage = NULL;
 
    for( loops = 0;; ++loops)
@@ -996,7 +946,7 @@ int   _mulle_aba_free_owned_pointer( struct mulle_aba *p,
             fprintf( stderr,  "\n%s: *** free old world %p immediately***\n", mulle_aba_thread_name(), free_worlds);
 #endif
             next = (struct _mulle_aba_world *) free_worlds->_link._next;
-            _mulle_allocator_free( &p->storage._allocator, free_worlds);
+            _mulle_allocator_free( p->storage._allocator, free_worlds);
             free_worlds = next;
          }
          return( 0);
@@ -1173,12 +1123,12 @@ void   mulle_aba_done( void)
 void   mulle_aba_reset()
 {
    assert( global);
-   struct mulle_allocator  allocator;
+   struct mulle_allocator  *allocator;
    
    allocator = global->storage._allocator;
    
    _mulle_aba_done( global);
-   _mulle_aba_init( global, &allocator);
+   _mulle_aba_init( global, allocator);
 }
 
 

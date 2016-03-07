@@ -372,7 +372,7 @@ int   _mulle_aba_storage_init( struct _mulle_aba_storage *q,
    
    memset( q, 0, sizeof( *q));
    
-   q->_allocator = *allocator;
+   q->_allocator = allocator;
 #if DEBUG
    world = _mulle_aba_storage_alloc_world( q, 1); // + 64 byte for storage...
 #else
@@ -433,7 +433,7 @@ struct _mulle_aba_freeentry
    }
    else
    {
-      entry = mulle_allocator_calloc( &q->_allocator, 1, sizeof( *entry));
+      entry = mulle_allocator_calloc( q->_allocator, 1, sizeof( *entry));
       if( ! entry)
          return( NULL);
       
@@ -523,10 +523,10 @@ struct _mulle_aba_world   *_mulle_aba_storage_alloc_world( struct _mulle_aba_sto
 #if MULLE_ABA_TRACE || MULLE_ABA_TRACE_FREE
       fprintf( stderr, "%s: free too small cached world %p\n", mulle_aba_thread_name(), world);
 #endif     
-      _mulle_allocator_free( &q->_allocator, world);
+      _mulle_allocator_free( q->_allocator, world);
    }
    
-   world = mulle_allocator_calloc( &q->_allocator,
+   world = mulle_allocator_calloc( q->_allocator,
                                    1,
                                    sizeof( struct _mulle_aba_world) +
                                    sizeof( struct _mulle_aba_timestampstorage *) * size);

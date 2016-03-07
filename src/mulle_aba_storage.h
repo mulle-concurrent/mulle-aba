@@ -313,7 +313,7 @@ struct _mulle_aba_storage
 #if MULLE_ABA_MEMTYPE_DEBUG
    uintptr_t                      _memtype;
 #endif
-   struct mulle_allocator         _allocator;
+   struct mulle_allocator         *_allocator;
    struct _mulle_aba_linkedlist   _leaks;
    struct _mulle_aba_linkedlist   _free_entries;
    struct _mulle_aba_linkedlist   _free_worlds;
