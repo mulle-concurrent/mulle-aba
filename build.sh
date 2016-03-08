@@ -1,6 +1,6 @@
 #! /bin/sh
 
-mulle-bootstrap build
+mulle-bootstrap build "$@"
 
 #
 # fucking Xcode stupidity if we build with -scheme
