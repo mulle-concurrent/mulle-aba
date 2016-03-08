@@ -593,7 +593,7 @@ void   _mulle_aba_storage_free_leak_worlds( struct _mulle_aba_storage *q)
    entry = _mulle_aba_linkedlist_remove_all( &q->_leaks);
    _mulle_atomic_pointer_write( &list._head, entry);
    
-   _mulle_aba_linkedlist_walk( &list, (void *) free_world, &q->_allocator);
+   _mulle_aba_linkedlist_walk( &list, (void *) free_world, q->_allocator);
 }
 
 
@@ -608,7 +608,7 @@ void   _mulle_aba_storage_free_unused_worlds( struct _mulle_aba_storage *q)
    entry = _mulle_aba_linkedlist_remove_all( &q->_free_worlds);
    _mulle_atomic_pointer_write( &list._head, entry);
    
-   _mulle_aba_linkedlist_walk( &list, (void *) free_world, &q->_allocator);
+   _mulle_aba_linkedlist_walk( &list, (void *) free_world, q->_allocator);
 }
 
 
@@ -638,7 +638,7 @@ void   _mulle_aba_storage_free_unused_free_entries( struct _mulle_aba_storage *q
    entry = _mulle_aba_linkedlist_remove_all( &q->_free_entries);
    _mulle_atomic_pointer_write( &list._head, entry);
    
-   _mulle_aba_linkedlist_walk( &list, (void *) free_entry, &q->_allocator);
+   _mulle_aba_linkedlist_walk( &list, (void *) free_entry, q->_allocator);
 }
 
 
