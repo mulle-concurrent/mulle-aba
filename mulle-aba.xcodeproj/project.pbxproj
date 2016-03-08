@@ -135,6 +135,7 @@
 		4147853A1ABB13D7002DBAE4 /* mulle_aba.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = mulle_aba.c; sourceTree = "<group>"; };
 		4147853B1ABB13D7002DBAE4 /* mulle_aba.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mulle_aba.h; sourceTree = "<group>"; };
 		414945B01BEAB89C00C92587 /* libmulle_test_allocator.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libmulle_test_allocator.a; path = "dependencies/lib/Release-macosx/libmulle_test_allocator.a"; sourceTree = "<group>"; };
+		414A61D21C8F15D00011AA7E /* build.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = build.sh; sourceTree = "<group>"; };
 		414AC1B31AC2C56100DCA3CC /* mulle_aba_storage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mulle_aba_storage.h; sourceTree = "<group>"; };
 		414AC1B41AC2C56100DCA3CC /* mulle_aba_storage.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = mulle_aba_storage.c; sourceTree = "<group>"; };
 		4158F6F81B5E982B00C5805C /* CMakeLists.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = CMakeLists.txt; sourceTree = "<group>"; };
@@ -244,12 +245,13 @@
 		414785231ABAF290002DBAE4 = {
 			isa = PBXGroup;
 			children = (
-				417C026D1BD84102005A3751 /* mulle-configuration */,
+				414A61D21C8F15D00011AA7E /* build.sh */,
 				41198A7B1B6B7FB40033B390 /* README.md */,
 				4170B7001BDD2C26008614DC /* RELEASENOTES.md */,
 				41BE418C1B6BB0F7000C0DD4 /* BUILD.md */,
 				41F14FF21B6902F9002189F1 /* LICENSE */,
 				4158F6F81B5E982B00C5805C /* CMakeLists.txt */,
+				417C026D1BD84102005A3751 /* mulle-configuration */,
 				4147852E1ABAF290002DBAE4 /* src */,
 				415930B61BAC50A900B1FB1D /* tests */,
 				4116D22A1BB7FAE200EE88F2 /* run-on-ipad */,
@@ -318,8 +320,7 @@
 				417C02751BD84102005A3751 /* StaticLibraryOSX.xcconfig */,
 				417C02761BD84102005A3751 /* ToolOSX.xcconfig */,
 			);
-			name = "mulle-configuration";
-			path = "../mulle-container/mulle-configuration";
+			path = "mulle-configuration";
 			sourceTree = "<group>";
 		};
 		418502891C875E22008C77C4 /* example */ = {

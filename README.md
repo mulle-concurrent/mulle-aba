@@ -54,8 +54,11 @@ struct mulle_allocator
 };
 ```
 
+> If `calloc` locks,  then **mulle-aba** will also occasionally lock, when it 
+needs to allocate memory. 
+
 If you pass in NULL, the `mulle_default_allocator` will be used, that is 
-condfigure to use `calloc`, `realloc`, `free`. If mulle_aba_init detects that
+configured to use `calloc`, `realloc`, `free`. If this function detects that
 the allocator is the `mulle_default_allocator` it will augment `abafree` and
 `aba` with values, allowing abafree to work.
 
@@ -75,7 +78,7 @@ mulle_aba_init( NULL);
 Call this function to finish **mulle-aba**. Your process needs to call 
 `mulle_aba_init` again before doing anything with **mulle-aba**. Be very sure 
 that all participating threads have unregistered **and** joined before calling 
-**mulle_aba_done**. If the  allocator is the `mulle_default_allocator`, then
+`mulle_aba_done`. If the  allocator is the `mulle_default_allocator`, then
 this function will remove abafree from the allocator.
 
 This function is not thread safe (red).
@@ -87,11 +90,11 @@ This function is not thread safe (red).
 
 Your thread must call this function before accessing any shared resources that 
 should be protected by **mulle_aba**. The main thread should also call  
-**mulle_aba_register**.
+`mulle_aba_register`.
 
 Only one thread can be registering (or unregistering) at once, and other threads 
-will be looping. The registration does not block or lock **mulle_aba_free** 
-or **mulle_aba_checkin**!
+will be looping. The registration does not block or lock `mulle_aba_free`
+or `mulle_aba_checkin`!
 
 This is a soft-blocking (blue) operation.
 
@@ -115,7 +118,7 @@ mulle_thread_create( &threads, NULL, (void *) run_thread, "VfL Bochum 1848");
 *Always available*
 
 You can check if the current thread is registered with this function.
-Returns 0, if not registerd.
+Returns 0, if not registered.
 
 
 
@@ -127,7 +130,7 @@ You call this function at the end of your thread. This includes the main thread.
 
 Only one thread can be unregistering (or registering) at once, and other threads 
 will be looping. You don't have to call checkin before calling 
-**mulle_aba_unregister**.
+`mulle_aba_unregister`.
 
 This is a soft-blocking (blue) operation. 
 
@@ -141,8 +144,9 @@ setting, this guarantees that the freed pointer does not run afoul of the ABA
 problem. The actual freeing of the pointer is delayed until all threads have 
 checked in.
 
-This operation is lock-free (black). Note that if your **free** operation is 
-locking or blocking, then **mulle-aba**'s main operation is not lock-free.
+> This operation is designed to be lock-free (black). Note that if your 
+**free** operation is locking, then **mulle-aba**'s main operation is not 
+lock-free.
 
 Ex.
 
