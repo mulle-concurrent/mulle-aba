@@ -2,6 +2,15 @@ cmake_minimum_required (VERSION 3.0)
 
 project (mulle-aba)
 
+include_directories(
+src
+)
+
+include_directories( BEFORE SYSTEM
+dependencies/include
+)
+
+
 #
 # dont forget to wipe all cmake produced files before
 # changing this
@@ -27,10 +36,19 @@ src/main.c)
 add_executable(mulle_aba_ll_test EXCLUDE_FROM_ALL
 src/ll_main.c)
 
-link_directories(${CMAKE_BINARY_DIR})
+link_directories(${CMAKE_BINARY_DIR}
+dependencies/lib/Debug
+dependencies/lib/Release
+)
+
 target_link_libraries( mulle_aba_test LINK_PUBLIC mulle_aba
+mulle_thread
+mulle_allocator
 pthread)
+
 target_link_libraries( mulle_aba_ll_test LINK_PUBLIC mulle_aba
+mulle_thread
+mulle_allocator
 pthread)
 
 
