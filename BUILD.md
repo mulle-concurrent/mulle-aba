@@ -1,6 +1,5 @@
 # Build Information
 
-
 ## What you get
 
 * `libmulle_aba.a`, the mulle-aba static library
@@ -10,24 +9,37 @@ it runs forever.
 * `mulle_aba_ll_test` is a standlone stress test for a part of mulle-aba. If it
 doesn't crash it runs forever.
 
-## Prerequisites
+## Dependencies
 
-`mulle-aba` is maintained with `mulle-bootstrap` a homegrown dependency manager
-It's easiest to install it with
+* mulle-thread
+* mulle-allocator
+* mulle-bootstrap (optional)
+* cmake 3.0 (optional)
+* xcodebuild (optional)
+
+`mulle-aba` is maintained with `mulle-bootstrap` a homegrown dependency manager.
+
+You can either obtain it like this with **homebrew**
 
 ```console
 brew tap mulle-kybernetik/software
 brew install mulle-bootstrap
 ```
 
-Then clone [mulle-aba](//www.mulle-kybernetik.com/software/git/mulle-aba),
-resolve the dependencies with mulle-bootstrap and build with xcodebuild.
+or manually
+
+```
+git clone https://www.mulle-kybernetik.com/repositories/mulle-bootstrap
+cd mulle-bootstrap
+sudo ./install.sh 
+```
+
+# Install on OS X or other Unixes
+
+Use mulle-bootstrap to clone [mulle-aba](//www.mulle-kybernetik.com/software/git/mulle-aba), resolve the dependencies and build it.
 
 ```console
-git clone https://www.mulle-kybernetik.com/software/git/mulle-aba
-cd mulle-aba
-mulle-bootstrap
-xcodebuild install DSTROOT=/ # or cmake
+mulle-bootstrap clone https://www.mulle-kybernetik.com/software/git/mulle-aba
 ```
 
 
