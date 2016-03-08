@@ -20,11 +20,11 @@ brew tap mulle-kybernetik/software
 brew install mulle-bootstrap
 ```
 
-Then clone [mulle-aba](http://www.mulle-kybernetik.com/software/git/mulle-aba),
+Then clone [mulle-aba](//www.mulle-kybernetik.com/software/git/mulle-aba),
 resolve the dependencies with mulle-bootstrap and build with xcodebuild.
 
 ```console
-git clone http://www.mulle-kybernetik.com/software/git/mulle-aba
+git clone https://www.mulle-kybernetik.com/software/git/mulle-aba
 cd mulle-aba
 mulle-bootstrap
 xcodebuild install DSTROOT=/ # or cmake
