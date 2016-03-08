@@ -19,6 +19,17 @@
 			name = Tests;
 			productName = Tests;
 		};
+		414A61CC1C8EE8110011AA7E /* Libraries */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = 414A61CF1C8EE8110011AA7E /* Build configuration list for PBXAggregateTarget "Libraries" */;
+			buildPhases = (
+			);
+			dependencies = (
+				414A61D11C8EE82D0011AA7E /* PBXTargetDependency */,
+			);
+			name = Libraries;
+			productName = Libraries;
+		};
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
@@ -74,6 +85,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = 419795961B6A5290005417AA;
 			remoteInfo = mulle_aba_linked_list_test;
+		};
+		414A61D01C8EE82D0011AA7E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 414785241ABAF290002DBAE4 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 41F14FE51B68F098002189F1;
+			remoteInfo = mulle_aba;
 		};
 		416F9D931C884F72005B16FC /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -450,6 +468,9 @@
 					414945B31BEABB4700C92587 = {
 						CreatedOnToolsVersion = 7.1;
 					};
+					414A61CC1C8EE8110011AA7E = {
+						CreatedOnToolsVersion = 7.2.1;
+					};
 					418502871C875E22008C77C4 = {
 						CreatedOnToolsVersion = 7.2.1;
 					};
@@ -471,6 +492,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
+				414A61CC1C8EE8110011AA7E /* Libraries */,
 				41F14FE51B68F098002189F1 /* mulle_aba */,
 				414945B31BEABB4700C92587 /* Tests */,
 				4147852B1ABAF290002DBAE4 /* mulle_aba_test */,
@@ -568,6 +590,11 @@
 			isa = PBXTargetDependency;
 			target = 419795961B6A5290005417AA /* mulle_aba_linked_list_test */;
 			targetProxy = 414945BD1BEABB5E00C92587 /* PBXContainerItemProxy */;
+		};
+		414A61D11C8EE82D0011AA7E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 41F14FE51B68F098002189F1 /* mulle_aba */;
+			targetProxy = 414A61D01C8EE82D0011AA7E /* PBXContainerItemProxy */;
 		};
 		416F9D941C884F72005B16FC /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -707,6 +734,18 @@
 			};
 			name = Release;
 		};
+		414A61CD1C8EE8110011AA7E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Debug;
+		};
+		414A61CE1C8EE8110011AA7E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Release;
+		};
 		4185028C1C875E22008C77C4 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 417C02761BD84102005A3751 /* ToolOSX.xcconfig */;
@@ -748,7 +787,6 @@
 			baseConfigurationReference = 417C02751BD84102005A3751 /* StaticLibraryOSX.xcconfig */;
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 1.0;
 			};
 			name = Debug;
 		};
@@ -757,7 +795,6 @@
 			baseConfigurationReference = 417C02751BD84102005A3751 /* StaticLibraryOSX.xcconfig */;
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 1.0;
 			};
 			name = Release;
 		};
@@ -808,6 +845,14 @@
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
+		};
+		414A61CF1C8EE8110011AA7E /* Build configuration list for PBXAggregateTarget "Libraries" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				414A61CD1C8EE8110011AA7E /* Debug */,
+				414A61CE1C8EE8110011AA7E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
 		};
 		4185028E1C875E22008C77C4 /* Build configuration list for PBXNativeTarget "example" */ = {
 			isa = XCConfigurationList;

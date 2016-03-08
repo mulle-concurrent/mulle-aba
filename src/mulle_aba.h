@@ -35,7 +35,7 @@
 #ifndef mulle_aba_h__
 #define mulle_aba_h__
 
-#define MULLE_ABA_VERSION     ((1 << 22) | (1 << 8) | 0)  // maj, min, patch
+#define MULLE_ABA_VERSION     ((1 << 22) | (1 << 8) | 1)  // maj, min, patch
 
 #include <stdio.h>
 #include "mulle_aba_storage.h"
@@ -43,7 +43,7 @@
 #if MULLE_ALLOCATOR_VERSION < ((1 << 20) | (1 << 8) | 0)
 # error "mulle_allocator is too old"
 #endif
-#if MULLE_THREAD_VERSION < ((0 << 20) | (2 << 8) | 0)
+#if MULLE_THREAD_VERSION < ((1 << 20) | (0 << 8) | 0)
 # error "mulle_thread is too old"
 #endif
 

@@ -12,3 +12,17 @@ project.xcworkspace/
 dependencies/
 .repos/
 mulle-configuration/
+
+
+dox/3threads-resources.graffle
+dox/3threads-resources.png
+dox/3threads.graffle
+dox/3threads.png
+dox/junk/
+dox/mulle-aba-state-diagram.png
+dox/mulle_aba.md
+dox/snafuthreads.graffle
+dox/snafuthreads.png
+dox/world-handling.md
+src/main.sublime-project
+src/main.sublime-workspace
