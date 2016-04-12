@@ -47,9 +47,20 @@ struct _mulle_aba_linkedlistentry
 };
 
 
+//
+// since the mulle_atomic_pointer_t is opaque, I use this union
+// to make it easier to debug
+//
+union _mulle_aba_atomiclinkedlistentry
+{
+   struct _mulle_aba_linkedlistentry  *entry;  // never read it except in the debugger
+   mulle_atomic_pointer_t             pointer;
+};
+
+
 struct _mulle_aba_linkedlist
 {
-   mulle_atomic_pointer_t   _head;
+   union _mulle_aba_atomiclinkedlistentry   _head;
 };
 
 
@@ -61,7 +72,7 @@ static inline void    _mulle_aba_linkedlist_init( struct _mulle_aba_linkedlist *
 
 static inline void   _mulle_aba_linkedlist_done( struct _mulle_aba_linkedlist *p)
 {
-   assert( ! _mulle_atomic_pointer_nonatomic_read( &p->_head));
+   assert( ! _mulle_atomic_pointer_nonatomic_read( &p->_head.pointer));
 }
 
 

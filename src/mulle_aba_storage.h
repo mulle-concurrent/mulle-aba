@@ -307,9 +307,21 @@ struct _mulle_aba_timestampentry   *
 #pragma mark -
 #pragma mark _mulle_aba_storage
 
+//
+// since the mulle_atomic_pointer_t is opaque, I use this union
+// to make it easier to debug
+//
+union _mulle_aba_atomicworldpointer_t
+{
+   _mulle_aba_worldpointer_t   world;     // never read it except in the debugger
+   mulle_atomic_pointer_t      pointer;
+};
+
+
 struct _mulle_aba_storage
 {
-   mulle_atomic_pointer_t         _world;  // really a _mulle_aba_worldpointer_t
+   union _mulle_aba_atomicworldpointer_t   _world;
+   
 #if MULLE_ABA_MEMTYPE_DEBUG
    uintptr_t                      _memtype;
 #endif
@@ -331,7 +343,7 @@ void   _mulle_aba_storage_done( struct _mulle_aba_storage *q);
 
 static inline int   _mulle_aba_storage_is_setup( struct _mulle_aba_storage *q)
 {
-   return( _mulle_atomic_pointer_read( &q->_world) != NULL);
+   return( _mulle_atomic_pointer_read( &q->_world.pointer) != NULL);
 }
 
 
@@ -357,7 +369,7 @@ static inline _mulle_aba_worldpointer_t   _mulle_aba_storage_get_worldpointer( s
    
    // if your thread isn't registered yet, you must not read the struct
    // it may be dealloced already
-   world_p = (_mulle_aba_worldpointer_t) _mulle_atomic_pointer_read( &q->_world);
+   world_p = (_mulle_aba_worldpointer_t) _mulle_atomic_pointer_read( &q->_world.pointer);
 #if MULLE_ABA_TRACE
    {
       extern char  *mulle_aba_thread_name( void);

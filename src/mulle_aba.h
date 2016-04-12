@@ -43,7 +43,7 @@
 #if MULLE_ALLOCATOR_VERSION < ((1 << 20) | (1 << 8) | 0)
 # error "mulle_allocator is too old"
 #endif
-#if MULLE_THREAD_VERSION < ((1 << 20) | (0 << 8) | 0)
+#if MULLE_THREAD_VERSION < ((2 << 20) | (0 << 8) | 0)
 # error "mulle_thread is too old"
 #endif
 

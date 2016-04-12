@@ -228,7 +228,9 @@ static void  single_threaded_test( void)
 #if PROGRESS
    fprintf( stdout,  "."); fflush( stdout);
 #endif
+   mulle_aba_register();
    run_gc_free_list_test();
+   mulle_aba_unregister();
 }
 
 

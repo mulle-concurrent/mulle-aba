@@ -47,11 +47,11 @@ struct _mulle_aba_linkedlistentry  *_mulle_aba_linkedlist_remove_all( struct _mu
    
    do
    {
-      head = _mulle_atomic_pointer_read( &list->_head);
+      head = _mulle_atomic_pointer_read( &list->_head.pointer);
       if( ! head)
          break;
    }
-   while( ! _mulle_atomic_pointer_compare_and_swap( &list->_head, NULL, head));
+   while( ! _mulle_atomic_pointer_compare_and_swap( &list->_head.pointer, NULL, head));
    
    return( head);
 }
@@ -69,13 +69,13 @@ void  _mulle_aba_linkedlist_add( struct _mulle_aba_linkedlist *list,
    
    do
    {
-      head = _mulle_atomic_pointer_read( &list->_head);
+      head = _mulle_atomic_pointer_read( &list->_head.pointer);
       assert( head != entry);
       
       UNPLEASANT_RACE_YIELD();
       entry->_next = head;
    }
-   while( ! _mulle_atomic_pointer_compare_and_swap( &list->_head, entry, head));
+   while( ! _mulle_atomic_pointer_compare_and_swap( &list->_head.pointer, entry, head));
 }
 
 
@@ -131,7 +131,7 @@ struct _mulle_aba_linkedlistentry  *_mulle_aba_linkedlist_remove_one( struct _mu
       if( ! chain)
          break;
    }
-   while( ! _mulle_atomic_pointer_compare_and_swap( &list->_head, chain, NULL));
+   while( ! _mulle_atomic_pointer_compare_and_swap( &list->_head.pointer, chain, NULL));
 
    return( entry);
 }
@@ -153,7 +153,7 @@ int   _mulle_aba_linkedlist_walk( struct _mulle_aba_linkedlist *list,
    assert( list);
    assert( callback);
    
-   entry = _mulle_atomic_pointer_nonatomic_read( &list->_head);
+   entry = _mulle_atomic_pointer_nonatomic_read( &list->_head.pointer);
    prev  = NULL;
    rval  = 0;
    UNPLEASANT_RACE_YIELD();
