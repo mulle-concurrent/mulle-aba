@@ -116,7 +116,7 @@ static void  _mulle_aba_timestampstorage_empty_assert( struct _mulle_aba_timesta
    for( i = 0; i < _mulle_aba_timestampstorage_n_entries; i++)
    {
 //      assert( ts_storage->_entries[ i]._retain_count_1._nonatomic == (void *) -1);
-      assert( ! _mulle_atomic_pointer_nonatomic_read( &                                                    ts_storage->_entries[ i]._pointer_list._head));
+      assert( ! _mulle_atomic_pointer_nonatomic_read( &                                                    ts_storage->_entries[ i]._pointer_list._head.pointer));
    }
 }
 
@@ -384,7 +384,7 @@ int   _mulle_aba_storage_init( struct _mulle_aba_storage *q,
       return( -1);
    }
    
-   _mulle_atomic_pointer_nonatomic_write( &q->_world, world);
+   _mulle_atomic_pointer_nonatomic_write( &q->_world.pointer, world);
 
    return( 0);
 }
@@ -591,7 +591,7 @@ void   _mulle_aba_storage_free_leak_worlds( struct _mulle_aba_storage *q)
    fprintf( stderr, "%s: freeing leaked worlds %p of storage %p\n", mulle_aba_thread_name(), &q->_leaks, q);
 #endif
    entry = _mulle_aba_linkedlist_remove_all( &q->_leaks);
-   _mulle_atomic_pointer_write( &list._head, entry);
+   _mulle_atomic_pointer_write( &list._head.pointer, entry);
    
    _mulle_aba_linkedlist_walk( &list, (void *) free_world, q->_allocator);
 }
@@ -606,7 +606,7 @@ void   _mulle_aba_storage_free_unused_worlds( struct _mulle_aba_storage *q)
    fprintf( stderr, "%s: freeing unused worlds %p of storage %p\n", mulle_aba_thread_name(), &q->_free_worlds, q);
 #endif
    entry = _mulle_aba_linkedlist_remove_all( &q->_free_worlds);
-   _mulle_atomic_pointer_write( &list._head, entry);
+   _mulle_atomic_pointer_write( &list._head.pointer, entry);
    
    _mulle_aba_linkedlist_walk( &list, (void *) free_world, q->_allocator);
 }
@@ -636,7 +636,7 @@ void   _mulle_aba_storage_free_unused_free_entries( struct _mulle_aba_storage *q
    fprintf( stderr, "%s: freeing unused entries %p of storage %p\n", mulle_aba_thread_name(), &q->_free_entries, q);
 #endif
    entry = _mulle_aba_linkedlist_remove_all( &q->_free_entries);
-   _mulle_atomic_pointer_write( &list._head, entry);
+   _mulle_atomic_pointer_write( &list._head.pointer, entry);
    
    _mulle_aba_linkedlist_walk( &list, (void *) free_entry, q->_allocator);
 }
@@ -832,10 +832,14 @@ static inline void  assert_swap_worlds( enum _mulle_swap_intent intention,
          assert( new_world != old_world);
       
       //
-      // if bit was set and will be cleared, make sure timestamp has changed
+      // if bit was set and will be cleared, make sure timestamp
+      // or number of threads has changed (but not both at same time)
       //
-      if( ((intptr_t) old_world_p & 1) && ! ((intptr_t) old_world_p & 1))
-         assert( old_world->_timestamp != new_world->_timestamp || ! new_world->_timestamp);
+      if( ((intptr_t) old_world_p & 1) && ! ((intptr_t) new_world & 1))
+         if( old_world != new_world)
+            assert( (old_world->_timestamp != new_world->_timestamp ||
+                  ! new_world->_timestamp) ^ (new_world->_timestamp && old_world->_n_threads != new_world->_n_threads) ||
+                intention == _mulle_swap_checkin_intent);
       
       //
       // conversely make sure timestamp stays unchanged, when bit hasn't been set
@@ -924,7 +928,7 @@ static inline int
 
    assert_swap_worlds( intention, new_world_p, old_world_p);
    
-   rval = _mulle_atomic_pointer_compare_and_swap( &q->_world, new_world_p, old_world_p);
+   rval = _mulle_atomic_pointer_compare_and_swap( &q->_world.pointer, new_world_p, old_world_p);
    
    log_swap_worlds( intention, new_world_p, old_world_p, rval);
    
@@ -1057,7 +1061,7 @@ _mulle_aba_worldpointer_t
       
       assert_swap_worlds( intention, new_world_p, old_world_p);
       
-      last_world_p = __mulle_atomic_pointer_compare_and_swap( &q->_world, new_world_p, old_world_p);
+      last_world_p = __mulle_atomic_pointer_compare_and_swap( &q->_world.pointer, new_world_p, old_world_p);
       
       log_swap_worlds( intention, new_world_p, old_world_p, last_world_p == old_world_p);
 
@@ -1471,7 +1475,7 @@ void   _mulle_aba_world_check_timerange( struct _mulle_aba_world *world,
       //
       free_list = ts_entry->_pointer_list;
       UNPLEASANT_RACE_YIELD();
-      _mulle_atomic_pointer_nonatomic_write( &ts_entry->_pointer_list._head, NULL);
+      _mulle_atomic_pointer_nonatomic_write( &ts_entry->_pointer_list._head.pointer, NULL);
       
       _mulle_aba_timestampstorage_set_usage_bit( ts_storage, index, 0);
       // now conceivably ts_storage may be gone, don't access any more

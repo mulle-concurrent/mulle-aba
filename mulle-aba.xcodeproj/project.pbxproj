@@ -61,6 +61,8 @@
 		41F14FED1B68F0AE002189F1 /* mulle_aba_storage.c in Sources */ = {isa = PBXBuildFile; fileRef = 414AC1B41AC2C56100DCA3CC /* mulle_aba_storage.c */; };
 		41F14FEE1B68F0AE002189F1 /* mulle_aba.c in Sources */ = {isa = PBXBuildFile; fileRef = 4147853A1ABB13D7002DBAE4 /* mulle_aba.c */; };
 		41F14FF11B68F0CA002189F1 /* libmulle_aba.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 41F14FE61B68F098002189F1 /* libmulle_aba.a */; };
+		41F9363A1CAC4AA20087D0E0 /* libmulle_allocator.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 41B2CC591C512033006CA7BB /* libmulle_allocator.a */; };
+		41F9363B1CAC4AA70087D0E0 /* libmulle_allocator.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 41B2CC591C512033006CA7BB /* libmulle_allocator.a */; };
 		41F9F33D1C8B2526001E405A /* libmulle_allocator.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 41B2CC591C512033006CA7BB /* libmulle_allocator.a */; };
 /* End PBXBuildFile section */
 
@@ -185,6 +187,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				41F14FF11B68F0CA002189F1 /* libmulle_aba.a in Frameworks */,
+				41F9363A1CAC4AA20087D0E0 /* libmulle_allocator.a in Frameworks */,
 				414945B21BEAB9C800C92587 /* libmulle_test_allocator.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -203,6 +206,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4197959C1B6A5290005417AA /* libmulle_aba.a in Frameworks */,
+				41F9363B1CAC4AA70087D0E0 /* libmulle_allocator.a in Frameworks */,
 				414945B11BEAB89C00C92587 /* libmulle_test_allocator.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -711,6 +715,10 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 417C02761BD84102005A3751 /* ToolOSX.xcconfig */;
 			buildSettings = {
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/dependencies/lib/Debug-macosx",
+				);
 			};
 			name = Debug;
 		};
@@ -718,6 +726,10 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 417C02761BD84102005A3751 /* ToolOSX.xcconfig */;
 			buildSettings = {
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/dependencies/lib/Debug-macosx",
+				);
 			};
 			name = Release;
 		};
@@ -773,6 +785,10 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 417C02761BD84102005A3751 /* ToolOSX.xcconfig */;
 			buildSettings = {
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/dependencies/lib/Debug-macosx",
+				);
 			};
 			name = Debug;
 		};
@@ -780,6 +796,10 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 417C02761BD84102005A3751 /* ToolOSX.xcconfig */;
 			buildSettings = {
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/dependencies/lib/Debug-macosx",
+				);
 			};
 			name = Release;
 		};
@@ -854,6 +874,7 @@
 				414A61CE1C8EE8110011AA7E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		4185028E1C875E22008C77C4 /* Build configuration list for PBXNativeTarget "example" */ = {
 			isa = XCConfigurationList;
