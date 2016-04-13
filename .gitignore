@@ -4,6 +4,10 @@
 *[Bb]uild/
 .idea/
 mintomic/
+old/
+tmp/
+*.dSYM/
+*.exe
 
 xcuserdata/
 project.xcworkspace/

@@ -2,22 +2,26 @@ cmake_minimum_required (VERSION 3.0)
 
 project (mulle-aba)
 
-include_directories(
-src
-)
-
-include_directories( BEFORE SYSTEM
-dependencies/include
-)
-
-
 #
 # dont forget to wipe all cmake produced files before
 # changing this
 #
 
 #set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O0 -g -DDEBUG -DMULLE_ABA_TRACE_LIST -DMULLE_ABA_TRACE_SWAP")
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O3 -g -DNDEBUG")
+
+set( CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_SOURCE_DIR}/mulle-configuration)
+message(STATUS "CMAKE_MODULE_PATH is ${CMAKE_MODULE_PATH}")
+message(STATUS "CMAKE_BUILD_TYPE is ${CMAKE_BUILD_TYPE}")
+if( "${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
+  include( Debug)
+else()
+  include( Release)
+endif()
+
+
+include_directories(
+src
+)
 
 set(HEADERS
 src/mulle_aba_linkedlist.h
@@ -35,11 +39,6 @@ src/main.c)
 
 add_executable(mulle_aba_ll_test EXCLUDE_FROM_ALL
 src/ll_main.c)
-
-link_directories(${CMAKE_BINARY_DIR}
-dependencies/lib/Debug
-dependencies/lib/Release
-)
 
 target_link_libraries( mulle_aba_test LINK_PUBLIC mulle_aba
 mulle_thread
