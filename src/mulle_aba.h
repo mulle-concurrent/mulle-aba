@@ -35,7 +35,7 @@
 #ifndef mulle_aba_h__
 #define mulle_aba_h__
 
-#define MULLE_ABA_VERSION     ((1 << 22) | (1 << 8) | 1)  // maj, min, patch
+#define MULLE_ABA_VERSION     ((1 << 22) | (2 << 8) | 0)  // maj, min, patch
 
 #include <stdio.h>
 #include "mulle_aba_storage.h"
