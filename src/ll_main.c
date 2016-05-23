@@ -33,8 +33,9 @@
 
 #include <mulle_thread/mulle_thread.h>
 #include <mulle_test_allocator/mulle_test_allocator.h>
-#include <stdio.h>
+#include <assert.h>
 #include <errno.h>
+#include <stdio.h>
 
 
 #define PROGRESS     0

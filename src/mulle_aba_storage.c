@@ -36,9 +36,10 @@
 
 #include "mulle_aba_defines.h"
 #include <mulle_thread/mulle_thread.h>
-#include <string.h>
-#include <stdio.h>
+#include <assert.h>
 #include <errno.h>
+#include <stdio.h>
+#include <string.h>
 
 
 static int   _mulle_aba_worldpointer_state( _mulle_aba_worldpointer_t world_p);
