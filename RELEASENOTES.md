@@ -1,6 +1,7 @@
 1.2
 ===
    * adapt to changes in mulle_thread
+   * moved test code into ./tests/
 
 1.1
 ===

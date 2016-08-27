@@ -35,10 +35,10 @@ src/mulle_aba.c
 )
 
 add_executable(mulle_aba_test EXCLUDE_FROM_ALL
-src/main.c)
+tests/punish/punish.c)
 
 add_executable(mulle_aba_ll_test EXCLUDE_FROM_ALL
-src/ll_main.c)
+tests/linkedlist/ll_main.c)
 
 target_link_libraries( mulle_aba_test LINK_PUBLIC mulle_aba
 mulle_thread
