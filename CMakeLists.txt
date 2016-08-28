@@ -2,6 +2,8 @@ cmake_minimum_required (VERSION 3.0)
 
 project (mulle-aba)
 
+cmake_policy(SET CMP0054 NEW)
+
 #
 # dont forget to wipe all cmake produced files before
 # changing this
