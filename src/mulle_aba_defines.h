@@ -38,10 +38,9 @@
 
 #if DEBUG
 
-#include <sched.h>
+#include <mulle_thread/mulle_thread.h>
 #include <stdlib.h>
 #include <time.h>
-#include <mulle_thread/mulle_thread.h>
 
 
 static inline void  UNPLEASANT_RACE_YIELD()
@@ -73,5 +72,3 @@ extern char  *mulle_aba_thread_name( void);
 #endif
 
 #endif
-
-
