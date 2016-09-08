@@ -47,6 +47,7 @@ static inline void  UNPLEASANT_RACE_YIELD()
 {
    if( (rand() & 0xF) == 0xA)  // 1:16 chance of yield
    {
+#ifndef _WIN32
       if( (rand() & 0x7) == 0x4)  // 1:64 chance of nanosleep
       {
          struct timespec ms30 =  { .tv_sec = 0, .tv_nsec = 1 * (1000 * 1000 * 1000) / 30 };
@@ -54,6 +55,7 @@ static inline void  UNPLEASANT_RACE_YIELD()
          nanosleep( &ms30, NULL);
       }
       else
+#endif
          mulle_thread_yield();
    }
 }
