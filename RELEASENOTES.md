@@ -1,3 +1,8 @@
+1.3
+===
+   * prettied up the docuementation for GitHub release
+   * fix compile problems on Windows
+   
 1.2
 ===
    * adapt to changes in mulle_thread

@@ -32,7 +32,7 @@
 //  POSSIBILITY OF SUCH DAMAGE.
 //
 
-#define MULLE_THREAD_USE_PTHREADS   
+#define MULLE_THREAD_USE_PTHREADS
 
 #include "mulle_aba.h"
 
@@ -58,15 +58,15 @@ static char  *mulle_aba_thread_name( void)
 static void   trace( char *format, ...)
 {
    va_list   args;
-   
+
    pthread_mutex_lock( &output_lock);
    {
       fprintf( stderr, "%s (%ld): ", mulle_aba_thread_name(), mulle_aba_current_thread_get_timestamp());
-      
+
       va_start( args, format);
       vfprintf( stderr, format, args);
       va_end( args);
-      
+
       fputc( '\n', stderr);
    }
    pthread_mutex_unlock( &output_lock);
@@ -89,9 +89,9 @@ static void  run_consumer( void *name)
 {
    int   c;
    int   i;
-   
+
    pthread_setspecific( thread_name_key, strdup( name));
-   
+
    trace( "mulle_aba_register");
    mulle_aba_register();
 
@@ -102,7 +102,7 @@ static void  run_consumer( void *name)
 
       trace( "mulle_aba_free");
       mulle_aba_free( print_c, (void *) (intptr_t) c);
-      
+
       switch( ++i & 0x3)
       {
       case 0x0  :
@@ -116,7 +116,7 @@ static void  run_consumer( void *name)
       }
       sleep( 1);
    }
-   
+
 done:
 
    trace( "mulle_aba_unregister");
@@ -132,21 +132,21 @@ done:
 static void  run_blocker( void *name)
 {
    int   c;
-   
+
    pthread_setspecific( thread_name_key, strdup( name));
-   
+
    trace( "mulle_aba_unregister");
    mulle_aba_register();
 
    printf( "\npress RETURN to stop\n\n");
    fflush( stdout);
-   
+
    if( ! getenv( "DONT_UNREGISTER_BEFORE_GETCHAR"))
    {
       trace( "mulle_aba_unregister");
       mulle_aba_unregister();
    }
-   
+
    c = getchar();
 
    if( ! getenv( "DONT_UNREGISTER_BEFORE_GETCHAR"))
@@ -154,7 +154,7 @@ static void  run_blocker( void *name)
       trace( "mulle_aba_register");
       mulle_aba_register();
    }
-   
+
    trace( "mulle_aba_free");
    mulle_aba_free( print_c, (void *) (intptr_t) c);
 
@@ -174,21 +174,21 @@ int   main(int argc, const char * argv[])
    int            rval;
    pthread_t      consumer[ 2];
    pthread_t      blocker;
-   
+
    /* give each thread a name for easier output */
    pthread_key_create( &thread_name_key, free);
    pthread_setspecific( thread_name_key, strdup( "main"));
 
    /* serialize mutiple fprintfs */
    pthread_mutex_init( &output_lock, NULL);
-  
+
    trace( "mulle_aba_init");
    mulle_aba_init( NULL);
 
    pthread_create( &consumer[ 0], NULL, (void *) run_consumer, "consumer[ 0]");
    pthread_create( &consumer[ 1], NULL, (void *) run_consumer, "consumer[ 1]");
    pthread_create( &blocker, NULL, (void *) run_blocker, "blocker");
-   
+
    pthread_join( consumer[ 0], NULL);
    pthread_join( consumer[ 1], NULL);
    pthread_join( blocker, NULL);
@@ -198,9 +198,9 @@ int   main(int argc, const char * argv[])
 
    // pedantism
    pthread_mutex_destroy( &output_lock);
-   
+
    pthread_key_delete( thread_name_key);
-   
+
    return( 0);
 }
 
