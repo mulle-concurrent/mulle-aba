@@ -35,7 +35,7 @@
 #ifndef mulle_aba_h__
 #define mulle_aba_h__
 
-#define MULLE_ABA_VERSION     ((1 << 22) | (2 << 8) | 0)  // maj, min, patch
+#define MULLE_ABA_VERSION     ((1 << 22) | (3 << 8) | 0)  // maj, min, patch
 
 #include <stdio.h>
 #include "mulle_aba_storage.h"
@@ -118,7 +118,7 @@ uintptr_t   mulle_aba_current_thread_get_timestamp( void);
 
 /*
  *
- * functions you need when dealing with multiple aba instances 
+ * functions you need when dealing with multiple aba instances
  *
  */
 static inline int   _mulle_aba_is_setup( struct mulle_aba *p)
@@ -155,4 +155,4 @@ uintptr_t   _mulle_aba_current_thread_get_timestamp( struct mulle_aba *p);
 void        *_mulle_aba_get_worldpointer( struct mulle_aba *p);
 
 
-#endif 
+#endif
