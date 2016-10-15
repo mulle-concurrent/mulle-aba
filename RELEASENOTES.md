@@ -1,8 +1,14 @@
+1.4
+===
+
+   * unify infrastructure with other mulle projects
+   * unify documentation
+
 1.3
 ===
    * prettied up the docuementation for GitHub release
    * fix compile problems on Windows
-   
+
 1.2
 ===
    * adapt to changes in mulle_thread
@@ -10,7 +16,7 @@
 
 1.1
 ===
-   * `struct mulle_aba` is no longer compatible to `struct mulle_allocator`, 
+   * `struct mulle_aba` is no longer compatible to `struct mulle_allocator`,
    because the smart mode sucked.
 
 1.0

@@ -31,3 +31,12 @@ dox/world-handling.md
 src/main.sublime-project
 src/main.sublime-workspace
 addictions/
+/mulle-tests/
+
+/tests/mulle-tests/
+
+/bin/mulle-homebrew/
+tests/punish/punish
+tests/linkedlist/ll_main
+tests/include/
+tests/lib/

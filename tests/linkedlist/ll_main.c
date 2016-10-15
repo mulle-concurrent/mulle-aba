@@ -28,8 +28,7 @@
 //  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 //  POSSIBILITY OF SUCH DAMAGE.
 //
-#include "mulle_aba_storage.h"
-#include "mulle_aba.h"
+#include <mulle_aba/mulle_aba.h>
 
 #include <mulle_thread/mulle_thread.h>
 #include <mulle_test_allocator/mulle_test_allocator.h>
@@ -39,9 +38,9 @@
 
 
 #define PROGRESS     0
-#define FOREVER      1
-#define LOOPS        (1 + (rand() % 100000))
-#define ITERATIONS   400
+#define FOREVER      0
+#define LOOPS        100000   // (1 + (rand() % 100000))
+#define ITERATIONS   100
 #define MAX_THREADS  4
 
 
@@ -72,7 +71,7 @@ static void   reset_memory()
 
    // use library to track allocations
    mulle_test_allocator_reset();
-  
+
    memset( &alloced, 0, sizeof( alloced));
    memset( &list, 0, sizeof( list));
 }
@@ -87,9 +86,9 @@ static void    run_thread_gc_free_list_test( void)
    struct _mulle_aba_freeentry   *entry;
    unsigned long                  i;
    void                           *thread;
-   
+
    thread = mulle_aba_thread_name();
-   
+
    for( i = 0; i < LOOPS; i++)
    {
       entry = (void *) _mulle_aba_linkedlist_remove_one( &list);
@@ -104,11 +103,11 @@ static void    run_thread_gc_free_list_test( void)
       {
          entry = mulle_allocator_calloc( &mulle_default_allocator, 1, sizeof( *entry));
          _mulle_atomic_pointer_increment( &alloced);
-#if MULLE_ABA_TRACE            
+#if MULLE_ABA_TRACE
          fprintf( stderr, "%s: allocated %p (%p)\n", mulle_aba_thread_name(), entry, entry->_next);
 #endif
       }
-      
+
       assert( entry);
       entry->_pointer = (void *) i;
       entry->_owner   = thread;
@@ -158,7 +157,7 @@ static void   finish_test( void)
 {
    struct _mulle_aba_freeentry   *entry;
    // remove all from list, so any leak means trouble
-   
+
    while( _mulle_atomic_pointer_decrement( &alloced))
    {
       entry = (void *) _mulle_aba_linkedlist_remove_one( &list);
@@ -174,14 +173,14 @@ static void  multi_threaded_test( intptr_t n)
    mulle_thread_t       *threads;
    struct thread_info   *info;
    mulle_atomic_pointer_t   n_threads;
-   
+
 #if MULLE_ABA_TRACE
    fprintf( stderr, "////////////////////////////////\n");
-   fprintf( stderr, "multi_threaded_test( %ld) starts\n", n); 
+   fprintf( stderr, "multi_threaded_test( %ld) starts\n", n);
 #endif
    threads = alloca( n * sizeof( mulle_thread_t));
    assert( threads);
-   
+
    _mulle_atomic_pointer_nonatomic_write( &n_threads, (void *) n);
    info = alloca( sizeof(struct thread_info) * n);
 
@@ -189,11 +188,11 @@ static void  multi_threaded_test( intptr_t n)
    {
       info[ i].n_threads = &n_threads;
       sprintf( info[ i].name, "thread #%d", i);
-      
+
       if( mulle_thread_create( (void *) run_test, &info[ i], &threads[ i]))
          abort();
    }
-   
+
    info[ 0].n_threads = &n_threads;
    sprintf( info[ 0].name, "thread #%d", 0);
    run_test( &info[ 0]);
@@ -204,9 +203,9 @@ static void  multi_threaded_test( intptr_t n)
          perror( "mulle_thread_join");
          abort();
       }
-   
+
    finish_test();
-   
+
 #if MULLE_ABA_TRACE
    fprintf( stderr, "%s: multi_threaded_test( %ld) ends\n", mulle_aba_thread_name(), n);
 #endif
@@ -238,19 +237,19 @@ static int   _main(int argc, const char * argv[])
    unsigned int   i;
    unsigned int   j;
    int            rval;
-   
+
    srand( (unsigned int) time( NULL));
-   
+
    rval = mulle_thread_tss_create( free, &threadname_key);
    assert( ! rval);
-   
+
    rval = mulle_thread_tss_set( threadname_key, strdup( "main"));
    assert( ! rval);
-   
+
 #if MULLE_ABA_TRACE
    fprintf( stderr, "%s\n", mulle_aba_thread_name());
 #endif
-   
+
 #if FOREVER
    fprintf( stderr, "This test runs forever, waiting for a crash\n");
 #endif
@@ -263,7 +262,7 @@ forever:
    // _mulle_aba_storage_done which is called by reset_memory
    // eventually
    //
-   
+
    for( i = 0; i < ITERATIONS; i++)
    {
 #if MULLE_ABA_TRACE || PROGRESS
