@@ -121,13 +121,10 @@ mulle-install --prefix /tmp
 
 For development use no flags.
 
-For production use NDEBUG
+For production use `-DNDEBUG`
 
-* DEBUG : turns on some compile time facilities to aid debugging `mulle-aba`
+* `-DDEBUG` : turns on some compile time facilities to aid debugging `mulle-aba`
           itself.
-* MULLE_ABA_TRACE : turns on a very detailed amount of tracing, which may be
+* `-DMULLE_ABA_TRACE` : turns on a very detailed amount of tracing, which may be
           too much. There are more detailed MULLE_ABA_TRACE flags available,
           consult the source.
-
-
-
