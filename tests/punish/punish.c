@@ -33,8 +33,7 @@
 //  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 //  POSSIBILITY OF SUCH DAMAGE.
 //
-#include "mulle_aba_storage.h"
-#include "mulle_aba.h"
+#include <mulle_aba/mulle_aba.h>
 #include <mulle_thread/mulle_thread.h>
 #include <mulle_test_allocator/mulle_test_allocator.h>
 #include <assert.h>
@@ -43,7 +42,7 @@
 
 
 #define PROGRESS  0
-#define FOREVER   1
+#define FOREVER   0
 
 #if DEBUG_PRINT
 extern void   mulle_aba_print( void);
@@ -70,13 +69,13 @@ static void   reset_memory()
    extern void  mulle_aba_reset( void);
 
    mulle_aba_done();
-   
+
 #if MULLE_ABA_TRACE
    fprintf( stderr, "\n================================================\n");
 #endif
 
    mulle_test_allocator_reset();
-   
+
    _mulle_aba_init( &test_global, &mulle_default_allocator);
 }
 
@@ -94,7 +93,7 @@ static void  fake_free( void *p)
 static void    run_gc_free_list_test( void)
 {
    unsigned long   i;
-   
+
    for( i = 0; i < 100000; i++)
       switch( rand() % 10)
       {
@@ -110,7 +109,7 @@ static void    run_gc_free_list_test( void)
       case 2 :
          mulle_aba_checkin();
          break;
-      
+
       default :
          mulle_thread_yield();
          break;
@@ -122,7 +121,7 @@ static void    run_thread_gc_free_list_test( void)
 {
    unsigned long   i;
    int             registered;
-   
+
    registered = 1;
    for( i = 0; i < (1 + (rand() % 10000)); i++)
       switch( rand() % 20)
@@ -202,12 +201,12 @@ static void    run_thread_gc_free_list_test( void)
          }
          registered = ! registered;
          break;
-         
+
       default :
          mulle_thread_yield();
          break;
       }
-   
+
    if( ! registered)
    {
 #if MULLE_ABA_TRACE || MULLE_ABA_TRACE_REGISTER
@@ -273,7 +272,7 @@ static mulle_thread_rval_t   run_test( struct thread_info *info)
    fprintf( stderr,  "%s: <- registered\n", mulle_aba_thread_name());
    mulle_aba_print();
 #endif
-   
+
    _wait_around( info->n_threads);
    multi_threaded_test_each_thread();
 
@@ -285,8 +284,8 @@ static mulle_thread_rval_t   run_test( struct thread_info *info)
    fprintf( stderr,  "%s: <- unregistered\n------------------------------\n", mulle_aba_thread_name());
    mulle_aba_print();
 #endif
-  
-    // voodoo 
+
+    // voodoo
    fflush( stdout);
    fflush( stderr);
 
@@ -300,14 +299,14 @@ static void  multi_threaded_test( intptr_t n)
    mulle_thread_t            *threads;
    struct thread_info   *info;
    mulle_atomic_pointer_t   n_threads;
-   
+
 #if MULLE_ABA_TRACE
    fprintf( stderr, "////////////////////////////////\n");
    fprintf( stderr, "multi_threaded_test( %ld) starts\n", n);
 #endif
    threads = alloca( n * sizeof( mulle_thread_t));
    assert( threads);
-   
+
    _mulle_atomic_pointer_nonatomic_write( &n_threads, (void *) n);
    info = alloca( sizeof(struct thread_info) * n);
 
@@ -315,11 +314,11 @@ static void  multi_threaded_test( intptr_t n)
    {
       info[ i].n_threads = &n_threads;
       sprintf( info[ i].name, "thread #%d", i);
-      
+
       if( mulle_thread_create( (void *) run_test, &info[ i], &threads[ i]))
          abort();
    }
-   
+
    info[ 0].n_threads = &n_threads;
    sprintf( info[ 0].name, "thread #%d", 0);
    run_test( &info[ 0]);
@@ -330,7 +329,7 @@ static void  multi_threaded_test( intptr_t n)
          perror( "mulle_thread_join");
          abort();
       }
-      
+
 #if MULLE_ABA_TRACE
    fprintf( stderr, "%s: multi_threaded_test( %ld) ends\n", mulle_aba_thread_name(), n);
 #endif
@@ -364,19 +363,19 @@ static int   _main(int argc, const char * argv[])
    unsigned int   i;
    unsigned int   j;
    int            rval;
-   
+
    srand( (unsigned int) time( NULL));
-   
+
    rval = mulle_thread_tss_create( free, &threadname_key);
    assert( ! rval);
-   
+
    rval = mulle_thread_tss_set( threadname_key, strdup( "main"));
    assert( ! rval);
-   
+
 #if MULLE_ABA_TRACE
    fprintf( stderr, "%s\n", mulle_aba_thread_name());
 #endif
-   
+
    mulle_aba_set_global( &test_global);
    _mulle_aba_init( &test_global, &mulle_default_allocator);
 
@@ -392,7 +391,7 @@ forever:
    // _mulle_aba_storage_done which is called by reset_memory
    // eventually
    //
-   
+
    for( i = 0; i < 400; i++)
    {
 #if MULLE_ABA_TRACE || PROGRESS
@@ -418,7 +417,7 @@ forever:
 #if STATE_STATS
    {
       extern void   mulle_transitions_count_print_dot( void);
-      
+
       mulle_transitions_count_print_dot();
    }
 #endif
@@ -433,4 +432,4 @@ int   main(int argc, const char * argv[])
 }
 #endif
 
-   
+
