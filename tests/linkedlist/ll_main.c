@@ -35,7 +35,7 @@
 #include <assert.h>
 #include <errno.h>
 #include <stdio.h>
-
+#include <time.h>
 
 #define PROGRESS     0
 #define FOREVER      0
