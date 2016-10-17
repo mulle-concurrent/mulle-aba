@@ -1,5 +1,12 @@
 # mulle-aba
 
+
+## How to use it
+
+Link against `mulle_aba` and
+`#include <mulle_aba/mulle_aba.h>` in your code.
+
+
 ## Rules of mulle-aba
 
 Threads have to cooperate in **mulle-aba**. If a non-cooperating thread is
@@ -34,7 +41,7 @@ Edge style
 # API
 
 
-### `void mulle_aba_init( struct mulle_allocator *allocator)`
+## `void mulle_aba_init( struct mulle_allocator *allocator)`
 
 *Available in state 1 (red)*
 
@@ -114,7 +121,7 @@ mulle_thread_create( &threads, NULL, (void *) run_thread, "VfL Bochum 1848");
 ```
 
 
-### `int   mulle_aba_is_registered( void)`
+## `int   mulle_aba_is_registered( void)`
 
 *Always available*
 
@@ -123,7 +130,7 @@ Returns 0, if not registered.
 
 
 
-### `void   mulle_aba_unregister( void)`
+## `void   mulle_aba_unregister( void)`
 
 *Available in state 4 (black)*
 
@@ -136,7 +143,7 @@ will be looping. You don't have to call `mulle_aba_checkin before calling
 This is a soft-blocking (blue) operation.
 
 
-### `int   mulle_aba_free( void (*free)( void *), void *pointer)`
+## `int   mulle_aba_free( void (*free)( void *), void *pointer)`
 
 *Available in state 4 (black)*
 
@@ -155,7 +162,7 @@ Ex.
     mulle_aba_free( free, s);
 ```
 
-### `void   mulle_aba_checkin( void)`
+## `void   mulle_aba_checkin( void)`
 
 *Available in state 4 (black)*
 
