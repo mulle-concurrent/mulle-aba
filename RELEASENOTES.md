@@ -1,13 +1,14 @@
-1.4
+1.3.1
 ===
 
-   * unify infrastructure with other mulle projects
-   * unify documentation
+* fix test compile on windows
 
 1.3
 ===
    * prettied up the docuementation for GitHub release
    * fix compile problems on Windows
+   * unify infrastructure with other mulle projects
+   * unify documentation
 
 1.2
 ===
