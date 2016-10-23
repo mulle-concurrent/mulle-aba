@@ -15,6 +15,11 @@ fairly complicated, please read the [Wikipedia article](//en.wikipedia.org/wiki/
 * [Example](example/main.m)
 
 
+## API
+
+* [Aba](dox/API_ABA.md)
+
+
 ## Install
 
 On OS X and Linux you can use
@@ -39,11 +44,6 @@ mulle-install --prefix /usr/local --branch release https://www.mulle-kybernetik.
 Otherwise read:
 
 * [How to Build](dox/BUILD.md)
-
-
-## API
-
-* [API](dox/API.md)
 
 
 ## Author
