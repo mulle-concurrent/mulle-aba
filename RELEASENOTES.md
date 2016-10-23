@@ -1,3 +1,15 @@
+1.3.3
+===
+
+* moved to indirect URLs in .bootstrap
+
+
+1.3.2
+===
+
+* cleanup
+
+
 1.3.1
 ===
 

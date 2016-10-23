@@ -1,2 +1,10 @@
-https://www.mulle-kybernetik.com/repositories/mulle-thread
-https://www.mulle-kybernetik.com/repositories/mulle-allocator
+#
+# override the repositories like so:
+#    echo "https://www.mulle-kybernetik.com/repositories" > .bootstrap.local/MULLE_REPOSITORIES
+#
+# override the branches like so:
+#    echo "master" > .bootstrap.local/MULLE_THREAD_BRANCH
+
+# allocator pulls thread, thread pulls c11
+
+${MULLE_REPOSITORIES}/mulle-allocator;;${MULLE_THREAD_BRANCH:-release}
