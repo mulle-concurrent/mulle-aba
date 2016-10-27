@@ -36,20 +36,34 @@ src/mulle_aba_storage.c
 src/mulle_aba.c
 )
 
+find_library( MULLE_ALLOCATOR_LIBRARY      NAMES mulle_allocator)
+find_library( MULLE_TEST_ALLOCATOR_LIBRARY NAMES mulle_test_allocator)
+find_library( MULLE_THREAD_LIBRARY         NAMES mulle_thread)
+
+message(STATUS "MULLE_ALLOCATOR_LIBRARY is ${MULLE_ALLOCATOR_LIBRARY}")
+message(STATUS "MULLE_TEST_ALLOCATOR_LIBRARY is ${MULLE_TEST_ALLOCATOR_LIBRARY}")
+message(STATUS "MULLE_THREAD_LIBRARY is ${MULLE_THREAD_LIBRARY}")
+
+
+set( DEPENDENCY_LIBRARIES
+${MULLE_ALLOCATOR_LIBRARY}
+${MULLE_THREAD_LIBRARY}
+)
+
 add_executable(mulle_aba_test EXCLUDE_FROM_ALL
 tests/punish/punish.c)
 
 add_executable(mulle_aba_ll_test EXCLUDE_FROM_ALL
 tests/linkedlist/ll_main.c)
 
-target_link_libraries( mulle_aba_test LINK_PUBLIC mulle_aba
-mulle_thread
-mulle_allocator
+target_link_libraries( mulle_aba_test LINK_PUBLIC
+mulle_aba
+${DEPENDENCY_LIBRARIES}
 pthread)
 
-target_link_libraries( mulle_aba_ll_test LINK_PUBLIC mulle_aba
-mulle_thread
-mulle_allocator
+target_link_libraries( mulle_aba_ll_test LINK_PUBLIC
+mulle_aba
+${DEPENDENCY_LIBRARIES}
 pthread)
 
 

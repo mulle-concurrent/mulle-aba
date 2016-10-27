@@ -1,3 +1,9 @@
+1.3.4
+===
+
+* use find_library in CMakeLists.txt
+
+
 1.3.3
 ===
 
