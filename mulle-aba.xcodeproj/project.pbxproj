@@ -137,7 +137,6 @@
 		4147853A1ABB13D7002DBAE4 /* mulle_aba.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = mulle_aba.c; sourceTree = "<group>"; };
 		4147853B1ABB13D7002DBAE4 /* mulle_aba.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mulle_aba.h; sourceTree = "<group>"; };
 		414945B01BEAB89C00C92587 /* libmulle_test_allocator.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libmulle_test_allocator.a; path = "dependencies/lib/Release-macosx/libmulle_test_allocator.a"; sourceTree = "<group>"; };
-		414A61D21C8F15D00011AA7E /* build.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = build.sh; sourceTree = "<group>"; };
 		414AC1B31AC2C56100DCA3CC /* mulle_aba_storage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mulle_aba_storage.h; sourceTree = "<group>"; };
 		414AC1B41AC2C56100DCA3CC /* mulle_aba_storage.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = mulle_aba_storage.c; sourceTree = "<group>"; };
 		4158F6F81B5E982B00C5805C /* CMakeLists.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = CMakeLists.txt; sourceTree = "<group>"; };
@@ -159,7 +158,7 @@
 		419795A11B6A5290005417AA /* mulle_aba_linked_list_test */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = mulle_aba_linked_list_test; sourceTree = BUILT_PRODUCTS_DIR; };
 		419795A21B6A52B5005417AA /* ll_main.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = ll_main.c; path = ../tests/linkedlist/ll_main.c; sourceTree = "<group>"; };
 		41B2CC591C512033006CA7BB /* libmulle_allocator.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libmulle_allocator.a; path = "dependencies/lib/Debug-macosx/libmulle_allocator.a"; sourceTree = "<group>"; };
-		41BE418C1B6BB0F7000C0DD4 /* BUILD.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = BUILD.md; sourceTree = "<group>"; };
+		41BE418C1B6BB0F7000C0DD4 /* BUILD.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; name = BUILD.md; path = dox/BUILD.md; sourceTree = "<group>"; };
 		41F14FE61B68F098002189F1 /* libmulle_aba.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libmulle_aba.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		41F14FF21B6902F9002189F1 /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -249,7 +248,6 @@
 		414785231ABAF290002DBAE4 = {
 			isa = PBXGroup;
 			children = (
-				414A61D21C8F15D00011AA7E /* build.sh */,
 				41198A7B1B6B7FB40033B390 /* README.md */,
 				4170B7001BDD2C26008614DC /* RELEASENOTES.md */,
 				41BE418C1B6BB0F7000C0DD4 /* BUILD.md */,
