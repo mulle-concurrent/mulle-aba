@@ -1,3 +1,8 @@
+1.4.1
+===
+
+* fix documentation link
+
 1.4.0
 ===
 

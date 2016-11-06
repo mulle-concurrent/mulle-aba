@@ -7,7 +7,7 @@ Release on [github](//github.com/mulle-nat/mulle-aba): [![Build Status](https://
 
 The ABA problem appears, when you are freeing memory, that is shared by
 multiple threads and is not protected by a lock. As the subject matter is
-fairly complicated, please read the [Wikipedia article](//en.wikipedia.org/wiki/ABA_problem) and maybe [Preshing: An Introduction to Lock-Free Programming](//preshing.com/20120612/an-introduction-to-lock-free-programming/) first and then checkout the following items:
+fairly complicated, please read the [Wikipedia article](//en.wikipedia.org/wiki/ABA_problem) and maybe [Preshing: An Introduction to Lock-Free Programming](http://preshing.com/20120612/an-introduction-to-lock-free-programming/) first and then checkout the following items:
 
 * [mulle-aba: How it works 1](//www.mulle-kybernetik.com/weblog/2015/mulle_aba_how_it_works_1.html)
 * [mulle-aba: How it works 2](//www.mulle-kybernetik.com/weblog/2015/mulle_aba_how_it_works_2.html)
