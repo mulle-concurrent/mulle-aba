@@ -1,3 +1,8 @@
+1.4.0
+===
+
+* recompile because `mulle_allocator` changed dramatically in layout
+
 1.3.5
 ===
 
