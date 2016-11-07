@@ -35,7 +35,10 @@
 #ifndef mulle_aba_h__
 #define mulle_aba_h__
 
-#define MULLE_ABA_VERSION     ((1 << 22) | (4 << 8) | 1)
+//
+// community version is always even
+//
+#define MULLE_ABA_VERSION     ((1 << 22) | (4 << 8) | 2)
 
 #include <stdio.h>
 #include "mulle_aba_storage.h"
