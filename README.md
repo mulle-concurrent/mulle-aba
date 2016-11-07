@@ -1,6 +1,6 @@
 # mulle-aba
 
-Release on [github](//github.com/mulle-nat/mulle-aba): [![Build Status](https://travis-ci.org/mulle-nat/mulle-aba.svg?branch=release)](https://travis-ci.org/mulle-nat/mulle-aba)
+[![Build Status](https://travis-ci.org/mulle-clang/mulle-aba.svg)](https://travis-ci.org/mulle-clang/mulle-aba)
 
 **mulle_aba** is a (pretty much) lock-free, cross-platform solution to the
 [ABA problem](//en.wikipedia.org/wiki/ABA_problem) written in C.
