@@ -2,9 +2,9 @@
 
 PROJECT="MulleAba"       # requires camel-case
 DESC="A portable, lock-free solution to the ABA problem in C"
-DEPENDENCIES='${REMOTEROOTDIR}/software/mulle-c11
-${REMOTEROOTDIR}/software/mulle-allocator
-${REMOTEROOTDIR}/software/mulle-thread'  # no camel case, will be evaled later!
+DEPENDENCIES='${DEPENDENCY_TAP}/mulle-c11
+${DEPENDENCY_TAP}/mulle-allocator
+${DEPENDENCY_TAP}/mulle-thread'  # no camel case, will be evaled later!
 LANGUAGE=c               # c,cpp, objc
 
 
