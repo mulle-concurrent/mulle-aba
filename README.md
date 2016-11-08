@@ -2,6 +2,8 @@
 
 [![Build Status](https://travis-ci.org/mulle-objc/mulle-aba.svg)](https://travis-ci.org/mulle-objc/mulle-aba)
 
+> Issues are on the [Community fork](//github.com/mulle-objc/mulle-aba)
+
 **mulle_aba** is a (pretty much) lock-free, cross-platform solution to the
 [ABA problem](//en.wikipedia.org/wiki/ABA_problem) written in C.
 
