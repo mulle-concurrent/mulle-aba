@@ -1,3 +1,8 @@
+1.4.3
+===
+
+* merge in fixes from community version
+
 1.4.2
 ===
 
