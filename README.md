@@ -1,7 +1,5 @@
 # mulle-aba
 
-[![Build Status](https://travis-ci.org/mulle-objc/mulle-aba.svg)](https://travis-ci.org/mulle-objc/mulle-aba)
-
 **mulle_aba** is a (pretty much) lock-free, cross-platform solution to the
 [ABA problem](//en.wikipedia.org/wiki/ABA_problem) written in C.
 
@@ -14,12 +12,11 @@ fairly complicated, please read the [Wikipedia article](//en.wikipedia.org/wiki/
 * [mulle-aba: How it works 3](//www.mulle-kybernetik.com/weblog/2015/mulle_aba_how_it_works_3.html)
 * [Example](example/main.m)
 
-Fork         | Branch  | Version | Build Status 
--------------|-------- |---------|----------------
-[Mulle kybernetiK](//github.com/mulle-nat/mulle-aba)  | release | ![GitHub version](https://badge.fury.io/gh/mulle-nat%2Fmulle-aba.svg) | [![Build Status](https://travis-ci.org/mulle-nat/mulle-aba.svg?branch=release)](https://travis-ci.org/mulle-nat/mulle-aba)
-[Community](https://github.com/mulle-objc/mulle-aba/tree/release)      | release | ![GitHub version](https://badge.fury.io/gh/mulle-objc%2Fmulle-aba.svg) |  [![Build Status](https://travis-ci.org/mulle-objc/mulle-aba.svg?branch=release)](https://travis-ci.org/mulle-objc/mulle-aba)
-[Community](//github.com/mulle-objc/mulle-aba)    | master | current |  [![Build Status](https://travis-ci.org/mulle-objc/mulle-aba.svg?branch=master)](https://travis-ci.org/mulle-objc/mulle-aba)
 
+Fork      |  Build Status | Release Version
+----------|---------------|-----------------------------------
+[Mulle kybernetiK](//github.com/mulle-nat/mulle-aba) | [![Build Status](https://travis-ci.org/mulle-nat/mulle-aba.svg?branch=release)](https://travis-ci.org/mulle-nat/mulle-aba) | ![Mulle kybernetiK tag](https://img.shields.io/github/tag/mulle-nat/mulle-aba.svg) [![Build Status](https://travis-ci.org/mulle-nat/mulle-aba.svg?branch=release)](https://travis-ci.org/mulle-nat/mulle-aba)
+[Community](https://github.com/mulle-objc/mulle-aba/tree/release) | [![Build Status](https://travis-ci.org/mulle-objc/mulle-aba.svg)](https://travis-ci.org/mulle-objc/mulle-aba) | ![Community tag](https://img.shields.io/github/tag/mulle-objc/mulle-aba.svg) [![Build Status](https://travis-ci.org/mulle-objc/mulle-aba.svg?branch=release)](https://travis-ci.org/mulle-objc/mulle-aba)
 
 
 ## API

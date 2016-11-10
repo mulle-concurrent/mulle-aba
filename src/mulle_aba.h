@@ -38,7 +38,7 @@
 //
 // community version is always even
 //
-#define MULLE_ABA_VERSION     ((1 << 22) | (4 << 8) | 2)
+#define MULLE_ABA_VERSION     ((1 << 22) | (4 << 8) | 4)
 
 #include <stdio.h>
 #include "mulle_aba_storage.h"

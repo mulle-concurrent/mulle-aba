@@ -13,9 +13,13 @@ xcuserdata/
 project.xcworkspace/
 .bootstrap.auto/
 .bootstrap.local/
-dependencies/
 .repos/
-mulle-configuration/
+
+addictions/
+dependencies/
+/mulle-configuration
+/tests/mulle-tests
+/bin/mulle-homebrew
 
 
 dox/3threads-resources.graffle
@@ -30,13 +34,10 @@ dox/snafuthreads.png
 dox/world-handling.md
 src/main.sublime-project
 src/main.sublime-workspace
-addictions/
-/mulle-tests/
 
-/tests/mulle-tests/
 
-/bin/mulle-homebrew/
 tests/punish/punish
 tests/linkedlist/ll_main
 tests/include/
 tests/lib/
+
