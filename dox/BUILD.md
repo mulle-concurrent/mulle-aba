@@ -85,9 +85,9 @@ brew install mulle-build
 ### All: Install mulle-build using git
 
 ```
-git clone https://www.mulle-kybernetik.com/repositories/mulle-bootstrap
+git clone https://github.com/mulle-nat/mulle-bootstrap
 ( cd mulle-bootstrap ; ./install.sh )
-git clone https://www.mulle-kybernetik.com/repositories/mulle-build
+git clone https://github.com/mulle-nat/mulle-build
 ( cd mulle-build ; ./install.sh )
 ```
 
@@ -97,7 +97,7 @@ git clone https://www.mulle-kybernetik.com/repositories/mulle-build
 Grab the latest **mulle-aba** release and go into the project directory:
 
 ```
-git clone https://www.mulle-kybernetik.com/repositories/mulle-aba
+git clone https://github.com/mulle-objc/mulle-aba
 cd mulle-aba
 ```
 
