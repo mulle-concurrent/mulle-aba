@@ -1,9 +1,5 @@
 # mulle-aba
 
-[![Build Status](https://travis-ci.org/mulle-objc/mulle-aba.svg)](https://travis-ci.org/mulle-objc/mulle-aba)
-
-> Issues are on the [Community fork](//github.com/mulle-objc/mulle-aba)
-
 **mulle_aba** is a (pretty much) lock-free, cross-platform solution to the
 [ABA problem](//en.wikipedia.org/wiki/ABA_problem) written in C.
 
@@ -15,6 +11,12 @@ fairly complicated, please read the [Wikipedia article](//en.wikipedia.org/wiki/
 * [mulle-aba: How it works 2](//www.mulle-kybernetik.com/weblog/2015/mulle_aba_how_it_works_2.html)
 * [mulle-aba: How it works 3](//www.mulle-kybernetik.com/weblog/2015/mulle_aba_how_it_works_3.html)
 * [Example](example/main.m)
+
+
+Fork      |  Build Status | Release Version
+----------|---------------|-----------------------------------
+[Mulle kybernetiK](//github.com/mulle-nat/mulle-aba) | [![Build Status](https://travis-ci.org/mulle-nat/mulle-aba.svg?branch=release)](https://travis-ci.org/mulle-nat/mulle-aba) | ![Mulle kybernetiK tag](https://img.shields.io/github/tag/mulle-nat/mulle-aba.svg) [![Build Status](https://travis-ci.org/mulle-nat/mulle-aba.svg?branch=release)](https://travis-ci.org/mulle-nat/mulle-aba)
+[Community](https://github.com/mulle-objc/mulle-aba/tree/release) | [![Build Status](https://travis-ci.org/mulle-objc/mulle-aba.svg)](https://travis-ci.org/mulle-objc/mulle-aba) | ![Community tag](https://img.shields.io/github/tag/mulle-objc/mulle-aba.svg) [![Build Status](https://travis-ci.org/mulle-objc/mulle-aba.svg?branch=release)](https://travis-ci.org/mulle-objc/mulle-aba)
 
 
 ## API
@@ -30,18 +32,16 @@ On OS X and Linux you can use
 to install the library:
 
 ```
-brew tap mulle-kybernetik/software
-brew install mulle-aba
+brew install mulle-objc/software/mulle-aba
 ```
 
 On other platforms you can use **mulle-install** from
-[mulle-build](//www.mulle-kybernetik.com/software/git/mulle-build)
+[mulle-build](//github.com/mulle-nat/mulle-build)
 to install the library:
 
 ```
-mulle-install --prefix /usr/local --branch release https://www.mulle-kybernetik.com/repositories/mulle-aba
+mulle-install --prefix /usr/local --branch release https://github.com/mulle-objc/mulle-aba
 ```
-
 
 Otherwise read:
 

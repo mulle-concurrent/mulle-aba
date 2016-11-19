@@ -1,3 +1,8 @@
+1.4.4
+===
+
+* merge with community version
+
 1.4.3
 ===
 
