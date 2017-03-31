@@ -51,7 +51,7 @@ static inline void  UNPLEASANT_RACE_YIELD()
       if( (rand() & 0x7) == 0x4)  // 1:64 chance of nanosleep
       {
          struct timespec ms30 =  { .tv_sec = 0, .tv_nsec = 1 * (1000 * 1000 * 1000) / 30 };
-         
+
          nanosleep( &ms30, NULL);
       }
       else

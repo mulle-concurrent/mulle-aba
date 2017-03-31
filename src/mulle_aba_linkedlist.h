@@ -83,7 +83,7 @@ static inline void   _mulle_aba_linkedlist_done( struct _mulle_aba_linkedlist *p
 void  _mulle_aba_linkedlist_add( struct _mulle_aba_linkedlist *list, struct _mulle_aba_linkedlistentry  *entry);
 struct _mulle_aba_linkedlistentry  *_mulle_aba_linkedlist_remove_all( struct _mulle_aba_linkedlist *list);
 
-// based on remove all 
+// based on remove all
 struct _mulle_aba_linkedlistentry  *_mulle_aba_linkedlist_remove_one( struct _mulle_aba_linkedlist *list);
 
 //

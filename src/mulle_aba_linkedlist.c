@@ -36,7 +36,7 @@
 
 #include <mulle_thread/mulle_thread.h>
 #include "mulle_aba_defines.h"
-#include <assert.h> 
+#include <assert.h>
 
 
 struct _mulle_aba_linkedlistentry  *_mulle_aba_linkedlist_remove_all( struct _mulle_aba_linkedlist *list)
@@ -44,7 +44,7 @@ struct _mulle_aba_linkedlistentry  *_mulle_aba_linkedlist_remove_all( struct _mu
    struct _mulle_aba_linkedlistentry  *head;
 
    assert( list);
-   
+
    do
    {
       head = _mulle_atomic_pointer_read( &list->_head.pointer);
@@ -52,7 +52,7 @@ struct _mulle_aba_linkedlistentry  *_mulle_aba_linkedlist_remove_all( struct _mu
          break;
    }
    while( ! _mulle_atomic_pointer_compare_and_swap( &list->_head.pointer, NULL, head));
-   
+
    return( head);
 }
 
@@ -66,12 +66,12 @@ void  _mulle_aba_linkedlist_add( struct _mulle_aba_linkedlist *list,
    assert( list);
    assert( entry);
    assert( ! entry->_next);
-   
+
    do
    {
       head = _mulle_atomic_pointer_read( &list->_head.pointer);
       assert( head != entry);
-      
+
       UNPLEASANT_RACE_YIELD();
       entry->_next = head;
    }
@@ -96,7 +96,7 @@ struct _mulle_aba_linkedlistentry  *_mulle_aba_linkedlist_remove_one( struct _mu
    struct _mulle_aba_linkedlistentry   *entry;
 
    assert( list);
-   
+
    entry = NULL;
    chain = NULL;
 
@@ -113,7 +113,7 @@ struct _mulle_aba_linkedlistentry  *_mulle_aba_linkedlist_remove_one( struct _mu
             chain = chain->_next;
             entry->_next = NULL;
          }
-      
+
          // chain together
          if( prev_chain)
          {
@@ -127,7 +127,7 @@ struct _mulle_aba_linkedlistentry  *_mulle_aba_linkedlist_remove_one( struct _mu
       }
       else
          chain = prev_chain;
-      
+
       if( ! chain)
          break;
    }
@@ -149,10 +149,10 @@ int   _mulle_aba_linkedlist_walk( struct _mulle_aba_linkedlist *list,
    struct _mulle_aba_linkedlistentry   *prev;
    struct _mulle_aba_linkedlistentry   *next;
    int                                   rval;
-   
+
    assert( list);
    assert( callback);
-   
+
    entry = _mulle_atomic_pointer_nonatomic_read( &list->_head.pointer);
    prev  = NULL;
    rval  = 0;
@@ -166,11 +166,11 @@ int   _mulle_aba_linkedlist_walk( struct _mulle_aba_linkedlist *list,
          break;
 
       UNPLEASANT_RACE_YIELD();
-      
+
       prev  = entry;
       entry = next;  // now
    }
-   
+
    return( rval);
 }
 
