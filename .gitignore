@@ -41,3 +41,13 @@ tests/linkedlist/ll_main
 tests/include/
 tests/lib/
 
+
+/.bootstrap.auto
+
+/.bootstrap.local
+
+/dependencies
+
+/addictions
+
+/.repos

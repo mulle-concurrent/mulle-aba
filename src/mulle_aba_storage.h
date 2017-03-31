@@ -60,11 +60,11 @@ enum
 struct _mulle_aba_freeentry
 {
    struct _mulle_aba_linkedlistentry   _link;
-   
+
 #if MULLE_ABA_MEMTYPE_DEBUG
    uintptr_t   _memtype;
 #endif
-   
+
    void   (*_free)( void *, void *);  // owner, pointer
    void   *_owner;
    void   *_pointer;
@@ -132,7 +132,7 @@ static inline unsigned int
                                                unsigned int index)
 {
    uintptr_t   usage;
-   
+
    usage = (uintptr_t) _mulle_atomic_pointer_read( &ts_storage->_usage_bits);
    return( (usage & (1UL << index)) ? 1 : 0);
 }
@@ -225,7 +225,7 @@ static inline _mulle_aba_worldpointer_t   mulle_aba_worldpointer_make( struct _m
 {
    assert( bits >= 0 && bits <= 3);
    assert( ! ((intptr_t) world & 0x3));
-   
+
    return( (void *) ((intptr_t) world | bits));
 }
 
@@ -233,7 +233,7 @@ static inline _mulle_aba_worldpointer_t   mulle_aba_worldpointer_make( struct _m
 static inline struct _mulle_aba_worldpointers  _mulle_aba_worldpointers_make( _mulle_aba_worldpointer_t new_world_p, _mulle_aba_worldpointer_t old_world_p)
 {
    assert( (! new_world_p && ! old_world_p) || (mulle_aba_worldpointer_get_struct( new_world_p) && mulle_aba_worldpointer_get_struct( old_world_p)));
-   
+
    return( (struct _mulle_aba_worldpointers) { .new_world_p = new_world_p, .old_world_p = old_world_p });
 }
 
@@ -247,14 +247,14 @@ static inline struct _mulle_aba_worldpointers  _mulle_aba_worldpointers_make( _m
 struct _mulle_aba_world
 {
    struct _mulle_aba_linkedlistentry   _link;            // chain, used when deallocing/dealloced
-   
+
 #if MULLE_ABA_MEMTYPE_DEBUG
    uintptr_t                             _memtype;
    uintptr_t                             _generation;      // debugging
 #endif
    uintptr_t                             _timestamp;       // current timestamp
    intptr_t                              _n_threads;       // currently active threads
-   
+
    // storage for registered threads
    uintptr_t                             _offset;          // _min_timestamp / _mulle_aba_timestampstorage_n_entries
    unsigned int                          _size;            // storage of timestamp, rc, blocks
@@ -283,7 +283,7 @@ struct _mulle_aba_timestampstorage *
 static inline size_t   _mulle_aba_world_get_size( struct _mulle_aba_world *world)
 {
    /* casty cast madness, code looks like c++ */
-   
+
    return( (size_t) ((char *) &world->_storage[ world->_size] - (char *) world));
 }
 
@@ -293,7 +293,7 @@ static inline struct _mulle_aba_timestampstorage  *
                                                    unsigned int ts_index)
 {
    struct _mulle_aba_timestampstorage  *ts_storage;
-   
+
    assert( ts_index != (unsigned int) -1 && ts_index < world->_n);
    ts_storage = world->_storage[ ts_index];
    assert( ts_storage);
@@ -321,7 +321,7 @@ union _mulle_aba_atomicworldpointer_t
 struct _mulle_aba_storage
 {
    union _mulle_aba_atomicworldpointer_t   _world;
-   
+
 #if MULLE_ABA_MEMTYPE_DEBUG
    uintptr_t                      _memtype;
 #endif
@@ -366,7 +366,7 @@ void   _mulle_aba_world_assert_sanity( struct _mulle_aba_world *world);
 static inline _mulle_aba_worldpointer_t   _mulle_aba_storage_get_worldpointer( struct _mulle_aba_storage *q)
 {
    _mulle_aba_worldpointer_t   world_p;
-   
+
    // if your thread isn't registered yet, you must not read the struct
    // it may be dealloced already
    world_p = (_mulle_aba_worldpointer_t) _mulle_atomic_pointer_read( &q->_world.pointer);
