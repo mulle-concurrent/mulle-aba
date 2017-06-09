@@ -1,8 +1,0 @@
-# Always merge with --no-commit
-#
-# git reset HEAD .bootstrap/MULLE_REPOSITORIES
-# git checkout -- .bootstrap/MULLE_REPOSITORIES
-#
-# in case upstream tries to clobber it
-#
-https://github.com/mulle-objc

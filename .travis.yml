@@ -19,7 +19,6 @@ before_install:
    - brew update
    - brew install mulle-kybernetik/software/mulle-build
 
-
 script:
-   - mulle-build --bootstrap
-   - mulle-test -vvv
+   - mulle-build -vv -V --bootstrap
+   - mulle-test -vv -V
