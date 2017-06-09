@@ -37,16 +37,16 @@ src/mulle_aba.c
 )
 
 find_library( MULLE_ALLOCATOR_LIBRARY      NAMES mulle_allocator)
-find_library( MULLE_TEST_ALLOCATOR_LIBRARY NAMES mulle_test_allocator)
-find_library( MULLE_THREAD_LIBRARY         NAMES mulle_thread)
-
 message(STATUS "MULLE_ALLOCATOR_LIBRARY is ${MULLE_ALLOCATOR_LIBRARY}")
+find_library( MULLE_TEST_ALLOCATOR_LIBRARY NAMES mulle_test_allocator)
 message(STATUS "MULLE_TEST_ALLOCATOR_LIBRARY is ${MULLE_TEST_ALLOCATOR_LIBRARY}")
+find_library( MULLE_THREAD_LIBRARY         NAMES mulle_thread)
 message(STATUS "MULLE_THREAD_LIBRARY is ${MULLE_THREAD_LIBRARY}")
 
 
-set( DEPENDENCY_LIBRARIES
+set( STATIC_DEPENDENCIES
 ${MULLE_ALLOCATOR_LIBRARY}
+${MULLE_TEST_ALLOCATOR_LIBRARY}
 ${MULLE_THREAD_LIBRARY}
 )
 
@@ -58,15 +58,15 @@ tests/linkedlist/ll_main.c)
 
 target_link_libraries( mulle_aba_test LINK_PUBLIC
 mulle_aba
-${DEPENDENCY_LIBRARIES}
+${STATIC_DEPENDENCIES}
 pthread)
 
 target_link_libraries( mulle_aba_ll_test LINK_PUBLIC
 mulle_aba
-${DEPENDENCY_LIBRARIES}
+${STATIC_DEPENDENCIES}
 pthread)
 
 
-INSTALL(TARGETS mulle_aba DESTINATION "lib")
-INSTALL(FILES ${HEADERS} DESTINATION "include/mulle_aba")
+INSTALL( TARGETS mulle_aba DESTINATION "lib")
+INSTALL( FILES ${HEADERS} DESTINATION "include/mulle_aba")
 

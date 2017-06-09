@@ -8,7 +8,7 @@ old/
 tmp/
 *.dSYM/
 *.exe
-
+*.old
 xcuserdata/
 project.xcworkspace/
 .bootstrap.auto/

@@ -7,4 +7,4 @@
 
 # allocator pulls thread, thread pulls c11
 
-${MULLE_REPOSITORIES}/mulle-allocator;;${MULLE_THREAD_BRANCH:-release}
+${MULLE_REPOSITORIES:-https://github.com/mulle-nat}/mulle-allocator;;${MULLE_ALLOCATOR_BRANCH:-release}
