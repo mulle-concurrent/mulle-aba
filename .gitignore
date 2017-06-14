@@ -9,6 +9,7 @@ tmp/
 *.dSYM/
 *.exe
 *.old
+*.bak
 xcuserdata/
 project.xcworkspace/
 .bootstrap.auto/
@@ -51,3 +52,5 @@ tests/lib/
 /addictions
 
 /.repos
+bin/tap-info.sh
+tap-info.sh
