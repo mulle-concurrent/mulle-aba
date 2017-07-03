@@ -1,3 +1,8 @@
+### 1.4.9
+
+* make it a cmake "C" projezt
+
+
 ### 1.4.7
 
 * modernized project
