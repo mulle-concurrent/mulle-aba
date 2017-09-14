@@ -19,14 +19,7 @@ else()
 endif()
 
 
-include_directories(
-src
-)
-
-set( HEADERS
-src/mulle_aba_linkedlist.h
-src/mulle_aba_storage.h
-src/mulle_aba.h)
+include( CMakeSourcesAndHeaders.txt)
 
 
 find_library( MULLE_ALLOCATOR_LIBRARY      NAMES mulle_allocator)
@@ -48,16 +41,8 @@ ${PTHREAD_LIBRARY}
 )
 
 add_library( mulle_aba
-src/mulle_aba_linkedlist.c
-src/mulle_aba_storage.c
-src/mulle_aba.c
+${SOURCES}
 )
-
-
-if( MSVC)
-   add_definitions( -DMULLE_ALLOCATOR_EXTERN_GLOBAL=extern)
-endif()
-
 
 add_executable( mulle_aba_test EXCLUDE_FROM_ALL
 tests/punish/punish.c)
