@@ -1,0 +1,15 @@
+include_directories(
+src
+)
+
+set( HEADERS
+src/mulle_aba_linkedlist.h
+src/mulle_aba_storage.h
+src/mulle_aba.h
+)
+
+set( SOURCES
+src/mulle_aba_linkedlist.c
+src/mulle_aba_storage.c
+src/mulle_aba.c
+)
