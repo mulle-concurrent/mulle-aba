@@ -1,0 +1,21 @@
+if( NOT __MULLE_ABA_CMAKE_DEPENDENCIES_TXT__)
+   set( __MULLE_ABA_CMAKE_DEPENDENCIES_TXT__ ON)
+
+   message( STATUS "# Include mulle-aba CMakeDependencies.txt")
+
+   include( ${DEPENDENCIES_DIR}/include/mulle_allocator/CMakeDependencies.txt)
+
+   if( NOT MULLE_ABA_LIBRARY)
+      find_library( MULLE_ABA_LIBRARY NAMES mulle_aba)
+      message(STATUS "MULLE_ABA_LIBRARY is ${MULLE_ABA_LIBRARY}")
+      set( C_DEPENDENCY_LIBRARIES
+         ${MULLE_ABA_LIBRARY}
+         ${C_DEPENDENCY_LIBRARIES}
+         CACHE INTERNAL "need to cache this"
+      )
+   endif()
+
+   if( MSVC)
+      set( MULLE_ABA_DEFINITIONS ${MULLE_ALLOCATOR_DEFINITIONS})
+   endif()
+endif()

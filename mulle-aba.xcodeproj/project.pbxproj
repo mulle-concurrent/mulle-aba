@@ -322,7 +322,7 @@
 				417C02751BD84102005A3751 /* StaticLibraryOSX.xcconfig */,
 				417C02761BD84102005A3751 /* ToolOSX.xcconfig */,
 			);
-			path = "mulle-configuration";
+			path = "mulle-configuration/xcode";
 			sourceTree = "<group>";
 		};
 		418502891C875E22008C77C4 /* example */ = {
