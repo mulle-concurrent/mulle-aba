@@ -19,30 +19,23 @@ else()
 endif()
 
 
+set( MULLE_ABA_LIBRARY ON)
+
 include( CMakeSourcesAndHeaders.txt)
+include( CMakeDependencies.txt)
 
 
-find_library( MULLE_ALLOCATOR_LIBRARY      NAMES mulle_allocator)
-message(STATUS "MULLE_ALLOCATOR_LIBRARY is ${MULLE_ALLOCATOR_LIBRARY}")
-find_library( MULLE_TEST_ALLOCATOR_LIBRARY NAMES mulle_test_allocator)
-message(STATUS "MULLE_TEST_ALLOCATOR_LIBRARY is ${MULLE_TEST_ALLOCATOR_LIBRARY}")
-find_library( MULLE_THREAD_LIBRARY         NAMES mulle_thread)
-message(STATUS "MULLE_THREAD_LIBRARY is ${MULLE_THREAD_LIBRARY}")
-
-if( MSVC)
-   add_definitions( -DMULLE_ALLOCATOR_EXTERN_GLOBAL=extern)
-endif()
-
-set( STATIC_DEPENDENCIES
-${MULLE_ALLOCATOR_LIBRARY}
-${MULLE_TEST_ALLOCATOR_LIBRARY}
-${MULLE_THREAD_LIBRARY}
-${PTHREAD_LIBRARY}
+set( PUBLIC_HEADERS
+${HEADERS}
+CMakeDependencies.txt
 )
 
 add_library( mulle_aba
 ${SOURCES}
 )
+
+
+add_definitions( ${MULLE_ABA_DEFINITIONS})
 
 add_executable( mulle_aba_test EXCLUDE_FROM_ALL
 tests/punish/punish.c)
@@ -50,17 +43,20 @@ tests/punish/punish.c)
 add_executable( mulle_aba_ll_test EXCLUDE_FROM_ALL
 tests/linkedlist/ll_main.c)
 
+
 target_link_libraries( mulle_aba_test LINK_PUBLIC
 mulle_aba
-${STATIC_DEPENDENCIES}
+${C_DEPENDENCY_LIBRARIES}
+${OS_SPECIFIC_LIBRARIES}
 )
 
 target_link_libraries( mulle_aba_ll_test LINK_PUBLIC
 mulle_aba
-${STATIC_DEPENDENCIES}
+${C_DEPENDENCY_LIBRARIES}
+${OS_SPECIFIC_LIBRARIES}
 )
 
 
 INSTALL( TARGETS mulle_aba DESTINATION "lib")
-INSTALL( FILES ${HEADERS} DESTINATION "include/mulle_aba")
+INSTALL( FILES ${PUBLIC_HEADERS} DESTINATION "include/mulle_aba")
 

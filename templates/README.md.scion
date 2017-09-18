@@ -26,26 +26,7 @@ Fork      |  Build Status | Release Version
 * [Aba](dox/API_ABA.md)
 
 
-## Install
-
-On OS X and Linux you can use
-[homebrew](//brew.sh), respectively
-[linuxbrew](//linuxbrew.sh)
-to install the library:
-
-```
-brew install mulle-objc/software/mulle-aba
-```
-
-On other platforms you can use **mulle-install** from
-[mulle-build](//github.com/{{PUBLISHER}}/mulle-build)
-to install the library:
-
-```
-mulle-install --prefix /usr/local --branch release https://github.com/mulle-objc/mulle-aba
-```
-
-Otherwise read:
+## Build
 
 * [How to Build](dox/BUILD.md)
 
