@@ -60,3 +60,4 @@ ${OS_SPECIFIC_LIBRARIES}
 INSTALL( TARGETS mulle_aba DESTINATION "lib")
 INSTALL( FILES ${PUBLIC_HEADERS} DESTINATION "include/mulle_aba")
 
+include( MulleTest)
