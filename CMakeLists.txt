@@ -30,12 +30,21 @@ ${HEADERS}
 CMakeDependencies.txt
 )
 
+#
+# add definitions for all
+#
+add_definitions( ${MULLE_ABA_DEFINITIONS})
+
+
 add_library( mulle_aba
 ${SOURCES}
 )
 
+# PRIVATE is a guess
+#target_compile_definitions( mulle_aba
+#PRIVATE ${MULLE_ABA_DEFINITIONS}
+#)
 
-add_definitions( ${MULLE_ABA_DEFINITIONS})
 
 add_executable( mulle_aba_test EXCLUDE_FROM_ALL
 tests/punish/punish.c)
