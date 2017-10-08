@@ -1,3 +1,7 @@
+### 1.4.19
+
+* Various small improvements
+
 ### 1.4.17
 
 * support new mulle-tests
