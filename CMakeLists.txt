@@ -1,75 +1,67 @@
-cmake_minimum_required ( VERSION 3.0)
+cmake_minimum_required( VERSION 3.0)
 
 project( mulle-aba C)
 
-#
-# dont forget to wipe all cmake produced files before
-# changing this
-#
 
-#set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O0 -g -DDEBUG -DMULLE_ABA_TRACE_LIST -DMULLE_ABA_TRACE_SWAP")
+### mulle-sde environment
 
-set( CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_SOURCE_DIR}/mulle-configuration/cmake)
-message( STATUS "CMAKE_MODULE_PATH is ${CMAKE_MODULE_PATH}")
-message( STATUS "CMAKE_BUILD_TYPE is ${CMAKE_BUILD_TYPE}")
-if( "${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
-  include( Debug)
-else()
-  include( Release)
-endif()
+# add cmake module paths to search path
+list( INSERT CMAKE_MODULE_PATH 0 "${PROJECT_SOURCE_DIR}/cmake/share")
+list( INSERT CMAKE_MODULE_PATH 0 "${PROJECT_SOURCE_DIR}/cmake")
 
+include( Environment)
+
+
+### Files
+
+include( PreFiles OPTIONAL)
 
 set( MULLE_ABA_LIBRARY ON)
 
-include( CMakeSourcesAndHeaders.txt)
-include( CMakeDependencies.txt)
+#
+# Include all non underscored .cmake files in ./cmake
+#
+file( GLOB LOCAL_CMAKE_INCLUDES
+   "cmake/[A-Za-z0-9]*.cmake"
+)
+
+foreach( FILE ${LOCAL_CMAKE_INCLUDES} )
+   include( "${FILE}")
+endforeach()
 
 
 include_directories( ${INCLUDE_DIRS})
 
+include( PostFiles OPTIONAL)
 
-set( PUBLIC_HEADERS
-${HEADERS}
-CMakeDependencies.txt
-)
+### Library
 
-#
-# add definitions for all
-#
-add_definitions( ${MULLE_ABA_DEFINITIONS})
+include( PreLibrary OPTIONAL)
 
-
-add_library( mulle_aba
+add_library( "mulle-aba"
 ${SOURCES}
+${PUBLIC_HEADERS}
+${PRIVATE_HEADERS}
+${CMAKE_EDITABLE_FILES}
 )
 
-# PRIVATE is a guess
-#target_compile_definitions( mulle_aba
-#PRIVATE ${MULLE_ABA_DEFINITIONS}
-#)
-
-
-add_executable( mulle_aba_test EXCLUDE_FROM_ALL
-tests/punish/punish.c)
-
-add_executable( mulle_aba_ll_test EXCLUDE_FROM_ALL
-tests/linkedlist/ll_main.c)
-
-
-target_link_libraries( mulle_aba_test LINK_PUBLIC
-mulle_aba
-${C_DEPENDENCY_LIBRARIES}
+if( BUILD_SHARED_LIBS)
+   target_link_libraries( mulle-aba
+${DEPENDENCIES_LIBRARIES}
 ${OS_SPECIFIC_LIBRARIES}
 )
+endif()
 
-target_link_libraries( mulle_aba_ll_test LINK_PUBLIC
-mulle_aba
-${C_DEPENDENCY_LIBRARIES}
-${OS_SPECIFIC_LIBRARIES}
-)
+include( PostLibrary OPTIONAL)
 
+### Install
 
-INSTALL( TARGETS mulle_aba DESTINATION "lib")
-INSTALL( FILES ${PUBLIC_HEADERS} DESTINATION "include/mulle_aba")
+include( PreInstall OPTIONAL)
 
-include( MulleTest)
+install( TARGETS "mulle-aba" DESTINATION "lib")
+install( FILES ${PUBLIC_HEADERS}  DESTINATION "include/mulle-aba")
+install( FILES ${PRIVATE_HEADERS} DESTINATION "include/mulle-aba/private")
+
+install( FILES ${CMAKE_INCLUDES}  DESTINATION "include/mulle-aba/cmake")
+
+include( PostInstall OPTIONAL)

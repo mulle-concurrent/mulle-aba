@@ -1,0 +1,1 @@
+mulle-allocator;tar;;823f9555-ffcc-4f6f-ab65-caf48e8d6f7c;${MULLE_ALLOCATOR_URL:-https://github.com/mulle-c/mulle-allocator/archive/${MULLE_ALLOCATOR_BRANCH:-latest}.tar.gz};;;;
