@@ -54,11 +54,27 @@ endif()
 
 include( PostLibrary OPTIONAL)
 
+
+set( STANDALONE_BASE_NAME "mulle-aba")
+set( STANDALONE_NAME "mulle-aba-standalone")
+set( STANDALONE_DEFINITIONS ${MULLE_ABA_DEFINITIONS})
+set( STANDALONE_DEPENDENCIES
+mulle-aba
+)
+
+set( STANDALONE_ALL_LOAD_LIBRARIES
+$<TARGET_FILE:mulle-aba>
+${C_DEPENDENCY_LIBRARIES}
+${OS_SPECIFIC_LIBRARIES}
+)
+
+include( Standalone)
+
 ### Install
 
 include( PreInstall OPTIONAL)
 
-install( TARGETS "mulle-aba" DESTINATION "lib")
+install( TARGETS "mulle-aba" "mulle-aba-standalone" DESTINATION "lib")
 install( FILES ${PUBLIC_HEADERS}  DESTINATION "include/mulle-aba")
 install( FILES ${PRIVATE_HEADERS} DESTINATION "include/mulle-aba/private")
 
