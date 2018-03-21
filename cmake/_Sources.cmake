@@ -9,3 +9,7 @@ src/mulle-aba.c
 src/mulle-aba-linkedlist.c
 src/mulle-aba-storage.c
 )
+
+set( STANDALONE_SOURCES
+src/mulle-aba-standalone.c
+)
