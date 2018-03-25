@@ -40,16 +40,14 @@
 //
 #define MULLE_ABA_VERSION     ((1 << 20) | (4 << 8) | 19)
 
-#include "dependencies.h"
-
 #include <stdio.h>
 #include "mulle-aba-storage.h"
 
 #if MULLE_ALLOCATOR_VERSION < ((2 << 20) | (0 << 8) | 0)
-# error "mulle-allocator is too old"
+# error "mulle_allocator is too old"
 #endif
 #if MULLE_THREAD_VERSION < ((2 << 20) | (0 << 8) | 0)
-# error "mulle-thread is too old"
+# error "mulle_thread is too old"
 #endif
 
 //

@@ -4,7 +4,7 @@
 ## How to use it
 
 Link against `mulle_aba` and
-`#include <mulle_aba/mulle_aba.h>` in your code.
+`#include <mulle-aba/mulle-aba.h>` in your code.
 
 
 ## Rules of mulle-aba

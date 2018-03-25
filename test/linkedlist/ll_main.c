@@ -28,10 +28,9 @@
 //  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 //  POSSIBILITY OF SUCH DAMAGE.
 //
-#include <mulle_aba/mulle_aba.h>
+#include <mulle-aba/mulle-aba.h>
 
-#include <mulle_thread/mulle_thread.h>
-#include <mulle_test_allocator/mulle_test_allocator.h>
+#include <mulle-test-allocator/mulle-test-allocator.h>
 #include <assert.h>
 #include <errno.h>
 #include <stdio.h>

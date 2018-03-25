@@ -1,4 +1,5 @@
 .DS_Store
+._.DS_Store
 
 *~.*
 .idea/
@@ -26,10 +27,10 @@ src/main.sublime-project
 src/main.sublime-workspace
 
 
-tests/punish/punish
-tests/linkedlist/ll_main
-tests/include/
-tests/lib/
+test/punish/punish
+test/linkedlist/ll_main
+test/include/
+test/lib/
 
 
 
@@ -55,12 +56,12 @@ tests/lib/
 .mulle-sourcetree-fix
 
 # stashes are generally boring
-stashes/
+stash/
 
 # build stuff is boring too
 build/
-dependencies/
-addictions/
+dependency/
+addiction/
 *.tmp/
 tmp.*
 
