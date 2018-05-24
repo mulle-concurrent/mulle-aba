@@ -38,7 +38,7 @@
 //
 // community version is always even
 //
-#define MULLE_ABA_VERSION     ((1 << 20) | (4 << 8) | 19)
+#define MULLE_ABA_VERSION     ((2 << 20) | (0 << 8) | 0)
 
 #include "dependencies.h"
 

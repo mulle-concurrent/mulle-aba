@@ -20,6 +20,9 @@ Fork      |  Build Status | Release Version
 
 ## Install
 
+
+### Manually
+
 Install the prerequisites first:
 
 | Prerequisites                                           |
@@ -37,7 +40,9 @@ mkdir build 2> /dev/null
 )
 ```
 
-Or let [mulle-sde](//github.com/mulle-sde) do it all for you.
+### Conveniently
+
+Or let [mulle-sde](//github.com/mulle-sde) do it all for you with `mulle-sde craft`.
 
 
 ## API

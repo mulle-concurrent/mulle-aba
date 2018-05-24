@@ -39,14 +39,19 @@ include( PostFiles OPTIONAL)
 include( PreLibrary OPTIONAL)
 
 add_library( "mulle-aba"
+# definitions from cmake/HeadersAndSources.cmake
 ${SOURCES}
 ${PUBLIC_HEADERS}
 ${PRIVATE_HEADERS}
+# definitions from cmake/share/Environment.cmake
 ${CMAKE_EDITABLE_FILES}
 )
 
+
+
 if( BUILD_SHARED_LIBS)
    target_link_libraries( mulle-aba
+# definitions from cmake/share/DependenciesAndLibraries.cmake
 ${DEPENDENCY_LIBRARIES}
 ${OS_SPECIFIC_LIBRARIES}
 )
@@ -54,33 +59,47 @@ endif()
 
 include( PostLibrary OPTIONAL)
 
+option( STANDALONE "Create standalone library for debugging" OFF)
 
-set( STANDALONE_BASE_NAME "mulle-aba")
-set( STANDALONE_NAME "mulle-aba-standalone")
-set( STANDALONE_DEFINITIONS ${MULLE_ABA_DEFINITIONS})
-set( STANDALONE_DEPENDENCIES
-mulle-aba
+set( INSTALL_LIBRARY_TARGETS
+"mulle-aba"
 )
 
-set( STANDALONE_ALL_LOAD_LIBRARIES
-$<TARGET_FILE:mulle-aba>
-${DEPENDENCY_LIBRARIES}
-${OPTIONAL_DEPENDENCY_LIBRARIES}
-)
+if( STANDALONE)
+   set( STANDALONE_BASE_NAME "mulle-aba")
+   set( STANDALONE_NAME "mulle-aba-standalone")
+   set( STANDALONE_DEFINITIONS ${MULLE_ABA_DEFINITIONS})
+   set( STANDALONE_DEPENDENCIES
+   mulle-aba
+   )
 
-set( STANDALONE_NORMAL_LOAD_LIBRARIES
-${OS_SPECIFIC_LIBRARIES}
-)
-include( Standalone)
+   set( STANDALONE_ALL_LOAD_LIBRARIES
+   $<TARGET_FILE:mulle-aba>
+   ${DEPENDENCY_LIBRARIES}
+   ${OPTIONAL_DEPENDENCY_LIBRARIES}
+   ${OS_SPECIFIC_LIBRARIES}
+   )
+
+   include( Standalone)
+
+   set( INSTALL_LIBRARY_TARGETS
+   ${INSTALL_LIBRARY_TARGETS}
+   "mulle-aba-standalone"
+   )
+endif()
 
 ### Install
 
 include( PreInstall OPTIONAL)
 
-install( TARGETS "mulle-aba" "mulle-aba-standalone" DESTINATION "lib")
+install( TARGETS ${INSTALL_LIBRARY_TARGETS} DESTINATION "lib")
 install( FILES ${PUBLIC_HEADERS}  DESTINATION "include/mulle-aba")
 install( FILES ${PRIVATE_HEADERS} DESTINATION "include/mulle-aba/private")
 
+# definitions from cmake/share/Environment.cmake
 install( FILES ${CMAKE_INCLUDES}  DESTINATION "include/mulle-aba/cmake")
+
+# definitions from cmake/share/LinkManifest.cmake
+install( FILES ${LINK_MANIFEST_FILES}  DESTINATION "include/mulle-aba/link")
 
 include( PostInstall OPTIONAL)
