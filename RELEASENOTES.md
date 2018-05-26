@@ -1,3 +1,7 @@
+### 2.0.1
+
+* fix travis.yml
+
 # 2.0.0
 
 * modernized mulle-sde environment
