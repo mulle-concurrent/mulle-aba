@@ -34,7 +34,7 @@
 
 #include "mulle-aba-linkedlist.h"
 
-#include "dependencies.h"
+#include "include-private.h"
 #include "mulle-aba-defines.h"
 #include <assert.h>
 
