@@ -36,7 +36,7 @@
 
 #include "mulle-aba-defines.h"
 
-#include "dependencies.h"
+#include "include-private.h"
 #include <assert.h>
 #include <errno.h>
 #include <stdlib.h>

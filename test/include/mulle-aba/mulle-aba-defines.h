@@ -38,7 +38,7 @@
 
 #if DEBUG
 
-#include "dependencies.h"
+#include "include.h"
 #include <stdlib.h>
 #include <time.h>
 

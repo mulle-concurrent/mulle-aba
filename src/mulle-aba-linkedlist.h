@@ -35,7 +35,7 @@
 #ifndef mulle_aba_linkedlist_h__
 #define mulle_aba_linkedlist_h__
 
-#include "dependencies.h"
+#include "include.h"
 
 #include <string.h>
 #include <assert.h>
