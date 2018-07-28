@@ -90,8 +90,13 @@ add_library( "mulle-aba"
    ${ALL_OBJECT_FILES}
 )
 
+include( Library OPTIONAL)
 
-set( INSTALL_LIBRARY_TARGETS "mulle-aba")
+
+set( INSTALL_LIBRARY_TARGETS
+   "mulle-aba"
+   "${INSTALL_LIBRARY_TARGETS}"
+)
 
 include( PostLibrary OPTIONAL)
 
