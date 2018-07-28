@@ -1,3 +1,7 @@
+### 2.0.4
+
+* remove cruft, modernize test, modernize project
+
 ### 2.0.3
 
 * modernized mulle-sde
