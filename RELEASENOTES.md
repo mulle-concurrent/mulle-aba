@@ -1,3 +1,7 @@
+### 2.0.5
+
+* adapt to mulle-c11 3.0.0
+
 ### 2.0.4
 
 * remove cruft, modernize test, modernize project
