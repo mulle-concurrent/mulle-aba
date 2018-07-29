@@ -345,7 +345,7 @@ char  *mulle_aba_thread_name( void)
 #include <sys/resource.h>
 
 
-__attribute__((constructor))
+MULLE_C_CONSTRUCTOR(__enable_core_dumps)
 static void  __enable_core_dumps(void)
 {
     struct rlimit   limit;
