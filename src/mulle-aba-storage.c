@@ -929,7 +929,7 @@ static inline int
 
    assert_swap_worlds( intention, new_world_p, old_world_p);
 
-   rval = _mulle_atomic_pointer_compare_and_swap( &q->_world.pointer, new_world_p, old_world_p);
+   rval = _mulle_atomic_pointer_cas( &q->_world.pointer, new_world_p, old_world_p);
 
    log_swap_worlds( intention, new_world_p, old_world_p, rval);
 
@@ -939,13 +939,13 @@ static inline int
 
 struct _mulle_aba_worldpointers
    _mulle_aba_storage_change_worldpointer( struct _mulle_aba_storage *q,
-                                            enum _mulle_swap_intent intention,
-                                            _mulle_aba_worldpointer_t
-                                            old_world_p,
-                                            int (*callback)( int, struct _mulle_aba_callback_info *, void *),
-                                            void *userinfo)
+                                           enum _mulle_swap_intent intention,
+                                           _mulle_aba_worldpointer_t
+                                           old_world_p,
+                                           int (*callback)( int, struct _mulle_aba_callback_info *, void *),
+                                           void *userinfo)
 {
-   _mulle_aba_worldpointer_t        new_world_p;
+   _mulle_aba_worldpointer_t         new_world_p;
    struct _mulle_aba_callback_info   ctxt;
    int                               rval;
 
@@ -1062,7 +1062,7 @@ _mulle_aba_worldpointer_t
 
       assert_swap_worlds( intention, new_world_p, old_world_p);
 
-      last_world_p = __mulle_atomic_pointer_compare_and_swap( &q->_world.pointer, new_world_p, old_world_p);
+      last_world_p = __mulle_atomic_pointer_cas( &q->_world.pointer, new_world_p, old_world_p);
 
       log_swap_worlds( intention, new_world_p, old_world_p, last_world_p == old_world_p);
 
@@ -1408,7 +1408,7 @@ int   _mulle_aba_timestampstorage_set_usage_bit( struct _mulle_aba_timestampstor
       if( usage == expect)
          break;
    }
-   while( ! _mulle_atomic_pointer_compare_and_swap( &ts_storage->_usage_bits, (void *) usage, (void *) expect));
+   while( ! _mulle_atomic_pointer_weakcas( &ts_storage->_usage_bits, (void *) usage, (void *) expect));
 
 #if MULLE_ABA_TRACE
    fprintf( stderr, "%s: set usage bit (%d/%d) for storage %p: %p -> %p\n", mulle_aba_thread_name(), index, bit, ts_storage, (void *) expect, (void *) usage);

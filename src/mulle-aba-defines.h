@@ -36,7 +36,7 @@
 #define mulle_aba_defines_h__
 
 
-#if DEBUG
+#if defined( MULLE_TEST)
 
 #include "include.h"
 #include <stdlib.h>
@@ -68,6 +68,7 @@ do                               \
 while( 0)
 
 #endif
+
 
 #if MULLE_ABA_TRACE || MULLE_ABA_TRACE_FREE || MULLE_ABA_TRACE_LIST || MULLE_ABA_TRACE_SWAP
 extern char  *mulle_aba_thread_name( void);
