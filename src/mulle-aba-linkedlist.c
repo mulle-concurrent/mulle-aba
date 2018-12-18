@@ -31,6 +31,7 @@
 //  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 //  POSSIBILITY OF SUCH DAMAGE.
 //
+#pragma clang diagnostic ignored "-Wparentheses"
 
 #include "mulle-aba-linkedlist.h"
 
@@ -51,7 +52,7 @@ struct _mulle_aba_linkedlistentry  *_mulle_aba_linkedlist_remove_all( struct _mu
       if( ! head)
          break;
    }
-   while( ! _mulle_atomic_pointer_compare_and_swap( &list->_head.pointer, NULL, head));
+   while( ! _mulle_atomic_pointer_weakcas( &list->_head.pointer, NULL, head));
 
    return( head);
 }
@@ -75,7 +76,7 @@ void  _mulle_aba_linkedlist_add( struct _mulle_aba_linkedlist *list,
       UNPLEASANT_RACE_YIELD();
       entry->_next = head;
    }
-   while( ! _mulle_atomic_pointer_compare_and_swap( &list->_head.pointer, entry, head));
+   while( ! _mulle_atomic_pointer_cas( &list->_head.pointer, entry, head));
 }
 
 
@@ -131,7 +132,7 @@ struct _mulle_aba_linkedlistentry  *_mulle_aba_linkedlist_remove_one( struct _mu
       if( ! chain)
          break;
    }
-   while( ! _mulle_atomic_pointer_compare_and_swap( &list->_head.pointer, chain, NULL));
+   while( ! _mulle_atomic_pointer_weakcas( &list->_head.pointer, chain, NULL));
 
    return( entry);
 }

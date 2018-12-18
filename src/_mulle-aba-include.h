@@ -8,4 +8,6 @@
 
 # include <mulle-allocator/mulle-allocator.h>   // mulle-allocator
 
+# include <mulle-thread/mulle-thread.h>   // mulle-thread
+
 #endif

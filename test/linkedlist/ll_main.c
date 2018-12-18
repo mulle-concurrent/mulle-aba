@@ -30,16 +30,26 @@
 //
 #include <mulle-aba/mulle-aba.h>
 
-#include <mulle-test-allocator/mulle-test-allocator.h>
+#include <mulle-testallocator/mulle-testallocator.h>
 #include <assert.h>
 #include <errno.h>
 #include <stdio.h>
 #include <time.h>
 
+//
+// when we compile with DEBUG and MULLE_TEST we have the UNPLEASANT_RACE_YIELD
+// to catch errors, which is REALLY slow
+//
 #define PROGRESS     0
 #define FOREVER      0
-#define LOOPS        100000   // (1 + (rand() % 100000))
-#define ITERATIONS   100
+
+#if defined( MULLE_TEST)
+# define LOOPS        1000   // (1 + (rand() % 100000))
+# define ITERATIONS   10
+#else
+# define LOOPS        100000   // (1 + (rand() % 100000))
+# define ITERATIONS   100
+#endif
 #define MAX_THREADS  4
 
 
@@ -69,7 +79,7 @@ static void   reset_memory()
 #endif
 
    // use library to track allocations
-   mulle_test_allocator_reset();
+   mulle_testallocator_reset();
 
    memset( &alloced, 0, sizeof( alloced));
    memset( &list, 0, sizeof( list));
@@ -94,7 +104,11 @@ static void    run_thread_gc_free_list_test( void)
       if( entry)
       {
 #if MULLE_ABA_TRACE
-         fprintf( stderr, "%s: reused %p (%p) from %p\n", mulle_aba_thread_name(), entry, entry->_next, &list);
+         fprintf( stderr, "%s: reused %p (%p) from %p\n",
+                              mulle_aba_thread_name(),
+                              entry,
+                              entry->_link._next,
+                              &list);
 #endif
          assert( ! entry->_link._next);
       }
@@ -103,7 +117,9 @@ static void    run_thread_gc_free_list_test( void)
          entry = mulle_allocator_calloc( &mulle_default_allocator, 1, sizeof( *entry));
          _mulle_atomic_pointer_increment( &alloced);
 #if MULLE_ABA_TRACE
-         fprintf( stderr, "%s: allocated %p (%p)\n", mulle_aba_thread_name(), entry, entry->_next);
+         fprintf( stderr, "%s: allocated %p (%p)\n",
+                              mulle_aba_thread_name(),
+                              entry, entry->_link._next);
 #endif
       }
 
@@ -119,7 +135,7 @@ static void    run_thread_gc_free_list_test( void)
 static void  multi_threaded_test_each_thread( void)
 {
 #if PROGRESS
-   fprintf( stdout,  "."); fflush( stdout);
+   fprintf( stdout, "."); fflush( stdout);
 #endif
    run_thread_gc_free_list_test();
 }
@@ -266,9 +282,9 @@ forever:
    {
 #if MULLE_ABA_TRACE || PROGRESS
 # if MULLE_ABA_TRACE
-      fprintf( stderr, "iteration %d\n", i);
+      fprintf( stderr, "iteration %d of %d\n", i, ITERATIONS);
 # else
-      fprintf( stdout, "iteration %d\n", i);
+      fprintf( stdout, "iteration %d of %d\n", i, ITERATIONS);
 # endif
 #endif
       for( j = 1; j <= MAX_THREADS; j += j)
