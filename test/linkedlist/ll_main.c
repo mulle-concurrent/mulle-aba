@@ -37,7 +37,7 @@
 #include <time.h>
 
 //
-// when we compile with DEBUG and MULLE_TEST we have the UNPLEASANT_RACE_YIELD
+// when we compile with DEBUG and MULLE_TEST we have the MULLE_THREAD_UNPLEASANT_RACE_YIELD
 // to catch errors, which is REALLY slow
 //
 #define PROGRESS     0
