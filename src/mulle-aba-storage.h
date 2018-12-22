@@ -35,9 +35,10 @@
 #ifndef mulle_aba_storage_h__
 #define mulle_aba_storage_h__
 
+#include "include.h"
+
 #include "mulle-aba-linkedlist.h"
 
-#include "include.h"
 
 #include <assert.h>
 #include <stdint.h>

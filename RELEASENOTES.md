@@ -1,3 +1,7 @@
+### 2.0.8
+
+* moved `UNPLEASANT_RACE_YIELD` from mulle-aba to mulle-thread and renamed it
+
 ### 2.0.7
 
 * modernized project for newest mulle-sde

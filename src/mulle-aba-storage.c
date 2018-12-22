@@ -975,7 +975,7 @@ start:
       ctxt.new_bit    = ctxt.old_bit;
 
       rval = (*callback)( _mulle_aba_world_modify, &ctxt, userinfo);
-      UNPLEASANT_RACE_YIELD();
+      MULLE_THREAD_UNPLEASANT_RACE_YIELD();
       if( rval)
       {
          errno = rval;
@@ -1147,7 +1147,7 @@ struct _mulle_aba_worldpointers
             (*callback)( _mulle_aba_world_discard, &ctxt, userinfo);
             _mulle_aba_storage_free_world( q, ctxt.new_world);
 
-            UNPLEASANT_RACE_YIELD();
+            MULLE_THREAD_UNPLEASANT_RACE_YIELD();
          }
 
          ctxt.new_world = _mulle_aba_storage_alloc_world( q, ctxt.old_world->_size);
@@ -1180,7 +1180,7 @@ struct _mulle_aba_worldpointers
       if( new_world_p == locked_world_p)
          break;
 
-      UNPLEASANT_RACE_YIELD();
+      MULLE_THREAD_UNPLEASANT_RACE_YIELD();
 
 #ifndef NDEBUG
       _mulle_aba_world_assert_sanity( mulle_aba_worldpointer_get_struct( new_world_p));
@@ -1216,7 +1216,7 @@ struct _mulle_aba_worldpointers
       if( ! fail)
          break;
 
-      UNPLEASANT_RACE_YIELD();
+      MULLE_THREAD_UNPLEASANT_RACE_YIELD();
    }
 
    return( _mulle_aba_worldpointers_make( new_world_p, locked_world_p));
@@ -1265,7 +1265,7 @@ start_with_old_world:
             (*callback)( _mulle_aba_world_discard, &ctxt, userinfo);
             _mulle_aba_storage_free_world( q, ctxt.new_world);
 
-            UNPLEASANT_RACE_YIELD();
+            MULLE_THREAD_UNPLEASANT_RACE_YIELD();
          }
 
          cmd            = _mulle_aba_world_modify;
@@ -1298,7 +1298,7 @@ start_with_old_world:
       if( new_world_p == old_world_p)
          break;
 
-      UNPLEASANT_RACE_YIELD();
+      MULLE_THREAD_UNPLEASANT_RACE_YIELD();
 
 #ifndef NDEBUG
       _mulle_aba_world_assert_sanity( mulle_aba_worldpointer_get_struct( new_world_p));
@@ -1368,7 +1368,7 @@ struct _mulle_aba_worldpointers
       ctxt.new_world->_size = size;
       ctxt.new_bit          = ctxt.old_bit;
 
-      UNPLEASANT_RACE_YIELD();
+      MULLE_THREAD_UNPLEASANT_RACE_YIELD();
 
       rval = (*callback)( cmd, &ctxt, userinfo);
       if( rval)
@@ -1403,7 +1403,7 @@ int   _mulle_aba_timestampstorage_set_usage_bit( struct _mulle_aba_timestampstor
       expect = usage;
       i_mask = 1UL << index;
       usage  = (usage & ~(i_mask)) | (bit ? i_mask : 0);
-      UNPLEASANT_RACE_YIELD();
+      MULLE_THREAD_UNPLEASANT_RACE_YIELD();
 
       if( usage == expect)
          break;
@@ -1449,7 +1449,7 @@ void   _mulle_aba_world_check_timerange( struct _mulle_aba_world *world,
       ts_entry    = _mulle_aba_timestampstorage_get_timestampentry_at_index( ts_storage, index);
       assert( ts_entry);
 
-      UNPLEASANT_RACE_YIELD();
+      MULLE_THREAD_UNPLEASANT_RACE_YIELD();
 
       rc = _mulle_atomic_pointer_decrement( &ts_entry->_retain_count_1);
 #if MULLE_ABA_TRACE
@@ -1475,7 +1475,7 @@ void   _mulle_aba_world_check_timerange( struct _mulle_aba_world *world,
       // of ts_entry (not storage though)
       //
       free_list = ts_entry->_pointer_list;
-      UNPLEASANT_RACE_YIELD();
+      MULLE_THREAD_UNPLEASANT_RACE_YIELD();
       _mulle_atomic_pointer_nonatomic_write( &ts_entry->_pointer_list._head.pointer, NULL);
 
       _mulle_aba_timestampstorage_set_usage_bit( ts_storage, index, 0);
@@ -1509,7 +1509,7 @@ static unsigned int  __mulle_aba_world_reuse_storages( struct _mulle_aba_world *
    n = world->_n;
    for( i = 0; i < n; i++)
    {
-      UNPLEASANT_RACE_YIELD();
+      MULLE_THREAD_UNPLEASANT_RACE_YIELD();
 
       if( i == ts_index)
          break;

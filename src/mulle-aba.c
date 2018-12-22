@@ -128,7 +128,7 @@ static int   _mulle_lockfree_deallocator_free_world_chain( struct mulle_aba *p, 
       next = (struct _mulle_aba_world *) tofree->_link._next;
       assert( next != tofree);
 
-      UNPLEASANT_RACE_YIELD();
+      MULLE_THREAD_UNPLEASANT_RACE_YIELD();
       //
       // sic! this looks weird, because 'p' looks like its freed, but its just
       // the first parameter to _mulle_aba_storage_free_world
@@ -136,7 +136,7 @@ static int   _mulle_lockfree_deallocator_free_world_chain( struct mulle_aba *p, 
       rval = _mulle_aba_free_owned_pointer( p, &p->storage, (void *) _mulle_aba_storage_free_world, tofree);
       if( rval)
          return( rval);
-      UNPLEASANT_RACE_YIELD();
+      MULLE_THREAD_UNPLEASANT_RACE_YIELD();
    }
    return( 0);
 }
@@ -315,7 +315,7 @@ int   _mulle_aba_checkin_current_thread( struct mulle_aba *p)
    if( ! world_ps.new_world_p)
       return( -1);
 
-   UNPLEASANT_RACE_YIELD();
+   MULLE_THREAD_UNPLEASANT_RACE_YIELD();
 
    rval = _mulle_lockfree_deallocator_free_world_if_needed( p, world_ps);
    if( rval)
@@ -479,7 +479,7 @@ int   _mulle_aba_unregister_current_thread( struct mulle_aba *p)
       if( ! locked_world_p)
          continue;
 
-      UNPLEASANT_RACE_YIELD();
+      MULLE_THREAD_UNPLEASANT_RACE_YIELD();
 
       locked_world         = mulle_aba_worldpointer_get_struct( locked_world_p);
       context.timestamp    = new;

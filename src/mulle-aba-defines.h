@@ -36,40 +36,6 @@
 #define mulle_aba_defines_h__
 
 
-#if defined( MULLE_TEST)
-
-#include "include.h"
-#include <stdlib.h>
-#include <time.h>
-
-
-static inline void  UNPLEASANT_RACE_YIELD()
-{
-   if( (rand() & 0xF) == 0xA)  // 1:16 chance of yield
-   {
-#ifndef _WIN32
-      if( (rand() & 0x7) == 0x4)  // 1:64 chance of nanosleep
-      {
-         struct timespec ms30 =  { .tv_sec = 0, .tv_nsec = 1 * (1000 * 1000 * 1000) / 30 };
-
-         nanosleep( &ms30, NULL);
-      }
-      else
-#endif
-         mulle_thread_yield();
-   }
-}
-#else
-
-#define UNPLEASANT_RACE_YIELD()  \
-do                               \
-{                                \
-}                                \
-while( 0)
-
-#endif
-
-
 #if MULLE_ABA_TRACE || MULLE_ABA_TRACE_FREE || MULLE_ABA_TRACE_LIST || MULLE_ABA_TRACE_SWAP
 extern char  *mulle_aba_thread_name( void);
 #endif
