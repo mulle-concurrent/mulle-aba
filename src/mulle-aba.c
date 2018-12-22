@@ -380,7 +380,6 @@ static int   remove_thread( int mode, struct _mulle_aba_callback_info  *info, vo
       return( EAGAIN);
    }
 
-
    if( --info->new_world->_n_threads)
    {
       assert( info->new_world->_n_threads > 0);
@@ -443,7 +442,10 @@ int   _mulle_aba_unregister_current_thread( struct mulle_aba *p)
       new         = old_world->_timestamp;
 
 #if MULLE_ABA_TRACE
-      fprintf( stderr, "%s: ::: final check in %ld-%ld\n", mulle_aba_thread_name(), old, new);
+      fprintf( stderr, "%s: ::: final check in %ld-%ld\n",
+                           mulle_aba_thread_name(),
+                           last,
+                           new);
 #endif
 #ifndef NDEBUG
       _mulle_aba_world_assert_sanity( old_world);
@@ -609,7 +611,9 @@ static int   handle_callback_mode_for_add_context( int mode, struct _mulle_aba_c
 }
 
 
-static int   pre_check_world_for_timestamp_increment( int mode, struct _mulle_aba_callback_info  *info, struct add_context   *context)
+static int   pre_check_world_for_timestamp_increment( int mode,
+                                                      struct _mulle_aba_callback_info *info,
+                                                      struct add_context *context)
 {
    assert( info->old_world != info->new_world);
    //
@@ -639,7 +643,9 @@ static int   pre_check_world_for_timestamp_increment( int mode, struct _mulle_ab
 }
 
 
-static int   size_check_world_for_timestamp_increment( int mode, struct _mulle_aba_callback_info *info, struct add_context *context)
+static int   size_check_world_for_timestamp_increment( int mode,
+                                                       struct _mulle_aba_callback_info *info,
+                                                       struct add_context *context)
 {
    assert( info->old_world != info->new_world);
 
@@ -672,7 +678,9 @@ static void   _increment_timestamp( struct _mulle_aba_callback_info  *info)
 }
 
 
-static int   increment_timestamp( int mode, struct _mulle_aba_callback_info  *info, void *userinfo)
+static int   increment_timestamp( int mode,
+                                  struct _mulle_aba_callback_info *info,
+                                  void *userinfo)
 {
    int                  rval;
    struct add_context   *context;
@@ -702,7 +710,9 @@ static int   increment_timestamp( int mode, struct _mulle_aba_callback_info  *in
 }
 
 
-static int   add_storage_and_increment_timestamp( int mode, struct _mulle_aba_callback_info  *info, void *userinfo)
+static int   add_storage_and_increment_timestamp( int mode,
+                                                  struct _mulle_aba_callback_info *info,
+                                                  void *userinfo)
 {
    struct add_context   *context;
    int                  rval;
@@ -757,7 +767,9 @@ static int   add_storage_and_increment_timestamp( int mode, struct _mulle_aba_ca
 }
 
 
-static int   reorganize_storage_and_increment_timestamp( int mode, struct _mulle_aba_callback_info *info, void *userinfo)
+static int   reorganize_storage_and_increment_timestamp( int mode,
+                                                         struct _mulle_aba_callback_info *info,
+                                                         void *userinfo)
 {
    int                  rval;
    struct add_context   *context;

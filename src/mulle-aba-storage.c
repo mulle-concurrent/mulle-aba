@@ -57,7 +57,8 @@ void   _mulle_aba_freeentry_set( struct _mulle_aba_freeentry *entry,
    entry->_pointer = pointer;
    entry->_free    = free;
 #if MULLE_ABA_TRACE || MULLE_ABA_TRACE_ALLOC
-   fprintf( stderr, "%s: alloc linked list entry %p (for payload %p/%p)\n", mulle_aba_thread_name(), entry, owner, pointer);
+   fprintf( stderr, "%s: alloc linked list entry %p (for payload %p/%p)\n",
+                        mulle_aba_thread_name(), entry, owner, pointer);
 #endif
 }
 
@@ -68,7 +69,8 @@ static int   print( struct _mulle_aba_freeentry   *entry,
                     void *userinfo)
 {
 #if MULLE_ABA_TRACE || MULLE_ABA_TRACE_ALLOC
-   fprintf( stderr, "%s:   %s[%p=%p]\n", mulle_aba_thread_name(), prev ? "->" : "", entry, entry->_pointer);
+   fprintf( stderr, "%s:   %s[%p=%p]\n", mulle_aba_thread_name(),
+                        prev ? "->" : "", entry, entry->_pointer);
 #else
    fprintf( stderr, "   %s[%p=%p]\n", prev ? "->" : "", entry, entry->_pointer);
 #endif
@@ -86,7 +88,8 @@ void   _mulle_aba_linkedlist_print( struct _mulle_aba_linkedlist *p)
 #pragma mark -
 #pragma mark timestamp storage
 
-struct _mulle_aba_timestampstorage *_mulle_aba_timestampstorage_alloc( struct mulle_allocator *allocator)
+struct _mulle_aba_timestampstorage *
+   _mulle_aba_timestampstorage_alloc( struct mulle_allocator *allocator)
 {
    struct _mulle_aba_timestampstorage   *ts_storage;
    unsigned int                          i;
@@ -110,7 +113,8 @@ struct _mulle_aba_timestampstorage *_mulle_aba_timestampstorage_alloc( struct mu
 }
 
 
-static void  _mulle_aba_timestampstorage_empty_assert( struct _mulle_aba_timestampstorage *ts_storage)
+static void
+   _mulle_aba_timestampstorage_empty_assert( struct _mulle_aba_timestampstorage *ts_storage)
 {
    unsigned int   i;
 
@@ -121,7 +125,8 @@ static void  _mulle_aba_timestampstorage_empty_assert( struct _mulle_aba_timesta
    }
 }
 
-void   __mulle_aba_timestampstorage_free( struct _mulle_aba_timestampstorage *ts_storage, struct mulle_allocator *allocator)
+void   __mulle_aba_timestampstorage_free( struct _mulle_aba_timestampstorage *ts_storage,
+                                          struct mulle_allocator *allocator)
 {
    if( ! ts_storage)
       return;
@@ -135,7 +140,7 @@ void   __mulle_aba_timestampstorage_free( struct _mulle_aba_timestampstorage *ts
 
 
 void   _mulle_aba_timestampstorage_free( struct _mulle_aba_timestampstorage *ts_storage,
-                                          struct mulle_allocator *allocator)
+                                         struct mulle_allocator *allocator)
 {
    if( ! ts_storage)
       return;
@@ -157,7 +162,8 @@ struct _mulle_aba_worldpointer;
 //
 // pops off first storage
 //
-struct _mulle_aba_timestampstorage   *_mulle_aba_world_pop_storage( struct _mulle_aba_world *world)
+struct _mulle_aba_timestampstorage   *
+   _mulle_aba_world_pop_storage( struct _mulle_aba_world *world)
 {
    struct _mulle_aba_timestampstorage   *storage;
    unsigned int                          n;
@@ -170,7 +176,9 @@ struct _mulle_aba_timestampstorage   *_mulle_aba_world_pop_storage( struct _mull
 
    storage = world->_storage[ 0];
 
-   memcpy( &world->_storage[ 0], &world->_storage[ 1], n * sizeof( struct _mulle_aba_timestampstorage *));
+   memcpy( &world->_storage[ 0],
+           &world->_storage[ 1],
+           n * sizeof( struct _mulle_aba_timestampstorage *));
 
    world->_storage[ n] = 0;
    world->_n           = n;
@@ -216,7 +224,7 @@ void   _mulle_aba_world_rotate_storage( struct _mulle_aba_world *world)
 
 
 unsigned int   _mulle_aba_world_get_timestampstorage_index( struct _mulle_aba_world *world,
-                                                             uintptr_t timestamp)
+                                                            uintptr_t timestamp)
 {
    unsigned int  s_index;
 
@@ -234,13 +242,13 @@ unsigned int   _mulle_aba_world_get_timestampstorage_index( struct _mulle_aba_wo
    {
       if( world->_size == world->_n)
       {
-         errno = ENOSPC;
-         assert( timestamp <= world->_timestamp + 1);  // that's OK
+         errno = ENOSPC; // that's OK
+         assert( timestamp <= world->_timestamp + 1);
          return( -1);
       }
 
       errno = EINVAL;
-      assert( timestamp <= world->_timestamp + 1);  // that's OK
+      assert( timestamp <= world->_timestamp + 1);
       return( -1);
    }
    return( s_index);
@@ -249,20 +257,21 @@ unsigned int   _mulle_aba_world_get_timestampstorage_index( struct _mulle_aba_wo
 
 struct _mulle_aba_timestampstorage  *
    _mulle_aba_world_get_timestampstorage( struct _mulle_aba_world *world,
-                                           uintptr_t timestamp)
+                                          uintptr_t timestamp)
 {
    unsigned int   ts_index;
 
    ts_index = _mulle_aba_world_get_timestampstorage_index( world, timestamp);
    if( ts_index == (unsigned int) -1)
       return( NULL);
+
    return( _mulle_aba_world_get_timestampstorage_at_index( world, ts_index));
 }
 
 
 struct _mulle_aba_timestampentry  *
    _mulle_aba_world_get_timestampentry( struct _mulle_aba_world *world,
-                                         uintptr_t timestamp)
+                                        uintptr_t timestamp)
 {
    struct _mulle_aba_timestampstorage  *ts_storage;
 
@@ -308,7 +317,8 @@ struct _mulle_aba_timestamp_range
    uintptr_t   length;
 };
 
-static int   timestamp_range_contains_timestamp( struct _mulle_aba_timestamp_range  range, uintptr_t timestamp)
+static int   timestamp_range_contains_timestamp( struct _mulle_aba_timestamp_range range,
+                                                 uintptr_t timestamp)
 {
    return( timestamp < range.start + range.length && timestamp >= range.start);
 }
@@ -393,7 +403,7 @@ int   _mulle_aba_storage_init( struct _mulle_aba_storage *q,
 void   _mulle_aba_storage_done( struct _mulle_aba_storage *q)
 {
    _mulle_aba_worldpointer_t   world_p;
-   struct _mulle_aba_world      *world;
+   struct _mulle_aba_world     *world;
 
 #if MULLE_ABA_TRACE || MULLE_ABA_TRACE_FREE
    fprintf( stderr, "%s: done with storage %p\n", mulle_aba_thread_name(), q);
@@ -455,19 +465,22 @@ struct _mulle_aba_freeentry
 
 
 void   _mulle_aba_storage_free_freeentry( struct _mulle_aba_storage *q,
-                                           struct _mulle_aba_freeentry  *entry)
+                                          struct _mulle_aba_freeentry  *entry)
 {
    memset( entry, 0, sizeof( *entry));
    _mulle_aba_linkedlist_add( &q->_free_entries, (void *) entry);
 #if MULLE_ABA_TRACE || MULLE_ABA_TRACE_FREE || MULLE_ABA_TRACE_LIST
-   fprintf( stderr, "%s: put entry %p on reuse chain %p\n", mulle_aba_thread_name(), entry, &q->_free_entries);
+   fprintf( stderr, "%s: put entry %p on reuse chain %p\n",
+                        mulle_aba_thread_name(),
+                        entry,
+                        &q->_free_entries);
 #endif
 }
 
 
 static int  free_pointer_and_entry( struct _mulle_aba_freeentry *entry,
-                                   struct _mulle_aba_freeentry *prev,
-                                   void *userinfo)
+                                    struct _mulle_aba_freeentry *prev,
+                                    void *userinfo)
 {
    struct _mulle_aba_storage *q;
 
@@ -479,14 +492,19 @@ static int  free_pointer_and_entry( struct _mulle_aba_freeentry *entry,
    (*entry->_free)( entry->_owner, entry->_pointer);
    _mulle_aba_storage_free_freeentry( q, entry);
 #if MULLE_ABA_TRACE || MULLE_ABA_TRACE_FREE || MULLE_ABA_TRACE_LIST
-   fprintf( stderr, "%s: added entry %p (%p) to reuse storage %p (%p)\n", mulle_aba_thread_name(), entry, entry->_next, &q->_free_entries, q->_free_entries._head._nonatomic);
+   fprintf( stderr, "%s: added entry %p (%p) to reuse storage %p (%p)\n",
+                        mulle_aba_thread_name(),
+                        entry,
+                        entry->_link._next,
+                        &q->_free_entries,
+                        _mulle_atomic_pointer_nonatomic_read( &q->_free_entries._head.pointer));
 #endif
    return( 0);
 }
 
 
 static void   _mulle_aba_storage_linkedlist_free( struct _mulle_aba_storage *q,
-                                                 struct _mulle_aba_linkedlist  *list)
+                                                  struct _mulle_aba_linkedlist  *list)
 {
    assert( q);
    assert( list);
@@ -562,7 +580,10 @@ void   _mulle_aba_storage_free_world( struct _mulle_aba_storage *q,
    _mulle_aba_linkedlist_add( &q->_free_worlds, (void *) world);
 
 #if MULLE_ABA_TRACE || MULLE_ABA_TRACE_FREE
-   fprintf( stderr, "%s: put world %p on reuse chain %p\n", mulle_aba_thread_name(), world, &q->_free_worlds);
+   fprintf( stderr, "%s: put world %p on reuse chain %p\n",
+                    mulle_aba_thread_name(),
+                    world,
+                    &q->_free_worlds);
 #endif
 }
 
