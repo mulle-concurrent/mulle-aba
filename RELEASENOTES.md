@@ -1,3 +1,7 @@
+### 2.0.10
+
+* fix compile problems when `MULLE_ABA_TRACE` is defined
+
 ### 2.0.9
 
 * check if aba builds on xenial

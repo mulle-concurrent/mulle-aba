@@ -37,6 +37,7 @@
 
 #include "include.h"
 
+#include "mulle-aba-defines.h"
 #include "mulle-aba-linkedlist.h"
 
 
@@ -362,6 +363,7 @@ void   _mulle_aba_storage_free_world( struct _mulle_aba_storage *q,
                                       struct _mulle_aba_world *world);
 
 void   _mulle_aba_world_assert_sanity( struct _mulle_aba_world *world);
+
 
 static inline _mulle_aba_worldpointer_t   _mulle_aba_storage_get_worldpointer( struct _mulle_aba_storage *q)
 {
