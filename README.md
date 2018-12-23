@@ -1,5 +1,7 @@
 # mulle-aba
 
+**WARNING: currently the tests error out on trusty but pass on xenial. Not sure what the issue is**
+
 **mulle_aba** is a (pretty much) lock-free, cross-platform solution to the
 [ABA problem](//en.wikipedia.org/wiki/ABA_problem) written in C.
 
