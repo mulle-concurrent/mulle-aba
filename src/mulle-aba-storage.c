@@ -125,6 +125,7 @@ static void
    }
 }
 
+
 void   __mulle_aba_timestampstorage_free( struct _mulle_aba_timestampstorage *ts_storage,
                                           struct mulle_allocator *allocator)
 {
@@ -145,12 +146,8 @@ void   _mulle_aba_timestampstorage_free( struct _mulle_aba_timestampstorage *ts_
    if( ! ts_storage)
       return;
 
-#if MULLE_ABA_TRACE
-   fprintf( stderr, "%s: free ts_storage %p\n", mulle_aba_thread_name(), ts_storage);
-#endif
-
    _mulle_aba_timestampstorage_empty_assert( ts_storage);
-   mulle_allocator_free( allocator, ts_storage);
+   __mulle_aba_timestampstorage_free( ts_storage, allocator);
 }
 
 
@@ -540,7 +537,7 @@ struct _mulle_aba_world   *_mulle_aba_storage_alloc_world( struct _mulle_aba_sto
       }
 
 #if MULLE_ABA_TRACE || MULLE_ABA_TRACE_FREE
-      fprintf( stderr, "%s: free too small cached world %p\n", mulle_aba_thread_name(), world);
+      fprintf( stderr, "%s: free a cached world %p thats too small for us\n", mulle_aba_thread_name(), world);
 #endif
       _mulle_allocator_free( q->_allocator, world);
    }

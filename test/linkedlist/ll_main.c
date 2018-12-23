@@ -114,7 +114,7 @@ static void    run_thread_gc_free_list_test( void)
       }
       else
       {
-         entry = mulle_allocator_calloc( &mulle_default_allocator, 1, sizeof( *entry));
+         entry = mulle_allocator_calloc( &mulle_testallocator, 1, sizeof( *entry));
          _mulle_atomic_pointer_increment( &alloced);
 #if MULLE_ABA_TRACE
          fprintf( stderr, "%s: allocated %p (%p)\n",
@@ -177,7 +177,7 @@ static void   finish_test( void)
    {
       entry = (void *) _mulle_aba_linkedlist_remove_one( &list);
       assert( entry);
-      mulle_allocator_free( &mulle_default_allocator, entry);
+      mulle_allocator_free( &mulle_testallocator, entry);
    }
 }
 
