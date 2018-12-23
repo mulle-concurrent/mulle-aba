@@ -247,7 +247,7 @@ static inline struct _mulle_aba_worldpointers  _mulle_aba_worldpointers_make( _m
 //
 struct _mulle_aba_world
 {
-   struct _mulle_aba_linkedlistentry   _link;            // chain, used when deallocing/dealloced
+   struct _mulle_aba_linkedlistentry     _link;            // chain, used when deallocing/dealloced
 
 #if MULLE_ABA_MEMTYPE_DEBUG
    uintptr_t                             _memtype;
@@ -365,7 +365,8 @@ void   _mulle_aba_storage_free_world( struct _mulle_aba_storage *q,
 void   _mulle_aba_world_assert_sanity( struct _mulle_aba_world *world);
 
 
-static inline _mulle_aba_worldpointer_t   _mulle_aba_storage_get_worldpointer( struct _mulle_aba_storage *q)
+static inline _mulle_aba_worldpointer_t
+   _mulle_aba_storage_get_worldpointer( struct _mulle_aba_storage *q)
 {
    _mulle_aba_worldpointer_t   world_p;
 
@@ -390,7 +391,8 @@ static inline void   _mulle_aba_storage_add_leak_world( struct _mulle_aba_storag
    // must not zero orphan
    _mulle_aba_linkedlist_add( &q->_leaks, (void *) orphan);
 #if MULLE_ABA_TRACE
-   fprintf( stderr, "%s: add leak world %p to storage %p\n", mulle_aba_thread_name(), orphan, q);
+   fprintf( stderr, "%s: add leak world %p to storage %p\n",
+                        mulle_aba_thread_name(), orphan, q);
 #endif
 }
 

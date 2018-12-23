@@ -81,7 +81,7 @@ static void   reset_memory()
 
    mulle_testallocator_reset();
 
-   _mulle_aba_init( &test_global, &mulle_default_allocator);
+   _mulle_aba_init( &test_global, &mulle_testallocator);
 }
 
 
@@ -383,7 +383,7 @@ static int   _main(int argc, const char * argv[])
 #endif
 
    mulle_aba_set_global( &test_global);
-   _mulle_aba_init( &test_global, &mulle_default_allocator);
+   _mulle_aba_init( &test_global, &mulle_testallocator);
 
 #if FOREVER
    fprintf( stderr, "This test runs forever, waiting for a crash\n");
