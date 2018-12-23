@@ -493,7 +493,11 @@ int   _mulle_aba_unregister_current_thread( struct mulle_aba *p)
       //
       // we can't say (old_world->_n_threads == 1) here
       //
-      world_ps = _mulle_aba_storage_copy_change_worldpointer( &p->storage, _mulle_swap_unregister_intent, locked_world_p, remove_thread, &context);
+      world_ps = _mulle_aba_storage_copy_change_worldpointer( &p->storage,
+                                                              _mulle_swap_unregister_intent,
+                                                              locked_world_p,
+                                                              remove_thread,
+                                                              &context);
       if( world_ps.new_world_p)
          break;
 
@@ -509,7 +513,8 @@ int   _mulle_aba_unregister_current_thread( struct mulle_aba *p)
             // if we couldn't unlock, we have now a world, that we need to
             // delay release (yay)
             //
-            rval = _mulle_lockfree_deallocator_free_world_chain( p, mulle_aba_worldpointer_get_struct( locked_world_p));
+            locked_world = mulle_aba_worldpointer_get_struct( locked_world_p);
+            rval         = _mulle_lockfree_deallocator_free_world_chain( p, locked_world);
             if( rval)
                return( rval);
          }
@@ -535,7 +540,9 @@ int   _mulle_aba_unregister_current_thread( struct mulle_aba *p)
    if( locked_world->_n_threads == 1)
    {
 #if MULLE_ABA_TRACE || MULLE_ABA_TRACE_FREE
-      fprintf( stderr, "\n%s: *** returned to initial state, removing leaks***\n", mulle_aba_thread_name());
+      fprintf( stderr, "\n%s: *** %p returns to initial state, removing leaks***\n",
+                                 locked_world,
+                                 mulle_aba_thread_name());
 #endif
       //
       // get rid of all old world resources, the new world has been cleaned
@@ -545,7 +552,8 @@ int   _mulle_aba_unregister_current_thread( struct mulle_aba *p)
 
       n = locked_world->_size;
       for( i = 0; i < n; i++)
-         __mulle_aba_timestampstorage_free( locked_world->_storage[ i], p->storage._allocator);
+         __mulle_aba_timestampstorage_free( locked_world->_storage[ i],
+                                            p->storage._allocator);
 
       _mulle_aba_storage_free_leak_worlds( &p->storage);
 
@@ -571,7 +579,9 @@ int   _mulle_aba_unregister_current_thread( struct mulle_aba *p)
 # pragma mark -
 # pragma mark add pointer to free
 
-static int   handle_callback_mode_for_add_context( int mode, struct _mulle_aba_callback_info  *info, struct add_context *context)
+static int   handle_callback_mode_for_add_context( int mode,
+                                                   struct _mulle_aba_callback_info *info,
+                                                   struct add_context *context)
 {
    assert( info->old_world != info->new_world);
 
@@ -597,11 +607,17 @@ static int   handle_callback_mode_for_add_context( int mode, struct _mulle_aba_c
       fprintf( stderr, "%s: %s ts_storage %p at %u in world %p\n", mulle_aba_thread_name(), (mode == _mulle_aba_world_reuse) ? "reuse" : "set", context->ts_storage, info->new_world->_n, info->new_world);
 #endif
       assert( info->new_world->_n < info->new_world->_size);
+      //
       // if we read in a new world, we expect a zero there
       // if we reuse the previous failed world, there would be our allocated
       // storage
       //
-      assert( ! info->new_world->_storage[ info->new_world->_n] ||  info->new_world->_storage[ info->new_world->_n] == context->ts_storage);
+      assert( ! info->new_world->_storage[ info->new_world->_n] ||
+                info->new_world->_storage[ info->new_world->_n] == context->ts_storage);
+
+      // fishing for bugs here...
+      assert( ! info->new_world->_n ||
+                info->new_world->_storage[ info->new_world->_n - 1] != context->ts_storage);
 
       info->new_world->_storage[ info->new_world->_n] = context->ts_storage;
       info->new_world->_n++;
