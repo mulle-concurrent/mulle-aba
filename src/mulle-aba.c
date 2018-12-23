@@ -114,7 +114,8 @@ void   _mulle_aba_done( struct mulle_aba *p)
 # pragma mark -
 # pragma mark get rid of old worlds
 
-static int   _mulle_lockfree_deallocator_free_world_chain( struct mulle_aba *p, struct _mulle_aba_world   *old_world)
+static int   _mulle_lockfree_deallocator_free_world_chain( struct mulle_aba *p,
+                                                           struct _mulle_aba_world *old_world)
 {
    struct _mulle_aba_world   *tofree;
    struct _mulle_aba_world   *next;
@@ -688,7 +689,7 @@ static void   _increment_timestamp( struct _mulle_aba_callback_info  *info)
       info->new_world->_timestamp = 1;
 
    ts_storage = _mulle_aba_world_get_timestampstorage( info->new_world, info->new_world->_timestamp);
-   index = mulle_aba_timestampstorage_get_timestamp_index( info->new_world->_timestamp);
+   index      = mulle_aba_timestampstorage_get_timestamp_index( info->new_world->_timestamp);
    _mulle_aba_timestampstorage_set_usage_bit( ts_storage, index, 1);
    info->new_bit = 0;
 }
