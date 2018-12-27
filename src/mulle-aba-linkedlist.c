@@ -135,7 +135,7 @@ struct _mulle_aba_linkedlistentry  *_mulle_aba_linkedlist_remove_one( struct _mu
    while( ! _mulle_atomic_pointer_weakcas( &list->_head.pointer, chain, NULL));
 
    // the contents of this area will get reused now so invalidate
-   mulle_atomic_memory_barrier();
+   // mulle_atomic_memory_barrier();
 
    return( entry);
 }
