@@ -1,6 +1,9 @@
 language: c
 
-dist: trusty
+dist: 
+  - xenial
+  - trusty
+
 sudo: required
 
 compiler:
@@ -24,4 +27,4 @@ before_install:
 
 script: |
    mulle-sde -v craft
-   [ -d test ] && mulle-sde -v test 
+   [ -d test ] && mulle-sde -v -lx test 
