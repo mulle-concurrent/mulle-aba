@@ -34,14 +34,20 @@
 //  POSSIBILITY OF SUCH DAMAGE.
 //
 #include <mulle-aba/mulle-aba.h>
-#include <mulle-test-allocator/mulle-test-allocator.h>
+#include <mulle-testallocator/mulle-testallocator.h>
 #include <assert.h>
 #include <errno.h>
 #include <stdio.h>
 
 
-#define PROGRESS  0
-#define FOREVER   0
+#define PROGRESS     0
+#define FOREVER      0
+
+#if defined( MULLE_TEST)
+# define ITERATIONS   40
+#else
+# define ITERATIONS   400
+#endif
 
 #if DEBUG_PRINT
 extern void   mulle_aba_print( void);
@@ -73,9 +79,9 @@ static void   reset_memory()
    fprintf( stderr, "\n================================================\n");
 #endif
 
-   mulle_test_allocator_reset();
+   mulle_testallocator_reset();
 
-   _mulle_aba_init( &test_global, &mulle_default_allocator);
+   _mulle_aba_init( &test_global, &mulle_testallocator);
 }
 
 
@@ -360,6 +366,7 @@ static void  __enable_core_dumps(void)
 static int   _main(int argc, const char * argv[])
 {
    unsigned int   i;
+   unsigned int   n;
    unsigned int   j;
    int            rval;
 
@@ -376,7 +383,7 @@ static int   _main(int argc, const char * argv[])
 #endif
 
    mulle_aba_set_global( &test_global);
-   _mulle_aba_init( &test_global, &mulle_default_allocator);
+   _mulle_aba_init( &test_global, &mulle_testallocator);
 
 #if FOREVER
    fprintf( stderr, "This test runs forever, waiting for a crash\n");
@@ -391,13 +398,13 @@ forever:
    // eventually
    //
 
-   for( i = 0; i < 400; i++)
+   for( i = 0; i < ITERATIONS; i++)
    {
 #if MULLE_ABA_TRACE || PROGRESS
 # if MULLE_ABA_TRACE
-      fprintf( stderr, "iteration %d\n", i);
+      fprintf( stderr, "iteration %d of %d\n", i + 1, ITERATIONS);
 # else
-      fprintf( stdout, "iteration %d\n", i);
+      fprintf( stdout, "iteration %d of %d\n", i + 1, ITERATIONS);
 # endif
 #endif
 #if 1
@@ -420,6 +427,7 @@ forever:
       mulle_transitions_count_print_dot();
    }
 #endif
+
    return( 0);
 }
 
