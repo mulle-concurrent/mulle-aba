@@ -3,6 +3,10 @@ language: c
 dist: trusty
 sudo: required
 
+compiler:
+  - clang
+  - gcc
+
 addons:
   apt:
     sources:
@@ -19,5 +23,5 @@ before_install:
    - sudo apt-get -y install mulle-sde mulle-test
 
 script: |
-   mulle-sde -vvv craft
-   [ -d test ] && mulle-test -vvv
+   mulle-sde -v craft
+   [ -d test ] && mulle-sde -v test 
