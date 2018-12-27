@@ -1,3 +1,7 @@
+### 2.0.11
+
+* fix wrong use of memcpy for older glibc
+
 ### 2.0.10
 
 * fix compile problems when `MULLE_ABA_TRACE` is defined

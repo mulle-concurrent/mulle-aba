@@ -173,9 +173,9 @@ struct _mulle_aba_timestampstorage   *
 
    storage = world->_storage[ 0];
 
-   memcpy( &world->_storage[ 0],
-           &world->_storage[ 1],
-           n * sizeof( struct _mulle_aba_timestampstorage *));
+   memmove( &world->_storage[ 0],
+            &world->_storage[ 1],
+            n * sizeof( struct _mulle_aba_timestampstorage *));
 
    world->_storage[ n] = 0;
    world->_n           = n;
@@ -224,10 +224,6 @@ unsigned int   _mulle_aba_world_get_timestampstorage_index( struct _mulle_aba_wo
                                                             uintptr_t timestamp)
 {
    unsigned int  s_index;
-
-#ifndef NDEBUG
-   _mulle_aba_world_assert_sanity( world);
-#endif
 
    if( timestamp < world->_offset)
    {

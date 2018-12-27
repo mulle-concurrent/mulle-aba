@@ -40,13 +40,20 @@
 #include <stdio.h>
 
 
-#define PROGRESS     0
-#define FOREVER      0
+#define PROGRESS              0
+#define VERBOSE_PROGRESS      0
+#define FOREVER               0
+#define SINGLE_THREADED_TEST  1
+#define MULTI_THREADED_TEST   1
+#define N_THREADS             8
 
-#if defined( MULLE_TEST)
-# define ITERATIONS   40
-#else
-# define ITERATIONS   400
+
+#ifndef ITERATIONS
+# if defined( MULLE_TEST)
+#  define ITERATIONS   40
+# else
+#  define ITERATIONS   400
+# endif
 #endif
 
 #if DEBUG_PRINT
@@ -142,8 +149,8 @@ static void    run_thread_gc_free_list_test( void)
          if( ! registered)
             continue;
 #if MULLE_ABA_TRACE
-         fprintf( stderr,  "\n------------------------------\n%s: (%lu) %p -> free pointer %p\n", mulle_aba_thread_name(), mulle_aba_get_thread_timestamp(),
-               _mulle_aba_get_worldpointer(),
+         fprintf( stderr,  "\n------------------------------\n%s: (%lu) %p -> free pointer %p\n", mulle_aba_thread_name(), mulle_aba_current_thread_get_timestamp(),
+               _mulle_aba_get_worldpointer( &test_global),
                  (void *) i);
 #endif
          if( mulle_aba_free( fake_free, (void *) i))
@@ -152,8 +159,8 @@ static void    run_thread_gc_free_list_test( void)
             abort();
          }
 #if MULLE_ABA_TRACE
-            fprintf( stderr,  "\n%s: (%lu) %p <- freed pointer:%ld\n------------------------------\n", mulle_aba_thread_name(), mulle_aba_get_thread_timestamp(),
-                    _mulle_aba_get_worldpointer(),
+            fprintf( stderr,  "\n%s: (%lu) %p <- freed pointer:%ld\n------------------------------\n", mulle_aba_thread_name(), mulle_aba_current_thread_get_timestamp(),
+                    _mulle_aba_get_worldpointer( &test_global),
                     i);
          mulle_aba_print();
 #endif
@@ -164,14 +171,14 @@ static void    run_thread_gc_free_list_test( void)
          if( ! registered)
             continue;
 #if MULLE_ABA_TRACE
-         fprintf( stderr,  "\n------------------------------\n%s: (%lu) %p -> check in\n", mulle_aba_thread_name(), mulle_aba_get_thread_timestamp(),
-               _mulle_aba_get_worldpointer());
+         fprintf( stderr,  "\n------------------------------\n%s: (%lu) %p -> check in\n", mulle_aba_thread_name(), mulle_aba_current_thread_get_timestamp(),
+               _mulle_aba_get_worldpointer( &test_global));
 #endif
          mulle_aba_checkin();
 #if MULLE_ABA_TRACE
          fprintf( stderr,  "\n%s (%lu) %p <- checked in\n------------------------------\n", mulle_aba_thread_name(),
-            mulle_aba_get_thread_timestamp(),
-               _mulle_aba_get_worldpointer());
+            mulle_aba_current_thread_get_timestamp(),
+               _mulle_aba_get_worldpointer( &test_global));
          mulle_aba_print();
 #endif
          break;
@@ -180,27 +187,27 @@ static void    run_thread_gc_free_list_test( void)
          if( registered)
          {
 #if MULLE_ABA_TRACE || MULLE_ABA_TRACE_REGISTER
-            fprintf( stderr,  "\n------------------------------\n%s: (%lu) %p -> unregister\n", mulle_aba_thread_name(), mulle_aba_get_thread_timestamp(),
-               _mulle_aba_get_worldpointer());
+            fprintf( stderr,  "\n------------------------------\n%s: (%lu) %p -> unregister\n", mulle_aba_thread_name(), mulle_aba_current_thread_get_timestamp(),
+               _mulle_aba_get_worldpointer( &test_global));
 #endif
             mulle_aba_unregister();
 #if MULLE_ABA_TRACE || MULLE_ABA_TRACE_REGISTER
             fprintf( stderr,  "%s: (%lu) %p <- unregistered\n------------------------------\n", mulle_aba_thread_name(),
-            mulle_aba_get_thread_timestamp(),
-               _mulle_aba_get_worldpointer());
+            mulle_aba_current_thread_get_timestamp(),
+               _mulle_aba_get_worldpointer( &test_global));
             mulle_aba_print();
 #endif
          }
          else
          {
 #if MULLE_ABA_TRACE || MULLE_ABA_TRACE_REGISTER
-            fprintf( stderr,  "\n------------------------------\n%s: (%lu) %p -> register\n", mulle_aba_thread_name(), mulle_aba_get_thread_timestamp(),
-               _mulle_aba_get_worldpointer());
+            fprintf( stderr,  "\n------------------------------\n%s: (%lu) %p -> register\n", mulle_aba_thread_name(), mulle_aba_current_thread_get_timestamp(),
+               _mulle_aba_get_worldpointer( &test_global));
 #endif
             mulle_aba_register();
 #if MULLE_ABA_TRACE || MULLE_ABA_TRACE_REGISTER
-            fprintf( stderr,  "\n%s: (%lu) %p <- registered\n------------------------------\n", mulle_aba_thread_name(), mulle_aba_get_thread_timestamp(),
-               _mulle_aba_get_worldpointer());
+            fprintf( stderr,  "\n%s: (%lu) %p <- registered\n------------------------------\n", mulle_aba_thread_name(), mulle_aba_current_thread_get_timestamp(),
+               _mulle_aba_get_worldpointer( &test_global));
             mulle_aba_print();
 #endif
          }
@@ -215,13 +222,13 @@ static void    run_thread_gc_free_list_test( void)
    if( ! registered)
    {
 #if MULLE_ABA_TRACE || MULLE_ABA_TRACE_REGISTER
-            fprintf( stderr,  "\n------------------------------\n%s: (%lu) %p -> register\n", mulle_aba_thread_name(), mulle_aba_get_thread_timestamp(),
-               _mulle_aba_get_worldpointer());
+            fprintf( stderr,  "\n------------------------------\n%s: (%lu) %p -> register\n", mulle_aba_thread_name(), mulle_aba_current_thread_get_timestamp(),
+               _mulle_aba_get_worldpointer( &test_global));
 #endif
          mulle_aba_register();
 #if MULLE_ABA_TRACE || MULLE_ABA_TRACE_REGISTER
-            fprintf( stderr,  "\n%s: (%lu) %p <- registered\n------------------------------\n", mulle_aba_thread_name(), mulle_aba_get_thread_timestamp(),
-               _mulle_aba_get_worldpointer());
+            fprintf( stderr,  "\n%s: (%lu) %p <- registered\n------------------------------\n", mulle_aba_thread_name(), mulle_aba_current_thread_get_timestamp(),
+               _mulle_aba_get_worldpointer( &test_global));
             mulle_aba_print();
 #endif
       }
@@ -231,7 +238,7 @@ static void    run_thread_gc_free_list_test( void)
 static void  single_threaded_test( void)
 {
 #if PROGRESS
-   fprintf( stdout,  "."); fflush( stdout);
+   fprintf( stderr,  "."); fflush( stderr);
 #endif
    mulle_aba_register();
    run_gc_free_list_test();
@@ -243,7 +250,7 @@ static void  single_threaded_test( void)
 static void  multi_threaded_test_each_thread( void)
 {
 #if PROGRESS
-   fprintf( stdout,  "."); fflush( stdout);
+   fprintf( stderr,  "."); fflush( stderr);
 #endif
    run_thread_gc_free_list_test();
 }
@@ -260,7 +267,7 @@ static void   _wait_around( mulle_atomic_pointer_t *n_threads)
 
 struct thread_info
 {
-   char                  name[ 64];
+   char                      name[ 64];
    mulle_atomic_pointer_t    *n_threads;
 };
 
@@ -291,7 +298,6 @@ static mulle_thread_rval_t   run_test( struct thread_info *info)
 #endif
 
     // voodoo
-   fflush( stdout);
    fflush( stderr);
 
    return( 0);
@@ -300,9 +306,9 @@ static mulle_thread_rval_t   run_test( struct thread_info *info)
 
 static void  multi_threaded_test( intptr_t n)
 {
-   int                  i;
-   mulle_thread_t            *threads;
-   struct thread_info   *info;
+   int                      i;
+   mulle_thread_t           *threads;
+   struct thread_info       *info;
    mulle_atomic_pointer_t   n_threads;
 
 #if MULLE_ABA_TRACE
@@ -313,9 +319,9 @@ static void  multi_threaded_test( intptr_t n)
    assert( threads);
 
    _mulle_atomic_pointer_nonatomic_write( &n_threads, (void *) n);
-   info = alloca( sizeof(struct thread_info) * n);
+   info = alloca( sizeof( struct thread_info) * n);
 
-   for( i = 1; i < n; i++)
+   for( i = 0; i < n; i++)
    {
       info[ i].n_threads = &n_threads;
       sprintf( info[ i].name, "thread #%d", i);
@@ -324,11 +330,7 @@ static void  multi_threaded_test( intptr_t n)
          abort();
    }
 
-   info[ 0].n_threads = &n_threads;
-   sprintf( info[ 0].name, "thread #%d", 0);
-   run_test( &info[ 0]);
-
-   for( i = 1; i < n; i++)
+   for( i = 0; i < n; i++)
       if( mulle_thread_join( threads[ i]))
       {
          perror( "mulle_thread_join");
@@ -363,6 +365,12 @@ static void  __enable_core_dumps(void)
 #endif
 
 
+static void  verbose_free( void *s)
+{
+   free( s);
+}
+
+
 static int   _main(int argc, const char * argv[])
 {
    unsigned int   i;
@@ -372,10 +380,7 @@ static int   _main(int argc, const char * argv[])
 
    srand( (unsigned int) time( NULL));
 
-   rval = mulle_thread_tss_create( free, &threadname_key);
-   assert( ! rval);
-
-   rval = mulle_thread_tss_set( threadname_key, strdup( "main"));
+   rval = mulle_thread_tss_create( verbose_free, &threadname_key);
    assert( ! rval);
 
 #if MULLE_ABA_TRACE
@@ -400,23 +405,28 @@ forever:
 
    for( i = 0; i < ITERATIONS; i++)
    {
-#if MULLE_ABA_TRACE || PROGRESS
-# if MULLE_ABA_TRACE
+#if VERBOSE_PROGRESS
       fprintf( stderr, "iteration %d of %d\n", i + 1, ITERATIONS);
-# else
-      fprintf( stdout, "iteration %d of %d\n", i + 1, ITERATIONS);
-# endif
 #endif
-#if 1
+
+#if SINGLE_THREADED_TEST
+# if VERBOSE_PROGRESS
+      fprintf( stderr, "single threaded test\n");
+# endif
       single_threaded_test();
       reset_memory();
 #endif
-      for( j = 1; j <= 4; j += j)
-      {
-         multi_threaded_test( j);
-         reset_memory();
-      }
+
+#if MULTI_THREADED_TEST
+# if VERBOSE_PROGRESS
+      fprintf( stderr, "multi threaded test\n");
+# endif
+
+      multi_threaded_test( N_THREADS);
+      reset_memory();
+#endif
    }
+
 #if FOREVER
    goto forever;
 #endif
@@ -427,6 +437,13 @@ forever:
       mulle_transitions_count_print_dot();
    }
 #endif
+
+   _mulle_aba_done( &test_global);
+
+   mulle_thread_tss_free( threadname_key);
+
+   // collect last uglies
+   mulle_testallocator_reset();
 
    return( 0);
 }
