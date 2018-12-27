@@ -32,7 +32,9 @@ set( INSTALL_PUBLIC_HEADERS ${PUBLIC_HEADERS})
 # which aren't valid outside of the project scope.
 #
 set( INSTALL_PRIVATE_HEADERS ${PRIVATE_HEADERS})
-list( REMOVE_ITEM INSTALL_PRIVATE_HEADERS "include-private.h")
+if( INSTALL_PRIVATE_HEADERS)
+   list( REMOVE_ITEM INSTALL_PRIVATE_HEADERS "include-private.h")
+endif()
 
 # add ignored headers back in so that the generators pick them up
 set( PRIVATE_HEADERS

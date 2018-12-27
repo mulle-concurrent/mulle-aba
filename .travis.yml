@@ -1,7 +1,13 @@
 language: c
 
-dist: xenial
+dist:
+  - trusty
+
 sudo: required
+
+compiler:
+  - clang
+  - gcc
 
 addons:
   apt:
@@ -19,5 +25,5 @@ before_install:
    - sudo apt-get -y install mulle-sde mulle-test
 
 script: |
-   mulle-sde craft
-   [ -d test ] && mulle-test 
+   mulle-sde -v craft
+   [ -d test ] && mulle-sde -v -lx test
