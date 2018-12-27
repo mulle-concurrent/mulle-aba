@@ -225,6 +225,10 @@ unsigned int   _mulle_aba_world_get_timestampstorage_index( struct _mulle_aba_wo
 {
    unsigned int  s_index;
 
+#ifndef NDEBUG
+   _mulle_aba_world_assert_sanity( world);
+#endif
+
    if( timestamp < world->_offset)
    {
       errno = EINVAL;
