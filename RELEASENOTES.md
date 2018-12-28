@@ -1,3 +1,7 @@
+### 2.0.12
+
+* fix wrong assert
+
 ### 2.0.11
 
 * fix wrong use of memcpy for older glibc
