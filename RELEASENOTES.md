@@ -1,3 +1,7 @@
+### 2.0.13
+
+* ensure thread and allocator are up-to-date
+
 ### 2.0.12
 
 * fix wrong assert
