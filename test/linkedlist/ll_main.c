@@ -42,14 +42,19 @@
 //
 #define PROGRESS     0
 #define FOREVER      0
+#define ITERATIONS   1
+#define LOOPS        10
 
-#if defined( MULLE_TEST)
-# define LOOPS        1000   // (1 + (rand() % 100000))
-# define ITERATIONS   10
-#else
-# define LOOPS        100000   // (1 + (rand() % 100000))
-# define ITERATIONS   100
+#ifndef ITERATIONS
+# if defined( MULLE_TEST)
+#  define LOOPS        1000   // (1 + (rand() % 100000))
+#  define ITERATIONS   10
+# else
+#  define LOOPS        100000   // (1 + (rand() % 100000))
+#  define ITERATIONS   100
+# endif
 #endif
+
 #define MAX_THREADS  4
 
 
@@ -199,7 +204,7 @@ static void  multi_threaded_test( intptr_t n)
    _mulle_atomic_pointer_nonatomic_write( &n_threads, (void *) n);
    info = alloca( sizeof(struct thread_info) * n);
 
-   for( i = 1; i < n; i++)
+   for( i = 0; i < n; i++)
    {
       info[ i].n_threads = &n_threads;
       sprintf( info[ i].name, "thread #%d", i);
@@ -208,11 +213,7 @@ static void  multi_threaded_test( intptr_t n)
          abort();
    }
 
-   info[ 0].n_threads = &n_threads;
-   sprintf( info[ 0].name, "thread #%d", 0);
-   run_test( &info[ 0]);
-
-   for( i = 1; i < n; i++)
+   for( i = 0; i < n; i++)
       if( mulle_thread_join( threads[ i]))
       {
          perror( "mulle_thread_join");
@@ -258,7 +259,7 @@ static int   _main(int argc, const char * argv[])
    rval = mulle_thread_tss_create( free, &threadname_key);
    assert( ! rval);
 
-   rval = mulle_thread_tss_set( threadname_key, strdup( "main"));
+   rval = mulle_thread_tss_set( threadname_key, "main");
    assert( ! rval);
 
 #if MULLE_ABA_TRACE
@@ -287,11 +288,8 @@ forever:
       fprintf( stdout, "iteration %d of %d\n", i, ITERATIONS);
 # endif
 #endif
-      for( j = 1; j <= MAX_THREADS; j += j)
-      {
-         multi_threaded_test( j);
-         reset_memory();
-      }
+      multi_threaded_test( MAX_THREADS);
+      reset_memory();
    }
 
 #if FOREVER
