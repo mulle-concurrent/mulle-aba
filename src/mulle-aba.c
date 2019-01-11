@@ -62,6 +62,12 @@ void   mulle_aba_set_global( struct mulle_aba *p)
    global = p;
 }
 
+#if defined( MULLE_ABA_TRACE) & (MULLE_ABA_TRACE == 1848)
+char  *mulle_aba_thread_name( void)
+{
+   return( "unknown");
+}
+#endif
 
 # pragma mark -
 # pragma mark init/done
@@ -542,8 +548,8 @@ int   _mulle_aba_unregister_current_thread( struct mulle_aba *p)
    {
 #if MULLE_ABA_TRACE || MULLE_ABA_TRACE_FREE
       fprintf( stderr, "\n%s: *** %p returns to initial state, removing leaks***\n",
-                                 locked_world,
-                                 mulle_aba_thread_name());
+                                 mulle_aba_thread_name(),
+                                 locked_world);
 #endif
       //
       // get rid of all old world resources, the new world has been cleaned
@@ -1001,7 +1007,13 @@ int   _mulle_aba_free_owned_pointer( struct mulle_aba *p,
    _mulle_aba_freeentry_set( entry, owner, pointer, p_free);
    _mulle_aba_linkedlist_add( &ts_entry->_pointer_list, &entry->_link);
 #if MULLE_ABA_TRACE || MULLE_ABA_TRACE_LIST
-   fprintf( stderr,  "\n%s: *** put pointer %p/%p on linked list %p of ts=%ld rc=%ld***\n", mulle_aba_thread_name(), pointer, owner, &ts_entry->_pointer_list, timestamp, (intptr_t) _mulle_atomic_pointer_read( &ts_entry->_retain_count_1) + 1);
+   fprintf( stderr,  "\n%s: *** put pointer %p/%p on linked list %p of ts=%ld rc=%ld***\n",
+                        mulle_aba_thread_name(),
+                        pointer,
+                        owner,
+                        &ts_entry->_pointer_list,
+                        timestamp,
+                        (intptr_t) _mulle_atomic_pointer_read( &ts_entry->_retain_count_1) + 1);
 #endif
 
 
@@ -1104,8 +1116,10 @@ int   mulle_aba_free_owned_pointer( void *owner, void (*p_free)( void *, void *)
 }
 
 
+//
 // this will be automatically called on thread destruction, so you usually don't
-// call this
+// call this, except if you are the main thread
+//
 void   mulle_aba_unregister()
 {
    assert( global);
