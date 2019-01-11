@@ -7,7 +7,7 @@ endif()
 
 set( INCLUDE_DIRS
 src
-) 
+)
 
 set( PRIVATE_HEADERS
 src/include-private.h
@@ -19,5 +19,5 @@ src/mulle-aba-defines.h
 src/mulle-aba.h
 src/mulle-aba-linkedlist.h
 src/mulle-aba-storage.h
-) 
+)
 
