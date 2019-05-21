@@ -7,7 +7,7 @@ endif()
 
 # sourcetree: MULLE_ALLOCATOR;no-all-load,no-import,no-singlephase;
 if( NOT MULLE_ALLOCATOR_LIBRARY)
-   find_library( MULLE_ALLOCATOR_LIBRARY NAMES ${CMAKE_STATIC_LIBRARY_PREFIX}mulle-allocator${CMAKE_STATIC_LIBRARY_SUFFIX} mulle-allocator)
+   find_library( MULLE_ALLOCATOR_LIBRARY NAMES ${CMAKE_STATIC_LIBRARY_PREFIX}mulle-allocator${CMAKE_STATIC_LIBRARY_SUFFIX} mulle-allocator NO_CMAKE_SYSTEM_PATH)
    message( STATUS "MULLE_ALLOCATOR_LIBRARY is ${MULLE_ALLOCATOR_LIBRARY}")
    #
    # the order looks ascending, but due to the way this file is read
@@ -71,7 +71,7 @@ endif()
 
 # sourcetree: MULLE_THREAD;no-all-load,no-import,no-singlephase;
 if( NOT MULLE_THREAD_LIBRARY)
-   find_library( MULLE_THREAD_LIBRARY NAMES ${CMAKE_STATIC_LIBRARY_PREFIX}mulle-thread${CMAKE_STATIC_LIBRARY_SUFFIX} mulle-thread)
+   find_library( MULLE_THREAD_LIBRARY NAMES ${CMAKE_STATIC_LIBRARY_PREFIX}mulle-thread${CMAKE_STATIC_LIBRARY_SUFFIX} mulle-thread NO_CMAKE_SYSTEM_PATH)
    message( STATUS "MULLE_THREAD_LIBRARY is ${MULLE_THREAD_LIBRARY}")
    #
    # the order looks ascending, but due to the way this file is read

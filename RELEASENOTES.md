@@ -1,3 +1,7 @@
+### 2.0.15
+
+* Various small improvements
+
 ### 2.0.14
 
 * modernized to mulle-sde with .mulle folder
