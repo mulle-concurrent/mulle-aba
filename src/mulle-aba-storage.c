@@ -121,7 +121,7 @@ static void
    for( i = 0; i < _mulle_aba_timestampstorage_n_entries; i++)
    {
 //      assert( ts_storage->_entries[ i]._retain_count_1._nonatomic == (void *) -1);
-      assert( ! _mulle_atomic_pointer_nonatomic_read( &                                                    ts_storage->_entries[ i]._pointer_list._head.pointer));
+      assert( ! _mulle_atomic_pointer_nonatomic_read( &ts_storage->_entries[ i]._pointer_list._head.pointer));
    }
 }
 
@@ -958,8 +958,7 @@ static inline int
 struct _mulle_aba_worldpointers
    _mulle_aba_storage_change_worldpointer( struct _mulle_aba_storage *q,
                                            enum _mulle_swap_intent intention,
-                                           _mulle_aba_worldpointer_t
-                                           old_world_p,
+                                           _mulle_aba_worldpointer_t old_world_p,
                                            int (*callback)( int, struct _mulle_aba_callback_info *, void *),
                                            void *userinfo)
 {
@@ -1052,13 +1051,13 @@ static int   _mulle_aba_worldpointer_state( _mulle_aba_worldpointer_t world_p)
 
 _mulle_aba_worldpointer_t
    _mulle_aba_storage_try_set_lock_worldpointer( struct _mulle_aba_storage *q,
-                                                  _mulle_aba_worldpointer_t old_world_p,
-                                                  int bit)
+                                                 _mulle_aba_worldpointer_t old_world_p,
+                                                 int bit)
 {
    _mulle_aba_worldpointer_t   new_world_p;
    _mulle_aba_worldpointer_t   last_world_p;
-   struct _mulle_aba_world      *old_world;
-   enum _mulle_swap_intent                 intention;
+   struct _mulle_aba_world     *old_world;
+   enum _mulle_swap_intent     intention;
 
    // this is the world we are trying to lock
    intention = bit ? _mulle_swap_lock_intent : _mulle_swap_unlock_intent;
@@ -1100,7 +1099,7 @@ _mulle_aba_worldpointer_t
 }
 
 
-struct _mulle_aba_worldpointers
+static struct _mulle_aba_worldpointers
    _mulle_aba_storage_lock_worldpointer( struct _mulle_aba_storage *q)
 {
    _mulle_aba_worldpointer_t   new_world_p;
@@ -1113,6 +1112,12 @@ struct _mulle_aba_worldpointers
       if( new_world_p)
          return( _mulle_aba_worldpointers_make( new_world_p, old_world_p));
 
+      // https://www.realworldtech.com/forum/?threadid=189711&curpostid=189752
+      // TODO: doing locking fundamentally wrong here
+      // Intent here was, I think, to be nice on single core CPUs
+      // Could be a contention if 1000 threads checkin constantly.
+      // The checkin is supposed to be done when the thread is idle..
+      // Could probably "just" use a lock here.
       mulle_thread_yield();
    }
 }
@@ -1126,14 +1131,14 @@ struct _mulle_aba_worldpointers
                                                void *userinfo,
                                                struct _mulle_aba_world **dealloced)
 {
-   _mulle_aba_worldpointer_t        new_world_p;
-   _mulle_aba_worldpointer_t        locked_world_p;
-   int                                          rval;
+   _mulle_aba_worldpointer_t         locked_world_p;
+   _mulle_aba_worldpointer_t         new_world_p;
+   int                               fail;
+   int                               loops;
+   int                               rval;
    struct _mulle_aba_callback_info   ctxt;
    struct _mulle_aba_world           *tofree;
-   int                                          fail;
-   struct _mulle_aba_worldpointers  world_ps;
-   int                                          loops;
+   struct _mulle_aba_worldpointers   world_ps;
 
    ctxt.new_world  = NULL;
    ctxt.new_bit    = 0;
@@ -1429,7 +1434,10 @@ int   _mulle_aba_timestampstorage_set_usage_bit( struct _mulle_aba_timestampstor
    while( ! _mulle_atomic_pointer_weakcas( &ts_storage->_usage_bits, (void *) usage, (void *) expect));
 
 #if MULLE_ABA_TRACE
-   fprintf( stderr, "%s: set usage bit (%d/%d) for storage %p: %p -> %p\n", mulle_aba_thread_name(), index, bit, ts_storage, (void *) expect, (void *) usage);
+   fprintf( stderr, "%s: set usage bit (%d/%d) for storage %p: %p -> %p\n",
+                           mulle_aba_thread_name(),
+                           index, bit,
+                           ts_storage, (void *) expect, (void *) usage);
 #endif
 
    return( usage != 0);
@@ -1471,7 +1479,10 @@ void   _mulle_aba_world_check_timerange( struct _mulle_aba_world *world,
 
       rc = _mulle_atomic_pointer_decrement( &ts_entry->_retain_count_1);
 #if MULLE_ABA_TRACE
-      fprintf( stderr, "%s: decrement timestamp ts=%ld to rc=%ld\n", mulle_aba_thread_name(), timestamp, (intptr_t) rc);
+      fprintf( stderr, "%s: decrement timestamp ts=%ld to rc=%ld\n",
+                              mulle_aba_thread_name(),
+                              timestamp,
+                              (intptr_t) rc);
 #endif
 // rc can be negative, it's OK
 //      assert( (intptr_t) rc >= 0);
@@ -1484,7 +1495,11 @@ void   _mulle_aba_world_check_timerange( struct _mulle_aba_world *world,
       // so we can't reuse it
       //
 #if MULLE_ABA_TRACE || MULLE_ABA_TRACE_FREE || MULLE_ABA_TRACE_LIST
-      fprintf( stderr,  "\n%s: *** freeing linked list %p of ts=%ld rc=%ld***\n", mulle_aba_thread_name(), &ts_entry->_pointer_list, timestamp, (intptr_t) _mulle_atomic_pointer_read( &ts_entry->_retain_count_1) + 1);
+      fprintf( stderr,  "\n%s: *** freeing linked list %p of ts=%ld rc=%ld***\n",
+                              mulle_aba_thread_name(),
+                              &ts_entry->_pointer_list,
+                              timestamp,
+                              (intptr_t) _mulle_atomic_pointer_read( &ts_entry->_retain_count_1) + 1);
       _mulle_aba_linkedlist_print( &ts_entry->_pointer_list);
 #endif
 

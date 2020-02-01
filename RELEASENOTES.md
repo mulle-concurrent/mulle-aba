@@ -1,3 +1,7 @@
+### 2.0.18
+
+* Various small improvements
+
 ### 2.0.17
 
 * fix test sourcetree
