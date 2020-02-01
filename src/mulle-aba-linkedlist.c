@@ -40,7 +40,12 @@
 #include <assert.h>
 
 
-struct _mulle_aba_linkedlistentry  *_mulle_aba_linkedlist_remove_all( struct _mulle_aba_linkedlist *list)
+//
+// retrieves the current head pointer and sets it to NULL in one atomic
+// operation
+//
+struct _mulle_aba_linkedlistentry  *
+   _mulle_aba_linkedlist_remove_all( struct _mulle_aba_linkedlist *list)
 {
    struct _mulle_aba_linkedlistentry  *head;
 
@@ -88,7 +93,8 @@ void  _mulle_aba_linkedlist_add( struct _mulle_aba_linkedlist *list,
 // then lop one off, and keep removing and chaining stuff from the original list
 // until we can finally place the whole chain back into an empty list
 //
-struct _mulle_aba_linkedlistentry  *_mulle_aba_linkedlist_remove_one( struct _mulle_aba_linkedlist *list)
+struct _mulle_aba_linkedlistentry  *
+   _mulle_aba_linkedlist_remove_one( struct _mulle_aba_linkedlist *list)
 {
    struct _mulle_aba_linkedlistentry   *prev_chain;
    struct _mulle_aba_linkedlistentry   *chain;
@@ -143,16 +149,17 @@ struct _mulle_aba_linkedlistentry  *_mulle_aba_linkedlist_remove_one( struct _mu
 
 
 
-int   _mulle_aba_linkedlist_walk( struct _mulle_aba_linkedlist *list,
-                                   int (*callback)( struct _mulle_aba_linkedlistentry *,
-                                                    struct _mulle_aba_linkedlistentry *,
-                                                   void *),
-                                   void *userinfo)
+int
+   _mulle_aba_linkedlist_walk( struct _mulle_aba_linkedlist *list,
+                               int (*callback)( struct _mulle_aba_linkedlistentry *,
+                                                struct _mulle_aba_linkedlistentry *,
+                                                void *),
+                              void *userinfo)
 {
    struct _mulle_aba_linkedlistentry   *entry;
    struct _mulle_aba_linkedlistentry   *prev;
    struct _mulle_aba_linkedlistentry   *next;
-   int                                   rval;
+   int                                 rval;
 
    assert( list);
    assert( callback);

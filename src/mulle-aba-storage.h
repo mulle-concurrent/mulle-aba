@@ -456,8 +456,9 @@ _mulle_aba_storage_try_unlock_worldpointer( struct _mulle_aba_storage *q,
 }
 
 
-struct _mulle_aba_worldpointers
-   _mulle_aba_storage_lock_worldpointer( struct _mulle_aba_storage *q);
+// this is now a static (hiding the uglies :))
+//struct _mulle_aba_worldpointers
+//   _mulle_aba_storage_lock_worldpointer( struct _mulle_aba_storage *q);
 
 
 struct _mulle_aba_worldpointers
