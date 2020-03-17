@@ -19,7 +19,7 @@ if( NOT MULLE_ALLOCATOR_LIBRARY)
    #
    if( MULLE_ALLOCATOR_LIBRARY)
       #
-      # Add to MULLE_ALLOCATOR_LIBRARY list.
+      # Add MULLE_ALLOCATOR_LIBRARY to DEPENDENCY_LIBRARIES list.
       # Disable with: `mulle-sourcetree mark mulle-allocator no-cmakeadd`
       #
       set( DEPENDENCY_LIBRARIES
@@ -87,7 +87,7 @@ if( NOT MULLE_THREAD_LIBRARY)
    #
    if( MULLE_THREAD_LIBRARY)
       #
-      # Add to MULLE_THREAD_LIBRARY list.
+      # Add MULLE_THREAD_LIBRARY to DEPENDENCY_LIBRARIES list.
       # Disable with: `mulle-sourcetree mark mulle-thread no-cmakeadd`
       #
       set( DEPENDENCY_LIBRARIES
