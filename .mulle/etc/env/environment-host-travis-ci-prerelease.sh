@@ -1,3 +1,4 @@
+# Fill it with mulle-env envirionment --scope  set <key> <value>
 #
 # mulle-allocator nodetype: ${MULLE_ALLOCATOR_NODETYPE:-tar}
 #
