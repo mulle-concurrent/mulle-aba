@@ -33,6 +33,36 @@ Install the prerequisites first:
 | [mulle-thread](//github.com/mulle-concurrent/mulle-thread) |
 
 
+## Add 
+
+Use [mulle-sde](//github.com/mulle-sde) to add mulle-aba to your project:
+
+```
+mulle-sde dependency add --c --github mulle-concurrent mulle-aba
+```
+
+## Install
+
+### mulle-sde
+
+Use [mulle-sde](//github.com/mulle-sde) to build and install mulle-aba and all dependencies:
+
+```
+mulle-sde install --prefix /usr/local \
+   https://github.com/mulle-concurrent/mulle-aba/archive/latest.tar.gz
+```
+
+### Manual Installation
+
+
+Install the requirements:
+
+Requirements                                               | Description
+-----------------------------------------------------------|-----------------------
+[mulle-allocator](//github.com/mulle-c/mulle-allocator)    | Memory allocation wrapper
+[mulle-thread](//github.com/mulle-concurrent/mulle-thread) | Threads and atomics
+
+
 Install into `/usr/local`:
 
 ```
@@ -45,7 +75,6 @@ mkdir build 2> /dev/null
    make install
 )
 ```
-
 
 ### Conveniently
 
