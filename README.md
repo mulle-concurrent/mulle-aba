@@ -1,6 +1,6 @@
 # mulle-aba
 
-🚮 A lock-free, cross-platform solution to the ABA problem, written in C
+🚮 A lock-free, cross-platform solution to the ABA problem
 
 **mulle_aba** is a (pretty much) lock-free, cross-platform solution to the
 [ABA problem](//en.wikipedia.org/wiki/ABA_problem) written in C.
