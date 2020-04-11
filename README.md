@@ -20,17 +20,10 @@ Build Status | Release Version
 [![Build Status](https://travis-ci.org/mulle-concurrent/mulle-aba.svg?branch=release)](https://travis-ci.org/mulle-concurrent/mulle-aba) | ![Mulle kybernetiK tag](https://img.shields.io/github/tag/mulle-concurrent/mulle-aba.svg) [![Build Status](https://travis-ci.org/mulle-concurrent/mulle-aba.svg?branch=release)](https://travis-ci.org/mulle-concurrent/mulle-aba)
 
 
-## Install
+## API
 
+* [Aba](dox/API_ABA.md)
 
-### Manually
-
-Install the prerequisites first:
-
-| Prerequisites                                              |
-|------------------------------------------------------------|
-| [mulle-allocator](//github.com/mulle-c/mulle-allocator)    |
-| [mulle-thread](//github.com/mulle-concurrent/mulle-thread) |
 
 
 ## Add 
@@ -75,15 +68,6 @@ mkdir build 2> /dev/null
    make install
 )
 ```
-
-### Conveniently
-
-Or let [mulle-sde](//github.com/mulle-sde) do it all for you with `mulle-sde craft`.
-
-
-## API
-
-* [Aba](dox/API_ABA.md)
 
 ### Platforms and Compilers
 
