@@ -1131,8 +1131,7 @@ void   mulle_aba_unregister()
 }
 
 
-#pragma mark -
-#pragma mark init/done
+#pragma mark - init/done
 
 void   mulle_aba_init( struct mulle_allocator *allocator)
 {
@@ -1161,8 +1160,7 @@ void   mulle_aba_done( void)
 }
 
 
-#pragma mark -
-#pragma mark Testing stuff
+#pragma mark - Testing stuff
 
 // only really useful for testing
 void   mulle_aba_reset()
@@ -1229,13 +1227,22 @@ void   _mulle_aba_print_worldpointer( _mulle_aba_worldpointer_t world_p)
 #if MULLE_ABA_TRACE || MULLE_ABA_TRACE_ALLOC
    fprintf( stderr,  "%s: ", mulle_aba_thread_name());
 #endif
-   fprintf( stderr,  "world   %p : { ts=%ld, rc=%lu, of=%ld, n=%u, sz=%u }\n", world, world->_timestamp, world->_n_threads, world->_offset, world->_n, world->_size);
+   fprintf( stderr,  "world   %p : { ts=%ld, rc=%lu, of=%ld, n=%u, sz=%u }\n",
+                        world,
+                        (long) world->_timestamp,
+                        (unsigned long) world->_n_threads,
+                        (long) world->_offset,
+                        (unsigned int) world->_n,
+                        (unsigned int) world->_size);
 
    for( i = 0; i < world->_n; i++)
    {
       ts_storage = world->_storage[ i];
       assert( ts_storage);
-      fprintf( stderr,  "    #%u : adr=%p bits=%p\n", i, ts_storage, _mulle_atomic_pointer_read( & ts_storage->_usage_bits));
+      fprintf( stderr,  "    #%u : adr=%p bits=%p\n",
+                        i,
+                        ts_storage,
+                        _mulle_atomic_pointer_read( & ts_storage->_usage_bits));
    }
 
    if( world->_n)

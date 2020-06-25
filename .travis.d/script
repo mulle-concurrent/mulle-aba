@@ -16,6 +16,7 @@ if [ -d test ]
 then
    # For the test craft verbose is more of a distraction and duplicates much
    # of what we've seen
+#   mulle-sde -DMULLE_FETCH_SEARCH_PATH="${MULLE_FETCH_SEARCH_PATH}" test env
    mulle-sde -DMULLE_FETCH_SEARCH_PATH="${MULLE_FETCH_SEARCH_PATH}" test craft &&
    mulle-sde -DMULLE_FETCH_SEARCH_PATH="${MULLE_FETCH_SEARCH_PATH}" -v test run --serial
 fi

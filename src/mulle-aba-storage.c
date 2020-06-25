@@ -85,8 +85,7 @@ void   _mulle_aba_linkedlist_print( struct _mulle_aba_linkedlist *p)
 #endif
 
 
-#pragma mark -
-#pragma mark timestamp storage
+#pragma mark - timestamp storage
 
 struct _mulle_aba_timestampstorage *
    _mulle_aba_timestampstorage_alloc( struct mulle_allocator *allocator)
@@ -151,8 +150,7 @@ void   _mulle_aba_timestampstorage_free( struct _mulle_aba_timestampstorage *ts_
 }
 
 
-#pragma mark -
-#pragma mark delete/free stuff
+#pragma mark - delete/free stuff
 
 struct _mulle_aba_worldpointer;
 
@@ -367,8 +365,7 @@ void   _mulle_aba_world_assert_sanity( struct _mulle_aba_world *world)
 }
 
 
-#pragma mark -
-#pragma mark init/done
+#pragma mark - init/done
 
 int   _mulle_aba_storage_init( struct _mulle_aba_storage *q,
                                struct mulle_allocator *allocator)
@@ -661,8 +658,7 @@ void   _mulle_aba_storage_free_unused_free_entries( struct _mulle_aba_storage *q
 }
 
 
-#pragma mark -
-#pragma mark world changing code
+#pragma mark - world changing code
 
 #if MULLE_ABA_TRACE || MULLE_ABA_TRACE_SWAP
 static char  *_mulle_swap_intent_name(enum _mulle_swap_intent intention )
