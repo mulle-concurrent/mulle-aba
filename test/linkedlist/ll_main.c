@@ -68,14 +68,12 @@ static mulle_thread_tss_t   threadname_key;
 char  *mulle_aba_thread_name( void);
 
 
-#pragma mark -
-#pragma mark global variables
+#pragma mark - global variables
 
 static struct _mulle_aba_linkedlist   list;     // common
 static mulle_atomic_pointer_t         alloced;  // common
 
-#pragma mark -
-#pragma mark reset allocator between tests
+#pragma mark - reset allocator between tests
 
 static void   reset_memory()
 {
@@ -92,8 +90,7 @@ static void   reset_memory()
 
 
 
-#pragma mark -
-#pragma mark run test
+#pragma mark - run test
 
 static void    run_thread_gc_free_list_test( void)
 {

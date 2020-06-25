@@ -305,8 +305,7 @@ struct _mulle_aba_timestampentry   *
    _mulle_aba_world_get_timestampentry( struct _mulle_aba_world *world,
                                          uintptr_t timestamp);
 
-#pragma mark -
-#pragma mark _mulle_aba_storage
+#pragma mark - _mulle_aba_storage
 
 //
 // since the mulle_atomic_pointer_t is opaque, I use this union

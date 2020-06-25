@@ -106,8 +106,7 @@ int   mulle_aba_free_owned_pointer( void *owner,
                                     void *pointer);
 
 
-#pragma mark -
-#pragma mark test support
+#pragma mark - test support
 
 // only really useful for testing
 void        mulle_aba_reset( void);
@@ -118,8 +117,7 @@ int         mulle_aba_is_registered( void);
 uintptr_t   mulle_aba_current_thread_get_timestamp( void);
 
 
-#pragma mark -
-#pragma mark multiple aba support
+#pragma mark - multiple aba support
 
 /*
  *
@@ -153,8 +151,7 @@ int   _mulle_aba_checkin_current_thread( struct mulle_aba *p);
 int   _mulle_aba_is_current_thread_registered( struct mulle_aba *p);
 
 
-#pragma mark -
-#pragma mark test support
+#pragma mark - test support
 
 uintptr_t   _mulle_aba_current_thread_get_timestamp( struct mulle_aba *p);
 void        *_mulle_aba_get_worldpointer( struct mulle_aba *p);
