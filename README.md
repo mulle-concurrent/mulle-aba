@@ -1,6 +1,6 @@
 # mulle-aba
 
-🚮 A lock-free, cross-platform solution to the ABA problem
+#### 🚮 A lock-free, cross-platform solution to the ABA problem
 
 **mulle_aba** is a (pretty much) lock-free, cross-platform solution to the
 [ABA problem](//en.wikipedia.org/wiki/ABA_problem) written in C.
@@ -15,9 +15,9 @@ fairly complicated, please read the [Wikipedia article](//en.wikipedia.org/wiki/
 * [Example](example/main.m)
 
 
-Build Status | Release Version
--------------|-----------------------------------
-[![Build Status](https://travis-ci.org/mulle-concurrent/mulle-aba.svg?branch=release)](https://travis-ci.org/mulle-concurrent/mulle-aba) | ![Mulle kybernetiK tag](https://img.shields.io/github/tag/mulle-concurrent/mulle-aba.svg) [![Build Status](https://travis-ci.org/mulle-concurrent/mulle-aba.svg?branch=release)](https://travis-ci.org/mulle-concurrent/mulle-aba)
+| Release Version
+|-----------------------------------
+| ![Mulle kybernetiK tag](https://img.shields.io/github/tag/mulle-concurrent/mulle-aba.svg?branch=release) [![Build Status](https://travis-ci.org/mulle-concurrent/mulle-aba.svg?branch=release)](https://travis-ci.org/mulle-concurrent/mulle-aba)
 
 
 ## API
@@ -26,7 +26,7 @@ Build Status | Release Version
 
 
 
-## Add 
+## Add
 
 Use [mulle-sde](//github.com/mulle-sde) to add mulle-aba to your project:
 
