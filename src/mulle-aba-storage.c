@@ -684,12 +684,12 @@ static inline void  assert_valid_transition(  _mulle_aba_worldpointer_t new_worl
 {
    uintptr_t   new_state;
    uintptr_t   old_state;
-   struct _mulle_aba_world   *new_world; // just for debugging
-   struct _mulle_aba_world   *old_world;
-
-   // two lines just for debugging
-   new_world = mulle_aba_worldpointer_get_struct( new_world_p);
-   old_world = mulle_aba_worldpointer_get_struct( old_world_p);
+//   struct _mulle_aba_world   *new_world; // just for debugging
+//   struct _mulle_aba_world   *old_world; // just for debugging
+//
+//   // two lines just for debugging
+//   new_world = mulle_aba_worldpointer_get_struct( new_world_p);
+//   old_world = mulle_aba_worldpointer_get_struct( old_world_p);
 
    // when the intent is locking, we can't read the world contents
    if( intention == _mulle_swap_lock_intent)
