@@ -1,0 +1,17 @@
+{
+   "name" : "mulle-aba",
+   "version" : "2.0.20",
+   "description" : "🚮 A lock-free, cross-platform solution to the ABA problem",
+   "homepage" : "https://github.com/mulle-concurrent/mulle-aba",
+   "bugs" : "https://github.com/mulle-concurrent/mulle-aba/issues",
+   "keywords" : [],
+   "license" : "BSD-3-Clause",
+   "repository" : {
+      "type" : "git",
+      "url" : "mulle-concurrent/mulle-aba"
+   },
+   "dependencies" : {
+      "mulle-allocator" : "mulle-c/mulle-allocator",
+      "mulle-thread" : "mulle-concurrent/mulle-thread"
+   }
+}
