@@ -15,7 +15,7 @@ endif()
 #
 # Generated from sourcetree: 9DB39403-9DF3-4E29-8871-E8D6023B9334;mulle-allocator;no-all-load,no-cmake-inherit,no-import,no-singlephase;
 # Disable with : `mulle-sourcetree mark mulle-allocator no-link`
-# Disable for this platform: `mulle-sourcetree mark mulle-allocator no-cmake-platform-linux`
+# Disable for this platform: `mulle-sourcetree mark mulle-allocator no-cmake-platform-darwin`
 #
 if( NOT MULLE_ALLOCATOR_LIBRARY)
    find_library( MULLE_ALLOCATOR_LIBRARY NAMES ${CMAKE_STATIC_LIBRARY_PREFIX}mulle-allocator${CMAKE_STATIC_LIBRARY_SUFFIX} mulle-allocator NO_CMAKE_SYSTEM_PATH NO_SYSTEM_ENVIRONMENT_PATH)
@@ -45,7 +45,7 @@ endif()
 #
 # Generated from sourcetree: FDD72DA6-03FE-41C8-AC5E-BDC4E891E0E3;mulle-thread;no-all-load,no-cmake-searchpath,no-import,no-singlephase;
 # Disable with : `mulle-sourcetree mark mulle-thread no-link`
-# Disable for this platform: `mulle-sourcetree mark mulle-thread no-cmake-platform-linux`
+# Disable for this platform: `mulle-sourcetree mark mulle-thread no-cmake-platform-darwin`
 #
 if( NOT MULLE_THREAD_LIBRARY)
    find_library( MULLE_THREAD_LIBRARY NAMES ${CMAKE_STATIC_LIBRARY_PREFIX}mulle-thread${CMAKE_STATIC_LIBRARY_SUFFIX} mulle-thread NO_CMAKE_SYSTEM_PATH NO_SYSTEM_ENVIRONMENT_PATH)
