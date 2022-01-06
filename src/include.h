@@ -20,6 +20,10 @@
  */
 
 #include "_mulle-aba-include.h"
+#ifndef MULLE_ABA_EXTERN_GLOBAL
+# define MULLE_ABA_EXTERN_GLOBAL MULLE_C_EXTERN_GLOBAL
+#endif
+
 
 /* You can add some more include statements here */
 
