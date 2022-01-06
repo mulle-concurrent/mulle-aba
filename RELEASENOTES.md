@@ -1,3 +1,7 @@
+### 2.0.22
+
+* Various small improvements
+
 ### 2.0.21
 
 * Various small improvements
