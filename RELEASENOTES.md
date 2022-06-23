@@ -1,3 +1,7 @@
+### 2.0.23
+
+* change GLOBALs for Windows
+
 ### 2.0.22
 
 * Various small improvements

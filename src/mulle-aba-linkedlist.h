@@ -80,23 +80,23 @@ static inline void   _mulle_aba_linkedlist_done( struct _mulle_aba_linkedlist *p
 // limited functionality, add to back (single)
 // remove all
 //
-MULLE_ABA_EXTERN_GLOBAL
+MULLE_ABA_GLOBAL
 void  _mulle_aba_linkedlist_add( struct _mulle_aba_linkedlist *list,
                                  struct _mulle_aba_linkedlistentry  *entry);
 
-MULLE_ABA_EXTERN_GLOBAL
+MULLE_ABA_GLOBAL
 struct _mulle_aba_linkedlistentry  *
    _mulle_aba_linkedlist_remove_all( struct _mulle_aba_linkedlist *list);
 
 // based on remove all
-MULLE_ABA_EXTERN_GLOBAL
+MULLE_ABA_GLOBAL
 struct _mulle_aba_linkedlistentry  *
    _mulle_aba_linkedlist_remove_one( struct _mulle_aba_linkedlist *list);
 
 //
 // NOT THREADSAFE AT ALL
 //
-MULLE_ABA_EXTERN_GLOBAL
+MULLE_ABA_GLOBAL
 int   _mulle_aba_linkedlist_walk( struct _mulle_aba_linkedlist *list,
                                   int (*callback)( struct _mulle_aba_linkedlistentry *,
                                                    struct _mulle_aba_linkedlistentry *,
