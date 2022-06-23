@@ -73,7 +73,7 @@ struct _mulle_aba_freeentry
 
 
 
-MULLE_ABA_EXTERN_GLOBAL
+MULLE_ABA_GLOBAL
 void   _mulle_aba_freeentry_set( struct _mulle_aba_freeentry *entry,
                                  void *owner,
                                  void *pointer,
@@ -85,7 +85,7 @@ static inline void _mulle_aba_freeentry_free( struct _mulle_aba_freeentry *entry
    mulle_allocator_free( allocator, entry);
 }
 
-MULLE_ABA_EXTERN_GLOBAL
+MULLE_ABA_GLOBAL
 void   _mulle_aba_free_list_print( struct _mulle_aba_linkedlist *p);
 
 
@@ -127,7 +127,7 @@ struct _mulle_aba_timestampstorage
 };
 
 
-MULLE_ABA_EXTERN_GLOBAL
+MULLE_ABA_GLOBAL
 struct _mulle_aba_timestampstorage *
    _mulle_aba_timestampstorage_alloc( struct mulle_allocator *allocator);
 
@@ -144,7 +144,7 @@ static inline unsigned int
 
 
 
-MULLE_ABA_EXTERN_GLOBAL
+MULLE_ABA_GLOBAL
 int   _mulle_aba_timestampstorage_set_usage_bit( struct _mulle_aba_timestampstorage *ts_storage,
                                                  unsigned int index,
                                                  int bit);
@@ -172,11 +172,11 @@ static inline struct _mulle_aba_timestampentry  *
    return( &ts_storage->_entries[ index]);
 }
 
-MULLE_ABA_EXTERN_GLOBAL
+MULLE_ABA_GLOBAL
 void   __mulle_aba_timestampstorage_free( struct _mulle_aba_timestampstorage *ts_storage,
                                           struct mulle_allocator *allocator);
 
-MULLE_ABA_EXTERN_GLOBAL
+MULLE_ABA_GLOBAL
 void   _mulle_aba_timestampstorage_free( struct _mulle_aba_timestampstorage *ts_storage,
                                          struct mulle_allocator *allocator);
 
@@ -288,23 +288,23 @@ struct _mulle_aba_world
 
 
 
-MULLE_ABA_EXTERN_GLOBAL
+MULLE_ABA_GLOBAL
 struct _mulle_aba_timestampstorage   *
 _mulle_aba_world_pop_storage( struct _mulle_aba_world *world);
 
-MULLE_ABA_EXTERN_GLOBAL
+MULLE_ABA_GLOBAL
 int  _mulle_aba_world_push_storage( struct _mulle_aba_world *world,
                                     struct _mulle_aba_timestampstorage *ts_storage);
 
-MULLE_ABA_EXTERN_GLOBAL
+MULLE_ABA_GLOBAL
 void   _mulle_aba_world_rotate_storage( struct _mulle_aba_world *world);
 
-MULLE_ABA_EXTERN_GLOBAL
+MULLE_ABA_GLOBAL
 unsigned int
    _mulle_aba_world_get_timestampstorage_index( struct _mulle_aba_world *world,
                                                  uintptr_t timestamp);
 
-MULLE_ABA_EXTERN_GLOBAL
+MULLE_ABA_GLOBAL
 struct _mulle_aba_timestampstorage *
    _mulle_aba_world_get_timestampstorage( struct _mulle_aba_world *world,
                                            uintptr_t timestamp);
@@ -363,11 +363,11 @@ struct _mulle_aba_storage
 # pragma mark -
 # pragma mark storage init/done
 
-MULLE_ABA_EXTERN_GLOBAL
+MULLE_ABA_GLOBAL
 int   _mulle_aba_storage_init( struct _mulle_aba_storage *q,
                                struct mulle_allocator *allocator);
 
-MULLE_ABA_EXTERN_GLOBAL
+MULLE_ABA_GLOBAL
 void   _mulle_aba_storage_done( struct _mulle_aba_storage *q);
 
 
@@ -380,21 +380,21 @@ static inline int   _mulle_aba_storage_is_setup( struct _mulle_aba_storage *q)
 # pragma mark -
 # pragma mark world init/free
 
-MULLE_ABA_EXTERN_GLOBAL
+MULLE_ABA_GLOBAL
 struct _mulle_aba_freeentry  *
    _mulle_aba_storage_alloc_freeentry( struct _mulle_aba_storage *q);
 
-MULLE_ABA_EXTERN_GLOBAL
+MULLE_ABA_GLOBAL
 void   _mulle_aba_storage_free_freeentry( struct _mulle_aba_storage *q,
                                           struct _mulle_aba_freeentry  *entry);
 
 struct _mulle_aba_world  *_mulle_aba_storage_alloc_world( struct _mulle_aba_storage *q,
                                                           unsigned int size);
-MULLE_ABA_EXTERN_GLOBAL
+MULLE_ABA_GLOBAL
 void   _mulle_aba_storage_free_world( struct _mulle_aba_storage *q,
                                       struct _mulle_aba_world *world);
 
-MULLE_ABA_EXTERN_GLOBAL
+MULLE_ABA_GLOBAL
 void   _mulle_aba_world_assert_sanity( struct _mulle_aba_world *world);
 
 
@@ -430,13 +430,13 @@ static inline void   _mulle_aba_storage_add_leak_world( struct _mulle_aba_storag
 }
 
 
-MULLE_ABA_EXTERN_GLOBAL
+MULLE_ABA_GLOBAL
 void   _mulle_aba_storage_free_leak_worlds( struct _mulle_aba_storage *q);
 
-MULLE_ABA_EXTERN_GLOBAL
+MULLE_ABA_GLOBAL
 void   _mulle_aba_storage_free_unused_worlds( struct _mulle_aba_storage *q);
 
-MULLE_ABA_EXTERN_GLOBAL
+MULLE_ABA_GLOBAL
 void   _mulle_aba_storage_free_unused_free_entries( struct _mulle_aba_storage *q);
 
 
@@ -473,7 +473,7 @@ struct _mulle_aba_callback_info
 };
 
 
-MULLE_ABA_EXTERN_GLOBAL
+MULLE_ABA_GLOBAL
 _mulle_aba_worldpointer_t
    _mulle_aba_storage_try_set_lock_worldpointer( struct _mulle_aba_storage *q,
                                                  _mulle_aba_worldpointer_t old_world_p,
@@ -501,7 +501,7 @@ _mulle_aba_storage_try_unlock_worldpointer( struct _mulle_aba_storage *q,
 //   _mulle_aba_storage_lock_worldpointer( struct _mulle_aba_storage *q);
 
 
-MULLE_ABA_EXTERN_GLOBAL
+MULLE_ABA_GLOBAL
 struct _mulle_aba_worldpointers
 _mulle_aba_storage_change_worldpointer_2( struct _mulle_aba_storage *q,
                                           enum _mulle_swap_intent intention,
@@ -509,7 +509,7 @@ _mulle_aba_storage_change_worldpointer_2( struct _mulle_aba_storage *q,
                                           int (*callback)( int, struct _mulle_aba_callback_info *, void *),
                                           void *userinfo);
 
-MULLE_ABA_EXTERN_GLOBAL
+MULLE_ABA_GLOBAL
 struct _mulle_aba_worldpointers
 _mulle_aba_storage_change_worldpointer( struct _mulle_aba_storage *q,
                                         enum _mulle_swap_intent intention,
@@ -517,14 +517,14 @@ _mulle_aba_storage_change_worldpointer( struct _mulle_aba_storage *q,
                                         int (*callback)( int, struct _mulle_aba_callback_info *, void *),
                                         void *userinfo);
 
-MULLE_ABA_EXTERN_GLOBAL
+MULLE_ABA_GLOBAL
 struct _mulle_aba_worldpointers
 _mulle_aba_storage_copy_lock_worldpointer( struct _mulle_aba_storage *q,
                                            int (*callback)( int, struct _mulle_aba_callback_info *, void *),
                                            void *userinfo,
                                            struct _mulle_aba_world **dealloced);
 
-MULLE_ABA_EXTERN_GLOBAL
+MULLE_ABA_GLOBAL
 struct _mulle_aba_worldpointers
 _mulle_aba_storage_copy_change_worldpointer( struct _mulle_aba_storage *q,
                                              enum _mulle_swap_intent intention,
@@ -532,7 +532,7 @@ _mulle_aba_storage_copy_change_worldpointer( struct _mulle_aba_storage *q,
                                              int (*callback)( int, struct _mulle_aba_callback_info *, void *),
                                              void *userinfo);
 
-MULLE_ABA_EXTERN_GLOBAL
+MULLE_ABA_GLOBAL
 struct _mulle_aba_worldpointers
 _mulle_aba_storage_grow_worldpointer( struct _mulle_aba_storage *q,
                                       unsigned int target_size,
@@ -540,21 +540,21 @@ _mulle_aba_storage_grow_worldpointer( struct _mulle_aba_storage *q,
                                       void *userinfo);
 
 
-MULLE_ABA_EXTERN_GLOBAL
+MULLE_ABA_GLOBAL
 void   _mulle_aba_world_check_timerange( struct _mulle_aba_world *world,
                                          uintptr_t old,
                                          uintptr_t new,
                                          struct _mulle_aba_storage *q);
 
-MULLE_ABA_EXTERN_GLOBAL
+MULLE_ABA_GLOBAL
 unsigned int  _mulle_aba_world_reuse_storages( struct _mulle_aba_world *world);
 
-MULLE_ABA_EXTERN_GLOBAL
+MULLE_ABA_GLOBAL
 unsigned int
    _mulle_aba_world_count_available_reusable_storages( struct _mulle_aba_world *world);
 
 #if DEBUG
-MULLE_ABA_EXTERN_GLOBAL
+MULLE_ABA_GLOBAL
 void   _mulle_aba_linkedlist_print( struct _mulle_aba_linkedlist *p);
 #endif
 
