@@ -20,8 +20,14 @@
  */
 
 #include "_mulle-aba-include.h"
-#ifndef MULLE_ABA_EXTERN_GLOBAL
-# define MULLE_ABA_EXTERN_GLOBAL MULLE_C_EXTERN_GLOBAL
+#ifdef MULLE_ABA_BUILD
+# define MULLE_ABA_GLOBAL    MULLE_C_GLOBAL
+#else
+# if defined( MULLE_ABA_INCLUDE_DYNAMIC) || (defined( MULLE_INCLUDE_DYNAMIC) && ! defined( MULLE_ABA_INCLUDE_STATIC))
+#  define MULLE_ABA_GLOBAL   MULLE_C_EXTERN_GLOBAL
+# else
+#  define MULLE_ABA_GLOBAL   extern
+# endif
 #endif
 
 
