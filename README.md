@@ -17,7 +17,7 @@ fairly complicated, please read the [Wikipedia article](//en.wikipedia.org/wiki/
 
 | Release Version
 |-----------------------------------
-| ![Mulle kybernetiK tag](https://img.shields.io/github/tag/mulle-concurrent/mulle-aba.svg?branch=release) [![Build Status](https://github.com/mulle-concurrent/mulle-aba/CI/badge.svg?branch=release)](//github.com/mulle-concurrent/mulle-aba)
+ ![Mulle kybernetiK tag](https://img.shields.io/github/tag/mulle-concurrent/mulle-aba.svg?branch=release) [![Build Status](https://github.com/mulle-concurrent/mulle-aba/workflows/CI/badge.svg?branch=release)](//github.com/mulle-concurrent/mulle-aba)
 
 
 ## API
