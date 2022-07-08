@@ -17,7 +17,7 @@ fairly complicated, please read the [Wikipedia article](//en.wikipedia.org/wiki/
 
 | Release Version
 |-----------------------------------
-| ![Mulle kybernetiK tag](https://img.shields.io/github/tag/mulle-concurrent/mulle-aba.svg?branch=release) [![Build Status](https://travis-ci.org/mulle-concurrent/mulle-aba.svg?branch=release)](https://travis-ci.org/mulle-concurrent/mulle-aba)
+| ![Mulle kybernetiK tag](//img.shields.io/github/tag/mulle-concurrent/mulle-aba.svg?branch=release) [![Build Status](//github.com/mulle-concurrent/mulle-aba/CI/badge.svg?branch=release)](//github.com/mulle-concurrent/mulle-aba)
 
 
 ## API
@@ -47,7 +47,7 @@ Use [mulle-sde](//github.com/mulle-sde) to build and install mulle-aba and all d
 
 ```
 mulle-sde install --prefix /usr/local \
-   https://github.com/mulle-concurrent/mulle-aba/archive/latest.tar.gz
+   //github.com/mulle-concurrent/mulle-aba/archive/latest.tar.gz
 ```
 
 ### Manual Installation
