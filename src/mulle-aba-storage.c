@@ -46,16 +46,16 @@ static int   _mulle_aba_worldpointer_state( _mulle_aba_worldpointer_t world_p);
 
 
 void   _mulle_aba_freeentry_set( struct _mulle_aba_freeentry *entry,
-                                  void *owner,
+                                  void (*p_free)( void *, void *),
                                   void *pointer,
-                                  void (*free)( void *, void *))
+                                  void *owner)
 {
 #if MULLE_ABA_MEMTYPE_DEBUG
    entry->_memtype = _mulle_aba_freeentry_memtype;
 #endif
    entry->_owner   = owner;
    entry->_pointer = pointer;
-   entry->_free    = free;
+   entry->_free    = p_free;
 #if MULLE_ABA_TRACE || MULLE_ABA_TRACE_ALLOC
    fprintf( stderr, "%s: alloc linked list entry %p (for payload %p/%p)\n",
                         mulle_aba_thread_name(), entry, owner, pointer);
@@ -483,7 +483,7 @@ static int  free_pointer_and_entry( struct _mulle_aba_freeentry *entry,
    fprintf( stderr, "%s: free linked list entry %p (for %p)\n", mulle_aba_thread_name(), entry, entry->_pointer);
 #endif
    // leak worlds occur sometimes multiple times fix that
-   (*entry->_free)( entry->_owner, entry->_pointer);
+   (*entry->_free)( entry->_pointer, entry->_owner);
    _mulle_aba_storage_free_freeentry( q, entry);
 #if MULLE_ABA_TRACE || MULLE_ABA_TRACE_FREE || MULLE_ABA_TRACE_LIST
    fprintf( stderr, "%s: added entry %p (%p) to reuse storage %p (%p)\n",
@@ -564,6 +564,27 @@ struct _mulle_aba_world   *_mulle_aba_storage_alloc_world( struct _mulle_aba_sto
 
 void   _mulle_aba_storage_free_world( struct _mulle_aba_storage *q,
                                       struct _mulle_aba_world *world)
+{
+   assert( q);
+   if( ! world)
+      return;
+
+   memset( world, 0, _mulle_aba_world_get_size( world));
+
+   _mulle_aba_linkedlist_add( &q->_free_worlds, (void *) world);
+
+#if MULLE_ABA_TRACE || MULLE_ABA_TRACE_FREE
+   fprintf( stderr, "%s: put world %p on reuse chain %p\n",
+                    mulle_aba_thread_name(),
+                    world,
+                    &q->_free_worlds);
+#endif
+}
+
+
+MULLE_ABA_GLOBAL
+void   _mulle_aba_storage_owned_pointer_free_world( struct _mulle_aba_world *world,
+                                                    struct _mulle_aba_storage *q)
 {
    assert( q);
    if( ! world)
@@ -904,11 +925,11 @@ static inline void  log_swap_worlds( enum _mulle_swap_intent intention,
 {
    static struct
    {
-      _mulle_aba_worldpointer_t   world_p;
-      mulle_thread_t                    thread;
+      _mulle_aba_worldpointer_t    world_p;
+      mulle_thread_t               thread;
    } last_world_ps[ 0x20];
-   static mulle_atomic_pointer_t    last_world_ps_index;
-   unsigned int                 i;
+   static mulle_atomic_pointer_t   last_world_ps_index;
+   unsigned int                    i;
 
    if( rval)
    {

@@ -38,7 +38,7 @@
 //
 // community version is always even
 //
-#define MULLE_ABA_VERSION     ((2 << 20) | (0 << 8) | 23)
+#define MULLE_ABA_VERSION     ((3 << 20) | (0 << 8) | 0)
 
 #include "include.h"
 
@@ -108,14 +108,13 @@ void   mulle_aba_unregister( void);
 
 // everybody frees through this
 MULLE_ABA_GLOBAL
-int   mulle_aba_free( void (*free)( void *), void *pointer);
+int   mulle_aba_free( void (*p_free)( void *), void *pointer);
 
 // same as above but owner, will be first parameter for p_free
 MULLE_ABA_GLOBAL
-int   mulle_aba_free_owned_pointer( void *owner,
-                                    void (*p_free)( void *owner, void *pointer),
-                                    void *pointer);
-
+int   mulle_aba_free_owned_pointer( void (*p_free)( void *owner, void *pointer),
+                                    void *pointer,
+                                    void *owner);
 
 #pragma mark - test support
 
@@ -163,9 +162,9 @@ int   _mulle_aba_free( struct mulle_aba *p,
 
 MULLE_ABA_GLOBAL
 int   _mulle_aba_free_owned_pointer( struct mulle_aba *p,
-                                     void *owner,
                                      void (*p_free)( void *, void *),
-                                     void *pointer);
+                                     void *pointer,
+                                     void *owner);
 
 MULLE_ABA_GLOBAL
 int   _mulle_aba_checkin_current_thread( struct mulle_aba *p);

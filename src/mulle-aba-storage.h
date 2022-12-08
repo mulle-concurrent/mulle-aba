@@ -67,17 +67,17 @@ struct _mulle_aba_freeentry
 #endif
 
    void   (*_free)( void *, void *);  // owner, pointer
-   void   *_owner;
    void   *_pointer;
+   void   *_owner;
 };
 
 
 
 MULLE_ABA_GLOBAL
 void   _mulle_aba_freeentry_set( struct _mulle_aba_freeentry *entry,
-                                 void *owner,
+                                 void (*p_free)( void *, void *),
                                  void *pointer,
-                                 void (*free)( void *, void *));
+                                 void *owner);
 
 static inline void _mulle_aba_freeentry_free( struct _mulle_aba_freeentry *entry,
                                               struct mulle_allocator *allocator)
@@ -393,6 +393,10 @@ struct _mulle_aba_world  *_mulle_aba_storage_alloc_world( struct _mulle_aba_stor
 MULLE_ABA_GLOBAL
 void   _mulle_aba_storage_free_world( struct _mulle_aba_storage *q,
                                       struct _mulle_aba_world *world);
+
+MULLE_ABA_GLOBAL
+void   _mulle_aba_storage_owned_pointer_free_world( struct _mulle_aba_world *world,
+                                                    struct _mulle_aba_storage *q);
 
 MULLE_ABA_GLOBAL
 void   _mulle_aba_world_assert_sanity( struct _mulle_aba_world *world);

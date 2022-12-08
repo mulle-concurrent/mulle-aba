@@ -82,7 +82,7 @@ static inline void   _mulle_aba_linkedlist_done( struct _mulle_aba_linkedlist *p
 //
 MULLE_ABA_GLOBAL
 void  _mulle_aba_linkedlist_add( struct _mulle_aba_linkedlist *list,
-                                 struct _mulle_aba_linkedlistentry  *entry);
+                                 struct _mulle_aba_linkedlistentry *entry);
 
 MULLE_ABA_GLOBAL
 struct _mulle_aba_linkedlistentry  *
