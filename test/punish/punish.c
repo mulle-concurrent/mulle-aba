@@ -43,7 +43,7 @@
 #define PROGRESS              0
 #define VERBOSE_PROGRESS      0
 #define FOREVER               0
-#define SINGLE_THREADED_TEST  1
+#define SINGLE_THREADED_TEST  0
 #define MULTI_THREADED_TEST   1
 #define N_THREADS             8
 

@@ -16,25 +16,25 @@
 
 // You can tweak the following #include with these commands.
 // (Use 9DB39403-9DF3-4E29-8871-E8D6023B9334 instead of mulle-allocator if there are duplicate entries)
-//    remove:             `mulle-sde dependency mark mulle-allocator no-header`
-//    rename:             `mulle-sde dependency|library set mulle-allocator include whatever.h`
-//    reorder:            `mulle-sde dependency move mulle-allocator <up|down>`
+//    remove #include:: `mulle-sde dependency mark mulle-allocator no-header`
+//    rename:              `mulle-sde dependency|library set mulle-allocator include whatever.h`
+//    reorder:             `mulle-sde dependency move mulle-allocator <up|down>`
 //    toggle #include:    `mulle-sde dependency mark mulle-allocator [no-]import`
-//    toggle public:      `mulle-sde dependency mark mulle-allocator [no-]public`
-//    toggle optional:    `mulle-sde dependency mark mulle-allocator [no-]require`
-//    remove for platform:`mulle-sde dependency mark mulle-allocator no-platform-<uname>`
+//    toggle public:       `mulle-sde dependency mark mulle-allocator [no-]public`
+//    toggle optional:     `mulle-sde dependency mark mulle-allocator [no-]require`
+//    remove for platform: `mulle-sde dependency mark mulle-allocator no-platform-<uname>`
 //        (use `mulle-sourcetree-to-c --unames` to list known values)
 #include <mulle-allocator/mulle-allocator.h>   // mulle-allocator
 
 // You can tweak the following #include with these commands.
 // (Use FDD72DA6-03FE-41C8-AC5E-BDC4E891E0E3 instead of mulle-thread if there are duplicate entries)
-//    remove:             `mulle-sde dependency mark mulle-thread no-header`
-//    rename:             `mulle-sde dependency|library set mulle-thread include whatever.h`
-//    reorder:            `mulle-sde dependency move mulle-thread <up|down>`
+//    remove #include:: `mulle-sde dependency mark mulle-thread no-header`
+//    rename:              `mulle-sde dependency|library set mulle-thread include whatever.h`
+//    reorder:             `mulle-sde dependency move mulle-thread <up|down>`
 //    toggle #include:    `mulle-sde dependency mark mulle-thread [no-]import`
-//    toggle public:      `mulle-sde dependency mark mulle-thread [no-]public`
-//    toggle optional:    `mulle-sde dependency mark mulle-thread [no-]require`
-//    remove for platform:`mulle-sde dependency mark mulle-thread no-platform-<uname>`
+//    toggle public:       `mulle-sde dependency mark mulle-thread [no-]public`
+//    toggle optional:     `mulle-sde dependency mark mulle-thread [no-]require`
+//    remove for platform: `mulle-sde dependency mark mulle-thread no-platform-<uname>`
 //        (use `mulle-sourcetree-to-c --unames` to list known values)
 #include <mulle-thread/mulle-thread.h>   // mulle-thread
 

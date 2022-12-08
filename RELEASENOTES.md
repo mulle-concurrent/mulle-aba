@@ -1,3 +1,8 @@
+# 3.0.0
+
+* adapt to changes in mulle-allocator 5
+
+
 ### 2.0.23
 
 * change GLOBALs for Windows
