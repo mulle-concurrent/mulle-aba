@@ -69,8 +69,8 @@ char  *mulle_aba_thread_name( void)
 }
 #endif
 
-# pragma mark -
-# pragma mark init/done
+
+# pragma mark - init/done
 
 int   _mulle_aba_init( struct mulle_aba *p,
                        struct mulle_allocator *allocator)
@@ -102,7 +102,7 @@ int   _mulle_aba_init( struct mulle_aba *p,
 
    // convenience for mulle_default_allocator
    if( allocator == &mulle_default_allocator)
-      mulle_allocator_set_aba( allocator, p, (void *) _mulle_aba_free);
+      mulle_allocator_set_aba( allocator, p, (void *) _mulle_aba_free_owned_pointer);
 
    return( rval);
 }
@@ -136,11 +136,11 @@ static int   _mulle_lockfree_deallocator_free_world_chain( struct mulle_aba *p,
       assert( next != tofree);
 
       MULLE_THREAD_UNPLEASANT_RACE_YIELD();
-      //
-      // sic! this looks weird, because 'p' looks like its freed, but its just
-      // the first parameter to _mulle_aba_storage_free_world
-      //
-      rval = _mulle_aba_free_owned_pointer( p, &p->storage, (void *) _mulle_aba_storage_free_world, tofree);
+
+      rval = _mulle_aba_free_owned_pointer( p,
+                                            (void (*)( void *, void *)) _mulle_aba_storage_owned_pointer_free_world,
+                                            tofree,
+                                            &p->storage);
       if( rval)
          return( rval);
       MULLE_THREAD_UNPLEASANT_RACE_YIELD();
@@ -149,7 +149,8 @@ static int   _mulle_lockfree_deallocator_free_world_chain( struct mulle_aba *p,
 }
 
 
-static int   _mulle_lockfree_deallocator_free_world_if_needed( struct mulle_aba *p, struct _mulle_aba_worldpointers world_ps)
+static int   _mulle_lockfree_deallocator_free_world_if_needed( struct mulle_aba *p,
+                                                               struct _mulle_aba_worldpointers world_ps)
 {
    struct _mulle_aba_world   *new_world;
    struct _mulle_aba_world   *old_world;
@@ -171,12 +172,14 @@ static int   _mulle_lockfree_deallocator_free_world_if_needed( struct mulle_aba 
    }
 
    assert( ! old_world->_link._next);
-   return( _mulle_aba_free_owned_pointer( p, &p->storage, (void *) _mulle_aba_storage_free_world, old_world));
+   return( _mulle_aba_free_owned_pointer( p,
+                                          (void (*)( void *, void *))_mulle_aba_storage_owned_pointer_free_world,
+                                          old_world,
+                                          &p->storage));
 }
 
 
-# pragma mark -
-# pragma mark register
+# pragma mark - register
 
 struct add_context
 {
@@ -188,7 +191,9 @@ struct add_context
 static int   add_thread( int mode, struct _mulle_aba_callback_info  *info, void *userinfo)
 {
 #if MULLE_ABA_TRACE
-   fprintf( stderr, "%s: %s (mode=%d, ts=%ld nt=%ld)\n", mulle_aba_thread_name(), __PRETTY_FUNCTION__, mode, info->new_world->_timestamp, info->new_world->_n_threads);
+   fprintf( stderr, "%s: %s (mode=%d, ts=%ld nt=%ld)\n",
+               mulle_aba_thread_name(), __PRETTY_FUNCTION__, mode,
+               info->new_world->_timestamp, info->new_world->_n_threads);
 #endif
    assert( info->old_world != info->new_world);
 
@@ -260,8 +265,7 @@ int   _mulle_aba_register_current_thread( struct mulle_aba *p)
 }
 
 
-# pragma mark -
-# pragma mark check in
+# pragma mark - check in
 
 static void   _mulle_aba_check_timestamp_range( struct mulle_aba *p, uintptr_t old, uintptr_t new)
 {
@@ -318,7 +322,11 @@ int   _mulle_aba_checkin_current_thread( struct mulle_aba *p)
    // TODO: Voodoo or necessity ? Think about it.
    mulle_atomic_memory_barrier();
 
-   world_ps = _mulle_aba_storage_change_worldpointer_2( &p->storage, _mulle_swap_checkin_intent, old_world_p, set_bit, NULL);
+   world_ps = _mulle_aba_storage_change_worldpointer_2( &p->storage,
+                                                        _mulle_swap_checkin_intent,
+                                                        old_world_p,
+                                                        set_bit,
+                                                        NULL);
    if( ! world_ps.new_world_p)
       return( -1);
 
@@ -336,8 +344,7 @@ int   _mulle_aba_checkin_current_thread( struct mulle_aba *p)
 }
 
 
-# pragma mark -
-# pragma mark unregister
+# pragma mark - unregister
 
 struct remove_context
 {
@@ -583,8 +590,7 @@ int   _mulle_aba_unregister_current_thread( struct mulle_aba *p)
 }
 
 
-# pragma mark -
-# pragma mark add pointer to free
+# pragma mark - add pointer to free
 
 static int   handle_callback_mode_for_add_context( int mode,
                                                    struct _mulle_aba_callback_info *info,
@@ -831,11 +837,10 @@ static int   reorganize_storage_and_increment_timestamp( int mode,
 }
 
 
-
 int   _mulle_aba_free_owned_pointer( struct mulle_aba *p,
-                                     void *owner,
                                      void (*p_free)( void *, void *),
-                                     void *pointer)
+                                     void *pointer,
+                                     void *owner)
 {
    _mulle_aba_worldpointer_t          world_p;
    int                                old_bit;
@@ -870,7 +875,7 @@ int   _mulle_aba_free_owned_pointer( struct mulle_aba *p,
 #if MULLE_ABA_TRACE
       fprintf( stderr,  "%s: *** p_free immediately, because RC=1 %p***\n", mulle_aba_thread_name(), pointer);
 #endif
-      (*p_free)( owner, pointer);
+      (*p_free)( pointer, owner);
       return( 0);
    }
 
@@ -892,7 +897,10 @@ int   _mulle_aba_free_owned_pointer( struct mulle_aba *p,
 #if MULLE_ABA_TRACE
          fprintf( stderr, "%s: update timestamp in world %p\n", mulle_aba_thread_name(), world_p);
 #endif
-         world_ps = _mulle_aba_storage_copy_change_worldpointer( &p->storage, _mulle_swap_free_intent, world_p, increment_timestamp, &ctxt);
+         world_ps = _mulle_aba_storage_copy_change_worldpointer( &p->storage,
+                                                                 _mulle_swap_free_intent,
+                                                                 world_p,
+                                                                 increment_timestamp, &ctxt);
       }
       else
          if( world->_n < world->_size)
@@ -901,7 +909,11 @@ int   _mulle_aba_free_owned_pointer( struct mulle_aba *p,
             fprintf( stderr, "%s: add storage and set rc in world %p\n", mulle_aba_thread_name(), world_p);
 #endif
             // add a storage to the world,
-            world_ps = _mulle_aba_storage_copy_change_worldpointer( &p->storage, _mulle_swap_free_intent, world_p, add_storage_and_increment_timestamp, &ctxt);
+            world_ps = _mulle_aba_storage_copy_change_worldpointer( &p->storage,
+                                                                    _mulle_swap_free_intent,
+                                                                    world_p,
+                                                                    add_storage_and_increment_timestamp,
+                                                                    &ctxt);
          }
          else
             if( _mulle_aba_world_count_available_reusable_storages( world))
@@ -913,7 +925,11 @@ int   _mulle_aba_free_owned_pointer( struct mulle_aba *p,
 #if MULLE_ABA_TRACE
                fprintf( stderr, "%s: reorganize world %p\n", mulle_aba_thread_name(), world_p);
 #endif
-               world_ps = _mulle_aba_storage_copy_change_worldpointer( &p->storage, _mulle_swap_free_intent, world_p, reorganize_storage_and_increment_timestamp, &ctxt);
+               world_ps = _mulle_aba_storage_copy_change_worldpointer( &p->storage,
+                                                                       _mulle_swap_free_intent,
+                                                                       world_p,
+                                                                       reorganize_storage_and_increment_timestamp,
+                                                                       &ctxt);
             }
             else
             {
@@ -924,7 +940,10 @@ int   _mulle_aba_free_owned_pointer( struct mulle_aba *p,
 #if MULLE_ABA_TRACE
                fprintf( stderr, "%s: grow and set RC in world %p\n", mulle_aba_thread_name(), world_p);
 #endif
-               world_ps = _mulle_aba_storage_grow_worldpointer( &p->storage, world->_size + 1, add_storage_and_increment_timestamp, &ctxt);
+               world_ps = _mulle_aba_storage_grow_worldpointer( &p->storage,
+                                                                world->_size + 1,
+                                                                add_storage_and_increment_timestamp,
+                                                                &ctxt);
             }
 
       if( world_ps.new_world_p)
@@ -974,7 +993,7 @@ int   _mulle_aba_free_owned_pointer( struct mulle_aba *p,
 #if MULLE_ABA_TRACE
          fprintf( stderr,  "%s: *** p_free immediately, because RC became 1 %p***\n", mulle_aba_thread_name(), pointer);
 #endif
-         (*p_free)( owner, pointer);
+         (*p_free)( pointer, owner);
 
          while( free_worlds)
          {
@@ -1004,7 +1023,7 @@ int   _mulle_aba_free_owned_pointer( struct mulle_aba *p,
       return( -1);
    }
 
-   _mulle_aba_freeentry_set( entry, owner, pointer, p_free);
+   _mulle_aba_freeentry_set( entry, p_free, pointer, owner);
    _mulle_aba_linkedlist_add( &ts_entry->_pointer_list, &entry->_link);
 #if MULLE_ABA_TRACE || MULLE_ABA_TRACE_LIST
    fprintf( stderr,  "\n%s: *** put pointer %p/%p on linked list %p of ts=%ld rc=%ld***\n",
@@ -1027,7 +1046,10 @@ int   _mulle_aba_free_owned_pointer( struct mulle_aba *p,
          return( -1);
 
       next = (struct _mulle_aba_world *) free_worlds->_link._next;
-      _mulle_aba_freeentry_set( entry, &p->storage, free_worlds, (void *) _mulle_aba_storage_free_world);
+      _mulle_aba_freeentry_set( entry,
+                                (void (*)( void *, void *)) _mulle_aba_storage_owned_pointer_free_world,
+                                free_worlds,
+                                &p->storage);
 
       _mulle_aba_linkedlist_add( &ts_entry->_pointer_list, &entry->_link);
 #if MULLE_ABA_TRACE || MULLE_ABA_TRACE_LIST
@@ -1043,8 +1065,7 @@ int   _mulle_aba_free_owned_pointer( struct mulle_aba *p,
 }
 
 
-# pragma mark -
-# pragma mark API
+# pragma mark - API
 
 // your thread must call this pretty much immediately after creation
 void   mulle_aba_register( void)
@@ -1065,7 +1086,7 @@ void   mulle_aba_checkin( void)
 }
 
 
-static void    _mulle_aba_no_owner_free( void *owner, void *pointer)
+static void    _mulle_aba_no_owner_free( void *pointer, void *owner)
 {
    void   (*p_free)( void *);
 
@@ -1084,9 +1105,9 @@ int   mulle_aba_free( void (*p_free)( void *), void *pointer)
 
    assert( p_free);
    return( _mulle_aba_free_owned_pointer( global,
-                                          p_free,
                                           _mulle_aba_no_owner_free,
-                                          pointer));
+                                          pointer,
+                                          p_free));
 }
 
 
@@ -1095,13 +1116,13 @@ int   _mulle_aba_free( struct mulle_aba *p,
                        void *pointer)
 {
    return( _mulle_aba_free_owned_pointer( p,
-                                          p_free,
                                           _mulle_aba_no_owner_free,
-                                          pointer));
+                                          pointer,
+                                          p_free));
 }
 
 
-int   mulle_aba_free_owned_pointer( void *owner, void (*p_free)( void *, void *), void *pointer)
+int   mulle_aba_free_owned_pointer( void (*p_free)( void *, void *), void *pointer, void *owner)
 {
    assert( global);
 
@@ -1112,7 +1133,7 @@ int   mulle_aba_free_owned_pointer( void *owner, void (*p_free)( void *, void *)
 //   if( ! mulle_aba_get_thread_timestamp())
 //      mulle_aba_register_current_thread();
 
-   return( _mulle_aba_free_owned_pointer( global, owner, p_free, pointer));
+   return( _mulle_aba_free_owned_pointer( global, p_free, pointer, owner));
 }
 
 
