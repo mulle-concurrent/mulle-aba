@@ -1,4 +1,4 @@
-cmake_minimum_required( VERSION 3.15)
+cmake_minimum_required( VERSION 3.14)
 
 project( mulle-aba C)
 
@@ -23,8 +23,8 @@ message( STATUS "CMAKE_STATIC_LIBRARY_SUFFIX=${CMAKE_STATIC_LIBRARY_SUFFIX}")
 
 if( HEADERS_PHASE)
    install( FILES ${INSTALL_PUBLIC_HEADERS}  DESTINATION "include/${PROJECT_NAME}")
-   install( FILES ${INSTALL_PRIVATE_HEADERS} DESTINATION "include/${PROJECT_NAME}/private")
-   install( FILES ${CMAKE_INCLUDES}          DESTINATION "include/${PROJECT_NAME}/cmake")
+   install( FILES ${INSTALL_PRIVATE_HEADERS} DESTINATION "include/${PROJECT_NAME}")
+   install( FILES ${INSTALL_CMAKE_INCLUDES}  DESTINATION "include/${PROJECT_NAME}/cmake")
 
    # short cut out
    if( NOT COMPILE_PHASE AND NOT LINK_PHASE)
