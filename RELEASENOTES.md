@@ -1,3 +1,7 @@
+### 3.0.1
+
+* remove package.json as it conflicts with clib.json
+
 # 3.0.0
 
 * adapt to changes in mulle-allocator 5

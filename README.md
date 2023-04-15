@@ -15,9 +15,9 @@ fairly complicated, please read the [Wikipedia article](//en.wikipedia.org/wiki/
 * [Example](example/main.m)
 
 
-| Release Version
-|-----------------------------------
- ![Mulle kybernetiK tag](https://img.shields.io/github/tag/mulle-concurrent/mulle-aba.svg?branch=release) [![Build Status](https://github.com/mulle-concurrent/mulle-aba/workflows/CI/badge.svg?branch=release)](//github.com/mulle-concurrent/mulle-aba)
+| Release Version                                       | Release Notes
+|-------------------------------------------------------|--------------
+| ![Mulle kybernetiK tag](https://img.shields.io/github/tag//mulle-aba.svg?branch=release) [![Build Status](https://github.com//mulle-aba/workflows/CI/badge.svg?branch=release)](//github.com//mulle-aba/actions)| [RELEASENOTES](RELEASENOTES.md) |
 
 
 ## API
@@ -25,9 +25,8 @@ fairly complicated, please read the [Wikipedia article](//en.wikipedia.org/wiki/
 * [Aba](dox/API_ABA.md)
 
 
-### You are here
 
-![Overview](overview.dot.svg)
+
 
 
 
@@ -36,32 +35,41 @@ fairly complicated, please read the [Wikipedia article](//en.wikipedia.org/wiki/
 Use [mulle-sde](//github.com/mulle-sde) to add mulle-aba to your project:
 
 ``` sh
-mulle-sde dependency add --c --github mulle-concurrent mulle-aba
+mulle-sde add github:/
 ```
+
+To only add the sources of mulle-aba with dependency
+sources use [clib](https://github.com/clibs/clib):
+
+
+``` sh
+clib install --out src/ /
+```
+
+Add `-isystem src/` to your `CFLAGS` and compile all the sources that were downloaded with your project.
+
 
 ## Install
 
-### mulle-sde
+### Install with mulle-sde
 
 Use [mulle-sde](//github.com/mulle-sde) to build and install mulle-aba and all dependencies:
 
 ``` sh
 mulle-sde install --prefix /usr/local \
-   https://github.com/mulle-concurrent/mulle-aba/archive/latest.tar.gz
+   https://github.com///archive/latest.tar.gz
 ```
 
 ### Manual Installation
 
-
 Install the requirements:
 
-Requirements                                               | Description
------------------------------------------------------------|-----------------------
-[mulle-allocator](//github.com/mulle-c/mulle-allocator)    | Memory allocation wrapper
-[mulle-thread](//github.com/mulle-concurrent/mulle-thread) | Threads and atomics
+| Requirements                                 | Description
+|----------------------------------------------|-----------------------
+| [mulle-allocator](https://github.com/mulle-c/mulle-allocator)             | 🔄 Flexible C memory allocation scheme
+| [mulle-thread](https://github.com/mulle-concurrent/mulle-thread)             | 🔠 Cross-platform thread/mutex/tss/atomic operations in C
 
-
-Install into `/usr/local`:
+Install **mulle-aba** into `/usr/local` with [cmake](https://cmake.org):
 
 ``` sh
 cmake -B build \
@@ -72,15 +80,8 @@ cmake --build build --config Release &&
 cmake --install build --config Release
 ```
 
-### Platforms and Compilers
-
-All platforms and compilers supported by
-[mulle-c11](//github.com/mulle-c/mulle-c11) and
-[mulle-thread](//github.com/mulle-concurrent/mulle-thread).
-
 ## Author
 
-[Nat!](//www.mulle-kybernetik.com/weblog) for
-[Mulle kybernetiK](//www.mulle-kybernetik.com) and
-[Codeon GmbH](//www.codeon.de)
+[Nat!](https://mulle-kybernetik.com/weblog) for Mulle kybernetiK
+
 
