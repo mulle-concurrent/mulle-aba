@@ -12,13 +12,5 @@ endif()
 #
 set( SOURCES
 src/mulle-aba.c
-src/mulle-aba-linkedlist.c
 src/mulle-aba-storage.c
-)
-
-#
-# contents selected with patternfile ??-source--standalone-sources
-#
-set( STANDALONE_SOURCES
-src/mulle-aba-standalone.c
 )
