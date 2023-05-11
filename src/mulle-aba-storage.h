@@ -38,8 +38,6 @@
 #include "include.h"
 
 #include "mulle-aba-defines.h"
-#include "mulle-aba-linkedlist.h"
-
 
 #include <assert.h>
 #include <stdint.h>
@@ -60,7 +58,7 @@ enum
 
 struct _mulle_aba_freeentry
 {
-   struct _mulle_aba_linkedlistentry   _link;
+   struct _mulle_concurrent_linkedlistentry   _link;
 
 #if MULLE_ABA_MEMTYPE_DEBUG
    uintptr_t   _memtype;
@@ -86,7 +84,7 @@ static inline void _mulle_aba_freeentry_free( struct _mulle_aba_freeentry *entry
 }
 
 MULLE_ABA_GLOBAL
-void   _mulle_aba_free_list_print( struct _mulle_aba_linkedlist *p);
+void   _mulle_aba_free_list_print( struct _mulle_concurrent_linkedlist *p);
 
 
 # pragma mark -
@@ -98,7 +96,7 @@ struct _mulle_aba_timestampentry
 #if MULLE_ABA_MEMTYPE_DEBUG
    uintptr_t                      _memtype;
 #endif
-   struct _mulle_aba_linkedlist   _pointer_list;
+   struct _mulle_concurrent_linkedlist   _pointer_list;
 };
 
 
@@ -191,7 +189,7 @@ struct _mulle_aba_worldpointers
 {
    _mulle_aba_worldpointer_t            new_world_p;
    _mulle_aba_worldpointer_t            old_world_p;
-   struct _mulle_aba_linkedlistentry   *free_worlds;
+   struct _mulle_concurrent_linkedlistentry   *free_worlds;
 };
 
 struct _mulle_aba_world;
@@ -270,7 +268,7 @@ static inline struct _mulle_aba_worldpointers
 //
 struct _mulle_aba_world
 {
-   struct _mulle_aba_linkedlistentry     _link;            // chain, used when deallocing/dealloced
+   struct _mulle_concurrent_linkedlistentry     _link;            // chain, used when deallocing/dealloced
 
 #if MULLE_ABA_MEMTYPE_DEBUG
    uintptr_t                             _memtype;
@@ -354,9 +352,9 @@ struct _mulle_aba_storage
    uintptr_t                      _memtype;
 #endif
    struct mulle_allocator         *_allocator;
-   struct _mulle_aba_linkedlist   _leaks;
-   struct _mulle_aba_linkedlist   _free_entries;
-   struct _mulle_aba_linkedlist   _free_worlds;
+   struct _mulle_concurrent_linkedlist   _leaks;
+   struct _mulle_concurrent_linkedlist   _free_entries;
+   struct _mulle_concurrent_linkedlist   _free_worlds;
 };
 
 
@@ -426,7 +424,7 @@ static inline void   _mulle_aba_storage_add_leak_world( struct _mulle_aba_storag
                                                         struct _mulle_aba_world *orphan)
 {
    // must not zero orphan
-   _mulle_aba_linkedlist_add( &q->_leaks, (void *) orphan);
+   _mulle_concurrent_linkedlist_add( &q->_leaks, (void *) orphan);
 #if MULLE_ABA_TRACE
    fprintf( stderr, "%s: add leak world %p to storage %p\n",
                         mulle_aba_thread_name(), orphan, q);
@@ -559,7 +557,7 @@ unsigned int
 
 #if DEBUG
 MULLE_ABA_GLOBAL
-void   _mulle_aba_linkedlist_print( struct _mulle_aba_linkedlist *p);
+void   _mulle_concurrent_linkedlist_print( struct _mulle_concurrent_linkedlist *p);
 #endif
 
 #endif /* defined(__test_delayed_deallocator_storage__delayed_deallocator_storage__) */

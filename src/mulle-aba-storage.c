@@ -31,8 +31,6 @@
 //  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 //  POSSIBILITY OF SUCH DAMAGE.
 //
-#include "include-private.h"
-
 #include "mulle-aba-storage.h"
 
 #include "mulle-aba-defines.h"
@@ -78,9 +76,9 @@ static int   print( struct _mulle_aba_freeentry   *entry,
 }
 
 
-void   _mulle_aba_linkedlist_print( struct _mulle_aba_linkedlist *p)
+void   _mulle_concurrent_linkedlist_print( struct _mulle_concurrent_linkedlist *p)
 {
-   _mulle_aba_linkedlist_walk( p, (void *)  print, NULL);
+   _mulle_concurrent_linkedlist_walk( p, (void *)  print, NULL);
 }
 #endif
 
@@ -425,7 +423,7 @@ struct _mulle_aba_freeentry
 {
    struct _mulle_aba_freeentry  *entry;
 
-   entry = (void *) _mulle_aba_linkedlist_remove_one( &q->_free_entries);
+   entry = (void *) _mulle_concurrent_linkedlist_remove_one( &q->_free_entries);
    if( entry)
    {
       entry->_link._next = 0;
@@ -462,7 +460,7 @@ void   _mulle_aba_storage_free_freeentry( struct _mulle_aba_storage *q,
                                           struct _mulle_aba_freeentry  *entry)
 {
    memset( entry, 0, sizeof( *entry));
-   _mulle_aba_linkedlist_add( &q->_free_entries, (void *) entry);
+   _mulle_concurrent_linkedlist_add( &q->_free_entries, (void *) entry);
 #if MULLE_ABA_TRACE || MULLE_ABA_TRACE_FREE || MULLE_ABA_TRACE_LIST
    fprintf( stderr, "%s: put entry %p on reuse chain %p\n",
                         mulle_aba_thread_name(),
@@ -498,7 +496,7 @@ static int  free_pointer_and_entry( struct _mulle_aba_freeentry *entry,
 
 
 static void   _mulle_aba_storage_linkedlist_free( struct _mulle_aba_storage *q,
-                                                  struct _mulle_aba_linkedlist  *list)
+                                                  struct _mulle_concurrent_linkedlist  *list)
 {
    assert( q);
    assert( list);
@@ -506,7 +504,7 @@ static void   _mulle_aba_storage_linkedlist_free( struct _mulle_aba_storage *q,
 #if MULLE_ABA_TRACE || MULLE_ABA_TRACE_LIST
    fprintf( stderr, "%s: free linked list %p\n", mulle_aba_thread_name(), list);
 #endif
-   _mulle_aba_linkedlist_walk( list, (void *) free_pointer_and_entry, q);
+   _mulle_concurrent_linkedlist_walk( list, (void *) free_pointer_and_entry, q);
 }
 
 
@@ -521,7 +519,7 @@ struct _mulle_aba_world   *_mulle_aba_storage_alloc_world( struct _mulle_aba_sto
 
    for(;;)
    {
-      world = (void *) _mulle_aba_linkedlist_remove_one( &q->_free_worlds);
+      world = (void *) _mulle_concurrent_linkedlist_remove_one( &q->_free_worlds);
       if( ! world)
          break;
 
@@ -571,7 +569,7 @@ void   _mulle_aba_storage_free_world( struct _mulle_aba_storage *q,
 
    memset( world, 0, _mulle_aba_world_get_size( world));
 
-   _mulle_aba_linkedlist_add( &q->_free_worlds, (void *) world);
+   _mulle_concurrent_linkedlist_add( &q->_free_worlds, (void *) world);
 
 #if MULLE_ABA_TRACE || MULLE_ABA_TRACE_FREE
    fprintf( stderr, "%s: put world %p on reuse chain %p\n",
@@ -592,7 +590,7 @@ void   _mulle_aba_storage_owned_pointer_free_world( struct _mulle_aba_world *wor
 
    memset( world, 0, _mulle_aba_world_get_size( world));
 
-   _mulle_aba_linkedlist_add( &q->_free_worlds, (void *) world);
+   _mulle_concurrent_linkedlist_add( &q->_free_worlds, (void *) world);
 
 #if MULLE_ABA_TRACE || MULLE_ABA_TRACE_FREE
    fprintf( stderr, "%s: put world %p on reuse chain %p\n",
@@ -621,31 +619,31 @@ static int  free_world( struct _mulle_aba_world *world,
 
 void   _mulle_aba_storage_free_leak_worlds( struct _mulle_aba_storage *q)
 {
-   struct _mulle_aba_linkedlist        list;
-   struct _mulle_aba_linkedlistentry  *entry;
+   struct _mulle_concurrent_linkedlist        list;
+   struct _mulle_concurrent_linkedlistentry  *entry;
 
 #if MULLE_ABA_TRACE
    fprintf( stderr, "%s: freeing leaked worlds %p of storage %p\n", mulle_aba_thread_name(), &q->_leaks, q);
 #endif
-   entry = _mulle_aba_linkedlist_remove_all( &q->_leaks);
+   entry = _mulle_concurrent_linkedlist_remove_all( &q->_leaks);
    _mulle_atomic_pointer_write( &list._head.pointer, entry);
 
-   _mulle_aba_linkedlist_walk( &list, (void *) free_world, q->_allocator);
+   _mulle_concurrent_linkedlist_walk( &list, (void *) free_world, q->_allocator);
 }
 
 
 void   _mulle_aba_storage_free_unused_worlds( struct _mulle_aba_storage *q)
 {
-   struct _mulle_aba_linkedlist        list;
-   struct _mulle_aba_linkedlistentry  *entry;
+   struct _mulle_concurrent_linkedlist        list;
+   struct _mulle_concurrent_linkedlistentry  *entry;
 
 #if MULLE_ABA_TRACE || MULLE_ABA_TRACE_LIST || MULLE_ABA_TRACE_FREE
    fprintf( stderr, "%s: freeing unused worlds %p of storage %p\n", mulle_aba_thread_name(), &q->_free_worlds, q);
 #endif
-   entry = _mulle_aba_linkedlist_remove_all( &q->_free_worlds);
+   entry = _mulle_concurrent_linkedlist_remove_all( &q->_free_worlds);
    _mulle_atomic_pointer_write( &list._head.pointer, entry);
 
-   _mulle_aba_linkedlist_walk( &list, (void *) free_world, q->_allocator);
+   _mulle_concurrent_linkedlist_walk( &list, (void *) free_world, q->_allocator);
 }
 
 
@@ -666,16 +664,16 @@ static int  free_entry( struct _mulle_aba_freeentry *entry,
 
 void   _mulle_aba_storage_free_unused_free_entries( struct _mulle_aba_storage *q)
 {
-   struct _mulle_aba_linkedlist        list;
-   struct _mulle_aba_linkedlistentry  *entry;
+   struct _mulle_concurrent_linkedlist        list;
+   struct _mulle_concurrent_linkedlistentry  *entry;
 
 #if MULLE_ABA_TRACE || MULLE_ABA_TRACE_LIST || MULLE_ABA_TRACE_FREE
    fprintf( stderr, "%s: freeing unused entries %p of storage %p\n", mulle_aba_thread_name(), &q->_free_entries, q);
 #endif
-   entry = _mulle_aba_linkedlist_remove_all( &q->_free_entries);
+   entry = _mulle_concurrent_linkedlist_remove_all( &q->_free_entries);
    _mulle_atomic_pointer_write( &list._head.pointer, entry);
 
-   _mulle_aba_linkedlist_walk( &list, (void *) free_entry, q->_allocator);
+   _mulle_concurrent_linkedlist_walk( &list, (void *) free_entry, q->_allocator);
 }
 
 
@@ -1473,7 +1471,7 @@ void   _mulle_aba_world_check_timerange( struct _mulle_aba_world *world,
    unsigned int                          ts_index;
    unsigned int                          index;
    void                                  *rc;
-   struct _mulle_aba_linkedlist         free_list;
+   struct _mulle_concurrent_linkedlist         free_list;
 
    if( ! world->_timestamp)
       return;
@@ -1517,7 +1515,7 @@ void   _mulle_aba_world_check_timerange( struct _mulle_aba_world *world,
                               &ts_entry->_pointer_list,
                               timestamp,
                               (intptr_t) _mulle_atomic_pointer_read( &ts_entry->_retain_count_1) + 1);
-      _mulle_aba_linkedlist_print( &ts_entry->_pointer_list);
+      _mulle_concurrent_linkedlist_print( &ts_entry->_pointer_list);
 #endif
 
       //
