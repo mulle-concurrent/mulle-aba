@@ -38,4 +38,16 @@
 //        (use `mulle-sourcetree-to-c --unames` to list known values)
 #include <mulle-thread/mulle-thread.h>   // mulle-thread
 
+// You can tweak the following #include with these commands.
+// (Use 7ACE8853-C4E5-499A-951D-A9CDCC85785F instead of mulle-linkedlist if there are duplicate entries)
+//    remove #include:: `mulle-sde dependency mark mulle-linkedlist no-header`
+//    rename:              `mulle-sde dependency|library set mulle-linkedlist include whatever.h`
+//    reorder:             `mulle-sde dependency move mulle-linkedlist <up|down>`
+//    toggle #include:    `mulle-sde dependency mark mulle-linkedlist [no-]import`
+//    toggle public:       `mulle-sde dependency mark mulle-linkedlist [no-]public`
+//    toggle optional:     `mulle-sde dependency mark mulle-linkedlist [no-]require`
+//    remove for platform: `mulle-sde dependency mark mulle-linkedlist no-platform-<uname>`
+//        (use `mulle-sourcetree-to-c --unames` to list known values)
+#include <mulle-linkedlist/mulle-linkedlist.h>   // mulle-linkedlist
+
 #endif

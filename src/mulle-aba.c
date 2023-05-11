@@ -36,7 +36,6 @@
 
 #include "mulle-aba-defines.h"
 
-#include "include-private.h"
 #include <assert.h>
 #include <errno.h>
 #include <stdlib.h>
@@ -1024,7 +1023,7 @@ int   _mulle_aba_free_owned_pointer( struct mulle_aba *p,
    }
 
    _mulle_aba_freeentry_set( entry, p_free, pointer, owner);
-   _mulle_aba_linkedlist_add( &ts_entry->_pointer_list, &entry->_link);
+   _mulle_concurrent_linkedlist_add( &ts_entry->_pointer_list, &entry->_link);
 #if MULLE_ABA_TRACE || MULLE_ABA_TRACE_LIST
    fprintf( stderr,  "\n%s: *** put pointer %p/%p on linked list %p of ts=%ld rc=%ld***\n",
                         mulle_aba_thread_name(),
@@ -1051,7 +1050,7 @@ int   _mulle_aba_free_owned_pointer( struct mulle_aba *p,
                                 free_worlds,
                                 &p->storage);
 
-      _mulle_aba_linkedlist_add( &ts_entry->_pointer_list, &entry->_link);
+      _mulle_concurrent_linkedlist_add( &ts_entry->_pointer_list, &entry->_link);
 #if MULLE_ABA_TRACE || MULLE_ABA_TRACE_LIST
       fprintf( stderr,  "\n%s: *** put old world %p on linked list %p of ts=%ld rc=%ld***\n", mulle_aba_thread_name(), free_worlds, &ts_entry->_pointer_list, timestamp, (intptr_t) _mulle_atomic_pointer_read( &ts_entry->_retain_count_1) + 1);
 #endif
@@ -1059,7 +1058,7 @@ int   _mulle_aba_free_owned_pointer( struct mulle_aba *p,
    }
 
 #if MULLE_ABA_TRACE
-   _mulle_aba_linkedlist_print( &ts_entry->_pointer_list);
+   _mulle_concurrent_linkedlist_print( &ts_entry->_pointer_list);
 #endif
    return( 0);
 }

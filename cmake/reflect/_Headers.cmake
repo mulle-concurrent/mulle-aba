@@ -24,13 +24,6 @@ src/reflect/_mulle-aba-include-private.h
 )
 
 #
-# contents selected with patternfile ??-header--private-generic-headers
-#
-set( PRIVATE_GENERIC_HEADERS
-src/generic/include-private.h
-)
-
-#
 # contents selected with patternfile ??-header--public-generated-headers
 #
 set( PUBLIC_GENERATED_HEADERS
@@ -52,7 +45,6 @@ src/generic/include.h
 set( PUBLIC_HEADERS
 src/mulle-aba-defines.h
 src/mulle-aba.h
-src/mulle-aba-linkedlist.h
 src/mulle-aba-storage.h
 )
 
