@@ -17,13 +17,6 @@ src/reflect
 )
 
 #
-# contents selected with patternfile ??-header--private-generated-headers
-#
-set( PRIVATE_GENERATED_HEADERS
-src/reflect/_mulle-aba-include-private.h
-)
-
-#
 # contents selected with patternfile ??-header--public-generated-headers
 #
 set( PUBLIC_GENERATED_HEADERS

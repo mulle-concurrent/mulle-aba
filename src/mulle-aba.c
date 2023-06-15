@@ -1155,8 +1155,8 @@ void   mulle_aba_unregister()
 
 void   mulle_aba_init( struct mulle_allocator *allocator)
 {
-   assert( MULLE_THREAD_VERSION    >= ((0 << 20) | (2 << 8) | 0));
-   assert( MULLE_ALLOCATOR_VERSION >= ((0 << 20) | (1 << 8) | 0));
+   assert( MULLE__THREAD_VERSION    >= ((0 << 20) | (2 << 8) | 0));
+   assert( MULLE__ALLOCATOR_VERSION >= ((0 << 20) | (1 << 8) | 0));
 
    if( ! allocator)
       allocator = &mulle_default_allocator;

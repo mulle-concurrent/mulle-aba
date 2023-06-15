@@ -38,17 +38,17 @@
 //
 // community version is always even
 //
-#define MULLE_ABA_VERSION     ((3 << 20) | (0 << 8) | 1)
+#define MULLE__ABA_VERSION     ((3 << 20) | (0 << 8) | 1)
 
 #include "include.h"
 
 #include <stdio.h>
 #include "mulle-aba-storage.h"
 
-#if MULLE_ALLOCATOR_VERSION < ((4 << 20) | (0 << 8) | 0)
+#if MULLE__ALLOCATOR_VERSION < ((4 << 20) | (0 << 8) | 0)
 # error "mulle-allocator is too old"
 #endif
-#if MULLE_THREAD_VERSION < ((4 << 20) | (1 << 8) | 8)
+#if MULLE__THREAD_VERSION < ((4 << 20) | (1 << 8) | 8)
 # error "mulle-thread is too old"
 #endif
 
@@ -67,10 +67,10 @@ struct mulle_aba
 // you must call this before mulle_aba_init if you want to change the
 // global. Hint: rarely useful.
 //
-MULLE_ABA_GLOBAL
+MULLE__ABA_GLOBAL
 void                mulle_aba_set_global( struct mulle_aba *p);
 
-MULLE_ABA_GLOBAL
+MULLE__ABA_GLOBAL
 struct mulle_aba   *mulle_aba_get_global( void);
 
 //
@@ -78,16 +78,16 @@ struct mulle_aba   *mulle_aba_get_global( void);
 // the allocator is used for mulle_aba internal allocations. Not for
 // freeing stuff passed to mulle_aba_free
 //
-MULLE_ABA_GLOBAL
+MULLE__ABA_GLOBAL
 void   mulle_aba_init( struct mulle_allocator *allocator);
 
-MULLE_ABA_GLOBAL
+MULLE__ABA_GLOBAL
 void   mulle_aba_done( void);
 
 //
 // your code must call this at the start of each thread once
 //
-MULLE_ABA_GLOBAL
+MULLE__ABA_GLOBAL
 void   mulle_aba_register( void);
 
 //
@@ -96,22 +96,22 @@ void   mulle_aba_register( void);
 // `select` and `mulle_aba_register` again afterwards. Reason
 // being, that this would fix the "getchar" misery.
 //
-MULLE_ABA_GLOBAL
+MULLE__ABA_GLOBAL
 void   mulle_aba_checkin( void);
 
 //
 // your code must call this at the end of each thread
 //
-MULLE_ABA_GLOBAL
+MULLE__ABA_GLOBAL
 void   mulle_aba_unregister( void);
 
 
 // everybody frees through this
-MULLE_ABA_GLOBAL
+MULLE__ABA_GLOBAL
 int   mulle_aba_free( void (*p_free)( void *), void *pointer);
 
 // same as above but owner, will be first parameter for p_free
-MULLE_ABA_GLOBAL
+MULLE__ABA_GLOBAL
 int   mulle_aba_free_owned_pointer( void (*p_free)( void *owner, void *pointer),
                                     void *pointer,
                                     void *owner);
@@ -119,15 +119,15 @@ int   mulle_aba_free_owned_pointer( void (*p_free)( void *owner, void *pointer),
 #pragma mark - test support
 
 // only really useful for testing
-MULLE_ABA_GLOBAL
+MULLE__ABA_GLOBAL
 void        mulle_aba_reset( void);
 
 // act on global
-MULLE_ABA_GLOBAL
+MULLE__ABA_GLOBAL
 void       *mulle_aba_get_worldpointer( void);
-MULLE_ABA_GLOBAL
+MULLE__ABA_GLOBAL
 int         mulle_aba_is_registered( void);
-MULLE_ABA_GLOBAL
+MULLE__ABA_GLOBAL
 uintptr_t   mulle_aba_current_thread_get_timestamp( void);
 
 
@@ -144,40 +144,40 @@ static inline int   _mulle_aba_is_setup( struct mulle_aba *p)
 }
 
 
-MULLE_ABA_GLOBAL
+MULLE__ABA_GLOBAL
 int   _mulle_aba_init( struct mulle_aba *p,
                        struct mulle_allocator *allocator);
-MULLE_ABA_GLOBAL
+MULLE__ABA_GLOBAL
 void  _mulle_aba_done( struct mulle_aba *p);
 
-MULLE_ABA_GLOBAL
+MULLE__ABA_GLOBAL
 int   _mulle_aba_unregister_current_thread( struct mulle_aba *p);
-MULLE_ABA_GLOBAL
+MULLE__ABA_GLOBAL
 int   _mulle_aba_register_current_thread( struct mulle_aba *p);
 
-MULLE_ABA_GLOBAL
+MULLE__ABA_GLOBAL
 int   _mulle_aba_free( struct mulle_aba *p,
                        void (*p_free)( void *),
                        void *pointer);
 
-MULLE_ABA_GLOBAL
+MULLE__ABA_GLOBAL
 int   _mulle_aba_free_owned_pointer( struct mulle_aba *p,
                                      void (*p_free)( void *, void *),
                                      void *pointer,
                                      void *owner);
 
-MULLE_ABA_GLOBAL
+MULLE__ABA_GLOBAL
 int   _mulle_aba_checkin_current_thread( struct mulle_aba *p);
 
-MULLE_ABA_GLOBAL
+MULLE__ABA_GLOBAL
 int   _mulle_aba_is_current_thread_registered( struct mulle_aba *p);
 
 
 #pragma mark - test support
 
-MULLE_ABA_GLOBAL
+MULLE__ABA_GLOBAL
 uintptr_t   _mulle_aba_current_thread_get_timestamp( struct mulle_aba *p);
-MULLE_ABA_GLOBAL
+MULLE__ABA_GLOBAL
 void        *_mulle_aba_get_worldpointer( struct mulle_aba *p);
 
 
