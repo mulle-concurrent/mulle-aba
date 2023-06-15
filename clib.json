@@ -6,23 +6,19 @@
    "license" : "BSD-3-Clause",
    "repo" : "mulle-concurrent/mulle-aba",
    "src" : [
-      "src/generic/include-private.h",
       "src/generic/include.h",
       "src/mulle-aba-defines.h",
-      "src/mulle-aba-linkedlist.c",
-      "src/mulle-aba-linkedlist.h",
-      "src/mulle-aba-standalone.c",
       "src/mulle-aba-storage.c",
       "src/mulle-aba-storage.h",
       "src/mulle-aba.c",
       "src/mulle-aba.h",
-      "src/reflect/_mulle-aba-include-private.h",
       "src/reflect/_mulle-aba-include.h",
       "src/reflect/_mulle-aba-provide.h",
       "src/reflect/_mulle-aba-versioncheck.h"
    ],
    "dependencies" : {
       "mulle-c/mulle-allocator": "*",
-      "mulle-concurrent/mulle-thread": "*"
+      "mulle-concurrent/mulle-thread": "*",
+      "mulle-concurrent/mulle-linkedlist": "*"
    }
 }

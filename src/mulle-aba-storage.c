@@ -39,8 +39,9 @@
 #include <stdio.h>
 #include <string.h>
 
-
+#if MULLE_ABA_TRACE || MULLE_ABA_TRACE_SWAP || STATE_STATS || ! defined( NDEBUG)
 static int   _mulle_aba_worldpointer_state( _mulle_aba_worldpointer_t world_p);
+#endif
 
 
 void   _mulle_aba_freeentry_set( struct _mulle_aba_freeentry *entry,
@@ -580,7 +581,7 @@ void   _mulle_aba_storage_free_world( struct _mulle_aba_storage *q,
 }
 
 
-MULLE_ABA_GLOBAL
+MULLE__ABA_GLOBAL
 void   _mulle_aba_storage_owned_pointer_free_world( struct _mulle_aba_world *world,
                                                     struct _mulle_aba_storage *q)
 {
@@ -919,29 +920,29 @@ static inline void  log_swap_worlds( enum _mulle_swap_intent intention,
 #endif
 
 // this only works with guard malloc, if addresses aren't reused
-#ifndef NDEBUG
-{
-   static struct
-   {
-      _mulle_aba_worldpointer_t    world_p;
-      mulle_thread_t               thread;
-   } last_world_ps[ 0x20];
-   static mulle_atomic_pointer_t   last_world_ps_index;
-   unsigned int                    i;
-
-   if( rval)
-   {
-//      for( i = 0; i < 0x20; i++)
-//         if( mulle_thread_self() != last_world_ps[ i].thread)
-//            assert( new_world_p != last_world_ps[ i].world_p);
-
-      i = ((uintptr_t) _mulle_atomic_pointer_read( &last_world_ps_index)) & 0x1F;
-      last_world_ps[ i].world_p = new_world_p;
-      last_world_ps[ i].thread  = mulle_thread_self();
-      _mulle_atomic_pointer_increment( &last_world_ps_index);
-   }
-}
-#endif
+// #ifndef NDEBUG
+// {
+//    static struct
+//    {
+//       _mulle_aba_worldpointer_t    world_p;
+//       mulle_thread_t               thread;
+//    } last_world_ps[ 0x20];
+//    static mulle_atomic_pointer_t   last_world_ps_index;
+//    unsigned int                    i;
+//
+//    if( rval)
+//    {
+// //      for( i = 0; i < 0x20; i++)
+// //         if( mulle_thread_self() != last_world_ps[ i].thread)
+// //            assert( new_world_p != last_world_ps[ i].world_p);
+//
+//       i = ((uintptr_t) _mulle_atomic_pointer_read( &last_world_ps_index)) & 0x1F;
+//       last_world_ps[ i].world_p = new_world_p;
+//       last_world_ps[ i].thread  = mulle_thread_self();
+//       _mulle_atomic_pointer_increment( &last_world_ps_index);
+//    }
+// }
+// #endif
 
 #if STATE_STATS
    mulle_transitions_count[ _mulle_aba_worldpointer_state( old_world_p)][ _mulle_aba_worldpointer_state( new_world_p)]++;
@@ -1048,6 +1049,7 @@ struct _mulle_aba_worldpointers
 /*
  *
  */
+#if MULLE_ABA_TRACE || MULLE_ABA_TRACE_SWAP || STATE_STATS || ! defined( NDEBUG)
 
 static int   _mulle_aba_worldpointer_state( _mulle_aba_worldpointer_t world_p)
 {
@@ -1062,6 +1064,8 @@ static int   _mulle_aba_worldpointer_state( _mulle_aba_worldpointer_t world_p)
       state += 8;
    return( state);
 }
+
+#endif
 
 
 _mulle_aba_worldpointer_t
