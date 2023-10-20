@@ -9,5 +9,12 @@
  *
  *      mulle-sde environment set MULLE_MATCH_TO_C_RUN DISABLE
  */
+#ifndef mulle_aba_provide_h__
+#define mulle_aba_provide_h__
+
+
 #include "mulle-aba-defines.h"
 #include "mulle-aba-storage.h"
+
+
+#endif
