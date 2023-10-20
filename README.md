@@ -17,7 +17,7 @@ fairly complicated, please read the [Wikipedia article](//en.wikipedia.org/wiki/
 
 | Release Version                                       | Release Notes
 |-------------------------------------------------------|--------------
-| ![Mulle kybernetiK tag](https://img.shields.io/github/tag//mulle-aba.svg?branch=release) [![Build Status](https://github.com//mulle-aba/workflows/CI/badge.svg?branch=release)](//github.com//mulle-aba/actions)| [RELEASENOTES](RELEASENOTES.md) |
+| ![Mulle kybernetiK tag](https://img.shields.io/github/tag/mulle-concurrent/mulle-aba.svg?branch=release) [![Build Status](https://github.com/mulle-concurrent/mulle-aba/workflows/CI/badge.svg?branch=release)](//github.com/mulle-concurrent/mulle-aba/actions)| [RELEASENOTES](RELEASENOTES.md) |
 
 
 ## API
@@ -64,7 +64,7 @@ Use [mulle-sde](//github.com/mulle-sde) to build and install mulle-aba and all d
 
 ``` sh
 mulle-sde install --prefix /usr/local \
-   https://github.com///archive/latest.tar.gz
+   https://github.com/mulle-concurrent/mulle-aba/archive/latest.tar.gz
 ```
 
 ### Manual Installation
@@ -75,6 +75,8 @@ Install the requirements:
 |----------------------------------------------|-----------------------
 | [mulle-allocator](https://github.com/mulle-c/mulle-allocator)             | 🔄 Flexible C memory allocation scheme
 | [mulle-thread](https://github.com/mulle-concurrent/mulle-thread)             | 🔠 Cross-platform thread/mutex/tss/atomic operations in C
+
+Download the latest [tar](https://github.com/mulle-concurrent/mulle-aba/archive/refs/tags/latest.tar.gz) or [zip](https://github.com/mulle-concurrent/mulle-aba/archive/refs/tags/latest.zip) archive and unpack it.
 
 Install **mulle-aba** into `/usr/local` with [cmake](https://cmake.org):
 

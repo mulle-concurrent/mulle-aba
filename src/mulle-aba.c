@@ -853,7 +853,6 @@ int   _mulle_aba_free_owned_pointer( struct mulle_aba *p,
    struct _mulle_aba_timestampentry   *ts_entry;
    struct add_context                 ctxt;
    uintptr_t                          timestamp;
-   int                                loops;
 
    assert( p);
    assert( p_free);
@@ -881,7 +880,7 @@ int   _mulle_aba_free_owned_pointer( struct mulle_aba *p,
    ctxt.allocator = p->storage._allocator;
    ctxt.ts_storage = NULL;
 
-   for( loops = 0;; ++loops)
+   for( ;;)
    {
       world     = mulle_aba_worldpointer_get_struct( world_p);
       old_bit   = mulle_aba_worldpointer_get_bit( world_p);

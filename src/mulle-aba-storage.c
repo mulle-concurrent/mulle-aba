@@ -1153,7 +1153,6 @@ struct _mulle_aba_worldpointers
    _mulle_aba_worldpointer_t         locked_world_p;
    _mulle_aba_worldpointer_t         new_world_p;
    int                               fail;
-   int                               loops;
    int                               rval;
    struct _mulle_aba_callback_info   ctxt;
    struct _mulle_aba_world           *tofree;
@@ -1165,7 +1164,7 @@ struct _mulle_aba_worldpointers
 
    *dealloced = NULL;
 
-   for( loops = 0;; loops++) // loops is just for debugging
+   for(;;) // loops is just for debugging
    {
       world_ps       = _mulle_aba_storage_lock_worldpointer( q);
 
@@ -1267,20 +1266,18 @@ struct _mulle_aba_worldpointers
 
 struct _mulle_aba_worldpointers
    _mulle_aba_storage_copy_change_worldpointer( struct _mulle_aba_storage *q,
-                                                 enum _mulle_swap_intent  intention,
-                                                 _mulle_aba_worldpointer_t   old_world_p,
-                                                 int (*callback)( int, struct _mulle_aba_callback_info *, void *),
-                                                 void *userinfo)
+                                                enum _mulle_swap_intent  intention,
+                                                _mulle_aba_worldpointer_t   old_world_p,
+                                                int (*callback)( int, struct _mulle_aba_callback_info *, void *),
+                                                void *userinfo)
 {
-   _mulle_aba_worldpointer_t        new_world_p;
+   _mulle_aba_worldpointer_t         new_world_p;
    int                               rval;
    struct _mulle_aba_callback_info   ctxt;
-   int                               loops;
    int                               cmd;
 
    assert( old_world_p);
 
-   loops = 0;
    ctxt.new_world  = NULL;
    ctxt.new_bit    = 0;
    ctxt.new_locked = 0;
@@ -1289,7 +1286,6 @@ struct _mulle_aba_worldpointers
 
    do
    {
-      ++loops;
       cmd            = _mulle_aba_world_reuse;
       old_world_p    = _mulle_aba_storage_get_worldpointer( q);
 start_with_old_world:
