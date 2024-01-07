@@ -38,19 +38,12 @@
 //
 // community version is always even
 //
-#define MULLE__ABA_VERSION     ((3 << 20) | (1 << 8) | 0)
+#define MULLE__ABA_VERSION     ((3UL << 20) | (1 << 8) | 0)
 
 #include "include.h"
 
 #include <stdio.h>
 #include "mulle-aba-storage.h"
-
-#if MULLE__ALLOCATOR_VERSION < ((4 << 20) | (0 << 8) | 0)
-# error "mulle-allocator is too old"
-#endif
-#if MULLE__THREAD_VERSION < ((4 << 20) | (1 << 8) | 8)
-# error "mulle-thread is too old"
-#endif
 
 //
 // THIS IS THREADSAFE, except where noted
@@ -180,5 +173,11 @@ uintptr_t   _mulle_aba_current_thread_get_timestamp( struct mulle_aba *p);
 MULLE__ABA_GLOBAL
 void        *_mulle_aba_get_worldpointer( struct mulle_aba *p);
 
+
+#ifdef __has_include
+# if __has_include( "_mulle-aba-versioncheck.h")
+#  include "_mulle-aba-versioncheck.h"
+# endif
+#endif
 
 #endif

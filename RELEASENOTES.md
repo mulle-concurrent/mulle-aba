@@ -1,3 +1,8 @@
+## 3.1.0
+
+* moved mulle-aba-linkedlist to own mulle-linkedlist project for the benefit of mulle-objc-runtime
+
+
 ### 3.0.1
 
 * remove package.json as it conflicts with clib.json
