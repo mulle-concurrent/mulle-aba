@@ -332,12 +332,12 @@ int   _mulle_aba_checkin_current_thread( struct mulle_aba *p)
    MULLE_THREAD_UNPLEASANT_RACE_YIELD();
 
    rval = _mulle_lockfree_deallocator_free_world_if_needed( p, world_ps);
-   if( rval)
-      return( -1);
-
-   _mulle_aba_check_timestamp_range( p, last, new);
-   mulle_thread_tss_set( p->timestamp_thread_key, (void *) (new + 1));
-
+   assert( rval == 0 || rval == -1);
+   if( ! rval)
+   {
+      _mulle_aba_check_timestamp_range( p, last, new);
+      mulle_thread_tss_set( p->timestamp_thread_key, (void *) (new + 1));
+   }
    //
    return( rval);
 }
@@ -1154,9 +1154,6 @@ void   mulle_aba_unregister()
 
 void   mulle_aba_init( struct mulle_allocator *allocator)
 {
-   assert( MULLE__THREAD_VERSION    >= ((0 << 20) | (2 << 8) | 0));
-   assert( MULLE__ALLOCATOR_VERSION >= ((0 << 20) | (1 << 8) | 0));
-
    if( ! allocator)
       allocator = &mulle_default_allocator;
 
