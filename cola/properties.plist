@@ -26,6 +26,14 @@
          repo="mulle-thread";
          url="https://github.com/mulle-concurrent/mulle-thread";
          user="mulle-concurrent";
+      },
+      {
+         description="🔂 mulle-linkedlist a wait and lock-free linked list";
+         domain="github";
+         name="mulle-linkedlist";
+         repo="mulle-linkedlist";
+         url="https://github.com/mulle-concurrent/mulle-linkedlist";
+         user="mulle-concurrent";
       }
-   )
+   );
 }
