@@ -7,7 +7,7 @@
       user="mulle-concurrent";
       repo="mulle-aba";
       homepage="https://github.com/mulle-concurrent/mulle-aba";
-      license="BSD-3-Clause"
+      license="BSD-3-Clause";
    };
    dependencies =
    (
