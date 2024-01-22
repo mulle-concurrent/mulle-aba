@@ -7,7 +7,7 @@
 
 #if defined( MULLE__ALLOCATOR_VERSION)
 # ifndef MULLE__ALLOCATOR_VERSION_MIN
-#  define MULLE__ALLOCATOR_VERSION_MIN  ((6UL << 20) | (0 << 8) | 0)
+#  define MULLE__ALLOCATOR_VERSION_MIN  ((6UL << 20) | (0 << 8) | 1)
 # endif
 # ifndef MULLE__ALLOCATOR_VERSION_MAX
 #  define MULLE__ALLOCATOR_VERSION_MAX  ((7UL << 20) | (0 << 8) | 0)
@@ -37,7 +37,7 @@
 
 #if defined( MULLE__THREAD_VERSION)
 # ifndef MULLE__THREAD_VERSION_MIN
-#  define MULLE__THREAD_VERSION_MIN  ((4UL << 20) | (5 << 8) | 2)
+#  define MULLE__THREAD_VERSION_MIN  ((4UL << 20) | (5 << 8) | 3)
 # endif
 # ifndef MULLE__THREAD_VERSION_MAX
 #  define MULLE__THREAD_VERSION_MAX  ((5UL << 20) | (0 << 8) | 0)
