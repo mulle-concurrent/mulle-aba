@@ -1095,7 +1095,6 @@ _mulle_aba_worldpointer_t
          return( NULL);
       }
 
-
       assert_swap_worlds( intention, new_world_p, old_world_p);
 
       last_world_p = __mulle_atomic_pointer_cas( &q->_world.pointer, new_world_p, old_world_p);
