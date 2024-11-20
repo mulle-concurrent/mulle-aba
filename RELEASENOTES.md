@@ -1,3 +1,7 @@
+### 3.1.1
+
+Various small improvements
+
 ## 3.1.0
 
 * moved mulle-aba-linkedlist to own mulle-linkedlist project for the benefit of mulle-objc-runtime
