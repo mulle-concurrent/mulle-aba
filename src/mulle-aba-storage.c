@@ -726,76 +726,76 @@ static inline void  assert_valid_transition(  _mulle_aba_worldpointer_t new_worl
    switch( old_state)
    {
    case 0 :
-      assert( new_state == 2 && intention == _mulle_swap_lock_intent);
+      assert( (new_state == 2 && intention == _mulle_swap_lock_intent));
       break;
 
    case 1 :
-      assert( new_state == 3 && intention == _mulle_swap_lock_intent);
+      assert( (new_state == 3 && intention == _mulle_swap_lock_intent));
       break;
 
    case 2 :
-      assert( new_state == 0 && intention == _mulle_swap_unlock_intent ||
-              new_state == 1 && intention == _mulle_swap_register_intent );
+      assert( (new_state == 0 && intention == _mulle_swap_unlock_intent) ||
+              (new_state == 1 && intention == _mulle_swap_register_intent));
       break;
 
    case 3 :
-      assert( new_state == 1 && intention == _mulle_swap_unlock_intent ||
-              new_state == 2 && intention == _mulle_swap_unregister_intent ||
-              new_state == 9 && intention == _mulle_swap_register_intent);
+      assert( (new_state == 1 && intention == _mulle_swap_unlock_intent) ||
+              (new_state == 2 && intention == _mulle_swap_unregister_intent) ||
+              (new_state == 9 && intention == _mulle_swap_register_intent));
       break;
 
    case 5 :
-      assert( new_state ==  7 && intention == _mulle_swap_lock_intent ||
-              new_state ==  5 && intention == _mulle_swap_checkin_intent);
+      assert( (new_state ==  7 && intention == _mulle_swap_lock_intent) ||
+              (new_state ==  5 && intention == _mulle_swap_checkin_intent));
       break;
 
    case 7 :
-      assert( new_state ==  2 && intention == _mulle_swap_unregister_intent ||
-              new_state ==  5 && intention == _mulle_swap_unlock_intent ||
-              new_state ==  5 && intention == _mulle_swap_checkin_intent ||
-              new_state == 13 && intention == _mulle_swap_register_intent);
+      assert( (new_state ==  2 && intention == _mulle_swap_unregister_intent) ||
+              (new_state ==  5 && intention == _mulle_swap_unlock_intent) ||
+              (new_state ==  5 && intention == _mulle_swap_checkin_intent) ||
+              (new_state == 13 && intention == _mulle_swap_register_intent));
       break;
 
    case 9 :
-      assert( new_state == 11 && intention == _mulle_swap_lock_intent ||
-              new_state == 12 && intention == _mulle_swap_free_intent);
+      assert( (new_state == 11 && intention == _mulle_swap_lock_intent) ||
+              (new_state == 12 && intention == _mulle_swap_free_intent));
       break;
 
    case 11 :
-      assert( new_state ==  1 && intention == _mulle_swap_unregister_intent ||
-              new_state ==  9 && intention == _mulle_swap_unlock_intent ||
-              new_state ==  9 && intention == _mulle_swap_unregister_intent ||
-              new_state ==  9 && intention == _mulle_swap_register_intent ||
-              new_state == 12 && intention == _mulle_swap_free_intent);
+      assert( (new_state ==  1 && intention == _mulle_swap_unregister_intent) ||
+              (new_state ==  9 && intention == _mulle_swap_unlock_intent) ||
+              (new_state ==  9 && intention == _mulle_swap_unregister_intent) ||
+              (new_state ==  9 && intention == _mulle_swap_register_intent) ||
+              (new_state == 12 && intention == _mulle_swap_free_intent));
       break;
 
    case 12 :
-      assert( new_state == 13 && intention == _mulle_swap_checkin_intent ||
-              new_state == 14 && intention == _mulle_swap_lock_intent);
+      assert( (new_state == 13 && intention == _mulle_swap_checkin_intent) ||
+              (new_state == 14 && intention == _mulle_swap_lock_intent));
       break;
 
    case 13 :
-      assert( new_state == 12 && intention == _mulle_swap_free_intent ||
-              new_state == 13 && intention == _mulle_swap_checkin_intent ||
-              new_state == 15 && intention == _mulle_swap_lock_intent);
+      assert( (new_state == 12 && intention == _mulle_swap_free_intent) ||
+              (new_state == 13 && intention == _mulle_swap_checkin_intent) ||
+              (new_state == 15 && intention == _mulle_swap_lock_intent));
       break;
 
    case 14 :
-      assert( new_state ==  5 && intention == _mulle_swap_unregister_intent ||
-              new_state == 12 && intention == _mulle_swap_unlock_intent ||
-              new_state == 13 && intention == _mulle_swap_register_intent ||
-              new_state == 13 && intention == _mulle_swap_unregister_intent ||
-              new_state == 13 && intention == _mulle_swap_checkin_intent ||
-              new_state == 14 && intention == _mulle_swap_free_intent);
+      assert( (new_state ==  5 && intention == _mulle_swap_unregister_intent) ||
+              (new_state == 12 && intention == _mulle_swap_unlock_intent) ||
+              (new_state == 13 && intention == _mulle_swap_register_intent) ||
+              (new_state == 13 && intention == _mulle_swap_unregister_intent) ||
+              (new_state == 13 && intention == _mulle_swap_checkin_intent) ||
+              (new_state == 14 && intention == _mulle_swap_free_intent));
       break;
 
    case 15 :
-      assert( new_state ==  5 && intention == _mulle_swap_unregister_intent ||
-              new_state == 12 && intention == _mulle_swap_free_intent ||
-              new_state == 13 && intention == _mulle_swap_unlock_intent ||
-              new_state == 13 && intention == _mulle_swap_checkin_intent ||
-              new_state == 13 && intention == _mulle_swap_register_intent ||
-              new_state == 13 && intention == _mulle_swap_unregister_intent);
+      assert( (new_state ==  5 && intention == _mulle_swap_unregister_intent) ||
+              (new_state == 12 && intention == _mulle_swap_free_intent) ||
+              (new_state == 13 && intention == _mulle_swap_unlock_intent) ||
+              (new_state == 13 && intention == _mulle_swap_checkin_intent) ||
+              (new_state == 13 && intention == _mulle_swap_register_intent) ||
+              (new_state == 13 && intention == _mulle_swap_unregister_intent));
       break;
 
    default :

@@ -189,6 +189,8 @@ struct add_context
 
 static int   add_thread( int mode, struct _mulle_aba_callback_info  *info, void *userinfo)
 {
+   MULLE_C_UNUSED( userinfo);
+
 #if MULLE_ABA_TRACE
    fprintf( stderr, "%s: %s (mode=%d, ts=%ld nt=%ld)\n",
                mulle_aba_thread_name(), __PRETTY_FUNCTION__, mode,
@@ -280,6 +282,8 @@ static void   _mulle_aba_check_timestamp_range( struct mulle_aba *p, uintptr_t o
 
 static int   set_bit( int mode, struct _mulle_aba_callback_info  *info, void *userinfo)
 {
+   MULLE_C_UNUSED( userinfo);
+
 #if MULLE_ABA_TRACE
    fprintf( stderr, "%s: %s (mode=%d, ts=%ld nt=%ld)\n", mulle_aba_thread_name(), __PRETTY_FUNCTION__, mode, info->new_world->_timestamp, info->new_world->_n_threads);
 #endif
@@ -643,6 +647,8 @@ static int   pre_check_world_for_timestamp_increment( int mode,
                                                       struct _mulle_aba_callback_info *info,
                                                       struct add_context *context)
 {
+   MULLE_C_UNUSED( mode);
+
    assert( info->old_world != info->new_world);
    //
    // if the world has changed to our benefit, cancel and free like usual
@@ -675,6 +681,9 @@ static int   size_check_world_for_timestamp_increment( int mode,
                                                        struct _mulle_aba_callback_info *info,
                                                        struct add_context *context)
 {
+   MULLE_C_UNUSED( mode);
+   MULLE_C_UNUSED( context);
+
    assert( info->old_world != info->new_world);
 
    // if the world is now too small, also bail
