@@ -7,46 +7,56 @@
 
 #if defined( MULLE__ALLOCATOR_VERSION)
 # ifndef MULLE__ALLOCATOR_VERSION_MIN
-#  define MULLE__ALLOCATOR_VERSION_MIN  ((7UL << 20) | (0 << 8) | 0)
+#  define MULLE__ALLOCATOR_VERSION_MIN  ((7UL << 20) | (0 << 8) | 2)
 # endif
 # ifndef MULLE__ALLOCATOR_VERSION_MAX
 #  define MULLE__ALLOCATOR_VERSION_MAX  ((8UL << 20) | (0 << 8) | 0)
 # endif
-# if MULLE__ALLOCATOR_VERSION < MULLE__ALLOCATOR_VERSION_MIN
-#  error "mulle-allocator is too old"
-# endif
-# if MULLE__ALLOCATOR_VERSION >= MULLE__ALLOCATOR_VERSION_MAX
-#  error "mulle-allocator is too new"
+# if MULLE__ALLOCATOR_VERSION < MULLE__ALLOCATOR_VERSION_MIN || MULLE__ALLOCATOR_VERSION >= MULLE__ALLOCATOR_VERSION_MAX
+#  pragma message("MULLE__ALLOCATOR_VERSION     is " MULLE_C_STRINGIFY_MACRO( MULLE__ALLOCATOR_VERSION))
+#  pragma message("MULLE__ALLOCATOR_VERSION_MIN is " MULLE_C_STRINGIFY_MACRO( MULLE__ALLOCATOR_VERSION_MIN))
+#  pragma message("MULLE__ALLOCATOR_VERSION_MAX is " MULLE_C_STRINGIFY_MACRO( MULLE__ALLOCATOR_VERSION_MAX))
+#  if MULLE__ALLOCATOR_VERSION < MULLE__ALLOCATOR_VERSION_MIN
+#   error "mulle-allocator is too old"
+#  else
+#   error "mulle-allocator is too new"
+#  endif
 # endif
 #endif
-
 #if defined( MULLE__LINKEDLIST_VERSION)
 # ifndef MULLE__LINKEDLIST_VERSION_MIN
-#  define MULLE__LINKEDLIST_VERSION_MIN  ((0UL << 20) | (0 << 8) | 3)
+#  define MULLE__LINKEDLIST_VERSION_MIN  ((0UL << 20) | (0 << 8) | 5)
 # endif
 # ifndef MULLE__LINKEDLIST_VERSION_MAX
 #  define MULLE__LINKEDLIST_VERSION_MAX  ((0UL << 20) | (1 << 8) | 0)
 # endif
-# if MULLE__LINKEDLIST_VERSION < MULLE__LINKEDLIST_VERSION_MIN
-#  error "mulle-linkedlist is too old"
-# endif
-# if MULLE__LINKEDLIST_VERSION >= MULLE__LINKEDLIST_VERSION_MAX
-#  error "mulle-linkedlist is too new"
+# if MULLE__LINKEDLIST_VERSION < MULLE__LINKEDLIST_VERSION_MIN || MULLE__LINKEDLIST_VERSION >= MULLE__LINKEDLIST_VERSION_MAX
+#  pragma message("MULLE__LINKEDLIST_VERSION     is " MULLE_C_STRINGIFY_MACRO( MULLE__LINKEDLIST_VERSION))
+#  pragma message("MULLE__LINKEDLIST_VERSION_MIN is " MULLE_C_STRINGIFY_MACRO( MULLE__LINKEDLIST_VERSION_MIN))
+#  pragma message("MULLE__LINKEDLIST_VERSION_MAX is " MULLE_C_STRINGIFY_MACRO( MULLE__LINKEDLIST_VERSION_MAX))
+#  if MULLE__LINKEDLIST_VERSION < MULLE__LINKEDLIST_VERSION_MIN
+#   error "mulle-linkedlist is too old"
+#  else
+#   error "mulle-linkedlist is too new"
+#  endif
 # endif
 #endif
-
 #if defined( MULLE__THREAD_VERSION)
 # ifndef MULLE__THREAD_VERSION_MIN
-#  define MULLE__THREAD_VERSION_MIN  ((4UL << 20) | (6 << 8) | 0)
+#  define MULLE__THREAD_VERSION_MIN  ((4UL << 20) | (6 << 8) | 2)
 # endif
 # ifndef MULLE__THREAD_VERSION_MAX
 #  define MULLE__THREAD_VERSION_MAX  ((5UL << 20) | (0 << 8) | 0)
 # endif
-# if MULLE__THREAD_VERSION < MULLE__THREAD_VERSION_MIN
-#  error "mulle-thread is too old"
-# endif
-# if MULLE__THREAD_VERSION >= MULLE__THREAD_VERSION_MAX
-#  error "mulle-thread is too new"
+# if MULLE__THREAD_VERSION < MULLE__THREAD_VERSION_MIN || MULLE__THREAD_VERSION >= MULLE__THREAD_VERSION_MAX
+#  pragma message("MULLE__THREAD_VERSION     is " MULLE_C_STRINGIFY_MACRO( MULLE__THREAD_VERSION))
+#  pragma message("MULLE__THREAD_VERSION_MIN is " MULLE_C_STRINGIFY_MACRO( MULLE__THREAD_VERSION_MIN))
+#  pragma message("MULLE__THREAD_VERSION_MAX is " MULLE_C_STRINGIFY_MACRO( MULLE__THREAD_VERSION_MAX))
+#  if MULLE__THREAD_VERSION < MULLE__THREAD_VERSION_MIN
+#   error "mulle-thread is too old"
+#  else
+#   error "mulle-thread is too new"
+#  endif
 # endif
 #endif
 

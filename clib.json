@@ -1,6 +1,6 @@
 {
    "name" : "mulle-aba",
-   "version" : "3.1.1",
+   "version" : "3.1.2",
    "description" : "🚮 A lock-free, cross-platform solution to the ABA problem",
    "keywords" : [],
    "license" : "BSD-3-Clause",
