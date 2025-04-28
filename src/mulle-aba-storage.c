@@ -477,6 +477,8 @@ static int  free_pointer_and_entry( struct _mulle_aba_freeentry *entry,
 {
    struct _mulle_aba_storage *q;
 
+   MULLE_C_UNUSED( prev);
+
    q = userinfo;
 #if MULLE_ABA_TRACE || MULLE_ABA_TRACE_LIST
    fprintf( stderr, "%s: free linked list entry %p (for %p)\n", mulle_aba_thread_name(), entry, entry->_pointer);
@@ -608,6 +610,8 @@ static int  free_world( struct _mulle_aba_world *world,
                         void *userinfo)
 {
    struct mulle_allocator   *allocator;
+
+   MULLE_C_UNUSED( prev);
 
    allocator = userinfo;
 #if MULLE_ABA_TRACE || MULLE_ABA_TRACE_LIST || MULLE_ABA_TRACE_FREE
@@ -829,7 +833,6 @@ static inline void  assert_swap_worlds( enum _mulle_swap_intent intention,
                                        _mulle_aba_worldpointer_t old_world_p)
 {
 #ifndef NDEBUG
-
    struct _mulle_aba_world   *new_world;
    struct _mulle_aba_world   *old_world;
 
@@ -887,6 +890,9 @@ static inline void  assert_swap_worlds( enum _mulle_swap_intent intention,
       assert( ! mulle_aba_worldpointer_get_struct( new_world_p)->_timestamp ||   (mulle_aba_worldpointer_get_struct( new_world_p)->_timestamp >=  mulle_aba_worldpointer_get_struct( old_world_p)->_timestamp));
    }
 #endif
+   MULLE_C_UNUSED( intention);   // just used in asserts
+   MULLE_C_UNUSED( new_world_p); // just used in asserts
+   MULLE_C_UNUSED( old_world_p); // just used in asserts
 }
 
 
@@ -947,6 +953,8 @@ static inline void  log_swap_worlds( enum _mulle_swap_intent intention,
 #if STATE_STATS
    mulle_transitions_count[ _mulle_aba_worldpointer_state( old_world_p)][ _mulle_aba_worldpointer_state( new_world_p)]++;
 #endif
+
+   MULLE_C_UNUSED( rval);
 }
 
 
