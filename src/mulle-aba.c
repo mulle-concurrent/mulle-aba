@@ -215,7 +215,7 @@ static int   add_thread( int mode, struct _mulle_aba_callback_info  *info, void 
 
 int   _mulle_aba_is_current_thread_registered( struct mulle_aba *p)
 {
-   assert( p->timestamp_thread_key != -1);
+   assert( p->timestamp_thread_key != (mulle_thread_tss_t) -1);
    return( mulle_thread_tss_get( p->timestamp_thread_key) != NULL);
 }
 
@@ -259,7 +259,7 @@ int   _mulle_aba_register_current_thread( struct mulle_aba *p)
    if( ! timestamp)
       timestamp = 1;
 
-   assert( p->timestamp_thread_key != -1);
+   assert( p->timestamp_thread_key != (mulle_thread_tss_t) -1);
    mulle_thread_tss_set( p->timestamp_thread_key, (void *) timestamp);
 
    return( _mulle_lockfree_deallocator_free_world_chain( p, dealloced));
@@ -443,7 +443,7 @@ int   _mulle_aba_unregister_current_thread( struct mulle_aba *p)
    unsigned int                      i, n;
 
    /* check in first */
-   assert( p->timestamp_thread_key != -1);
+   assert( p->timestamp_thread_key != (mulle_thread_tss_t) -1);
 
    for(;;)
    {

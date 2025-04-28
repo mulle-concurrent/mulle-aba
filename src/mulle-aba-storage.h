@@ -166,7 +166,7 @@ static inline struct _mulle_aba_timestampentry  *
    _mulle_aba_timestampstorage_get_timestampentry_at_index( struct _mulle_aba_timestampstorage *ts_storage,
                                                             unsigned int index)
 {
-   assert( index >= 0 && index < _mulle_aba_timestampstorage_n_entries);
+   assert( /* index >= 0 && */ index < _mulle_aba_timestampstorage_n_entries);
    return( &ts_storage->_entries[ index]);
 }
 

@@ -1,4 +1,4 @@
-cmake_minimum_required( VERSION 3.14)
+cmake_minimum_required( VERSION 3.13...99.99)
 
 project( mulle-aba VERSION 3.1.2 LANGUAGES C)
 
