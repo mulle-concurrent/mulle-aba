@@ -121,6 +121,8 @@ static void
 //      assert( ts_storage->_entries[ i]._retain_count_1._nonatomic == (void *) -1);
       assert( ! _mulle_atomic_pointer_nonatomic_read( &ts_storage->_entries[ i]._pointer_list._head.pointer));
    }
+
+   MULLE_C_UNUSED( ts_storage);
 }
 
 
@@ -361,6 +363,7 @@ void   _mulle_aba_world_assert_sanity( struct _mulle_aba_world *world)
 
    assert( ! world->_timestamp || _mulle_aba_world_get_timestampentry( world, world->_timestamp));
 #endif
+   MULLE_C_UNUSED( world);
 }
 
 
@@ -658,6 +661,8 @@ static int  free_entry( struct _mulle_aba_freeentry *entry,
 {
    struct mulle_allocator   *allocator;
 
+   MULLE_C_UNUSED( prev);
+
    allocator = userinfo;
 #if MULLE_ABA_TRACE || MULLE_ABA_TRACE_LIST || MULLE_ABA_TRACE_FREE
    fprintf( stderr, "%s: free unused linked list entry %p\n", mulle_aba_thread_name(), entry);
@@ -954,6 +959,9 @@ static inline void  log_swap_worlds( enum _mulle_swap_intent intention,
    mulle_transitions_count[ _mulle_aba_worldpointer_state( old_world_p)][ _mulle_aba_worldpointer_state( new_world_p)]++;
 #endif
 
+   MULLE_C_UNUSED( intention);
+   MULLE_C_UNUSED( new_world_p);
+   MULLE_C_UNUSED( old_world_p);
    MULLE_C_UNUSED( rval);
 }
 
@@ -1446,7 +1454,7 @@ int   _mulle_aba_timestampstorage_set_usage_bit( struct _mulle_aba_timestampstor
    {
       usage  = (uintptr_t) _mulle_atomic_pointer_read( &ts_storage->_usage_bits);
       expect = usage;
-      i_mask = 1UL << index;
+      i_mask = ((uintptr_t) 1) << index;
       usage  = (usage & ~(i_mask)) | (bit ? i_mask : 0);
       MULLE_THREAD_UNPLEASANT_RACE_YIELD();
 
