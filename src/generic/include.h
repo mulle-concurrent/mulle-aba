@@ -20,7 +20,7 @@
  */
 
 #include "_mulle-aba-include.h"
-#ifdef MULLE__ABA_BUILD
+#if defined( MULLE__ABA_BUILD) || defined( MULLE__CORE_BUILD)
 # define MULLE__ABA_GLOBAL    MULLE_C_GLOBAL
 #else
 # if defined( MULLE_ABA_INCLUDE_DYNAMIC) || (defined( MULLE_INCLUDE_DYNAMIC) && ! defined( MULLE_ABA_INCLUDE_STATIC))
