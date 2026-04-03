@@ -22,7 +22,7 @@
 //    remove #include: `mulle-sde dependency mark mulle-allocator no-header`
 //    rename              : `mulle-sde dependency|library set mulle-allocator include whatever.h`
 //    reorder             : `mulle-sde dependency move mulle-allocator <up|down>`
-//    toggle #include: `mulle-sde dependency mark mulle-allocator [no-]import`
+//    toggle objc         : `mulle-sde dependency mark mulle-allocator [no-]import`
 //    toggle public       : `mulle-sde dependency mark mulle-allocator [no-]public`
 //    toggle optional     : `mulle-sde dependency mark mulle-allocator [no-]require`
 //    remove for platform : `mulle-sde dependency mark mulle-allocator no-platform-<uname>`
@@ -37,7 +37,7 @@
 //    remove #include: `mulle-sde dependency mark mulle-thread no-header`
 //    rename              : `mulle-sde dependency|library set mulle-thread include whatever.h`
 //    reorder             : `mulle-sde dependency move mulle-thread <up|down>`
-//    toggle #include: `mulle-sde dependency mark mulle-thread [no-]import`
+//    toggle objc         : `mulle-sde dependency mark mulle-thread [no-]import`
 //    toggle public       : `mulle-sde dependency mark mulle-thread [no-]public`
 //    toggle optional     : `mulle-sde dependency mark mulle-thread [no-]require`
 //    remove for platform : `mulle-sde dependency mark mulle-thread no-platform-<uname>`
@@ -52,7 +52,7 @@
 //    remove #include: `mulle-sde dependency mark mulle-linkedlist no-header`
 //    rename              : `mulle-sde dependency|library set mulle-linkedlist include whatever.h`
 //    reorder             : `mulle-sde dependency move mulle-linkedlist <up|down>`
-//    toggle #include: `mulle-sde dependency mark mulle-linkedlist [no-]import`
+//    toggle objc         : `mulle-sde dependency mark mulle-linkedlist [no-]import`
 //    toggle public       : `mulle-sde dependency mark mulle-linkedlist [no-]public`
 //    toggle optional     : `mulle-sde dependency mark mulle-linkedlist [no-]require`
 //    remove for platform : `mulle-sde dependency mark mulle-linkedlist no-platform-<uname>`

@@ -327,6 +327,7 @@ static inline struct _mulle_aba_timestampstorage  *
    return( ts_storage);
 }
 
+MULLE__ABA_GLOBAL
 struct _mulle_aba_timestampentry   *
    _mulle_aba_world_get_timestampentry( struct _mulle_aba_world *world,
                                          uintptr_t timestamp);
@@ -386,6 +387,7 @@ MULLE__ABA_GLOBAL
 void   _mulle_aba_storage_free_freeentry( struct _mulle_aba_storage *q,
                                           struct _mulle_aba_freeentry  *entry);
 
+MULLE__ABA_GLOBAL
 struct _mulle_aba_world  *_mulle_aba_storage_alloc_world( struct _mulle_aba_storage *q,
                                                           unsigned int size);
 MULLE__ABA_GLOBAL
