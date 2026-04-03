@@ -93,8 +93,8 @@ struct _mulle_aba_timestampstorage *
    unsigned int                          i;
 
    ts_storage = mulle_allocator_calloc( allocator, 1, sizeof( *ts_storage));
-   if( ! ts_storage)
-      return( ts_storage);
+   assert( ts_storage);
+
 #if MULLE_ABA_MEMTYPE_DEBUG
    ts_storage->_memtype = _mulle_aba_timestampstorage_memtype;
 #endif
@@ -441,8 +441,7 @@ struct _mulle_aba_freeentry
    else
    {
       entry = mulle_allocator_calloc( q->_allocator, 1, sizeof( *entry));
-      if( ! entry)
-         return( NULL);
+      assert( entry);
 
 #if MULLE_ABA_TRACE || MULLE_ABA_TRACE_LIST || MULLE_ABA_TRACE_ALLOC
       fprintf( stderr, "%s: allocated list entry %p\n", mulle_aba_thread_name(), entry);
@@ -548,20 +547,20 @@ struct _mulle_aba_world   *_mulle_aba_storage_alloc_world( struct _mulle_aba_sto
                                    sizeof( struct _mulle_aba_world) +
                                    sizeof( struct _mulle_aba_timestampstorage *) * size);
 
-   if( world)
-   {
+   assert( world);
+
 #if MULLE_ABA_MEMTYPE_DEBUG
-      world->_memtype = _mulle_aba_world_memtype;
+   world->_memtype = _mulle_aba_world_memtype;
 #endif
-      world->_size = size;
-      assert( ! world->_link._next);
+   world->_size = size;
+   assert( ! world->_link._next);
 #ifndef NDEBUG
-      _mulle_aba_world_assert_sanity( world);
+   _mulle_aba_world_assert_sanity( world);
 #endif
 #if MULLE_ABA_TRACE || MULLE_ABA_TRACE_ALLOC
-      fprintf( stderr, "%s: alloc world %p\n", mulle_aba_thread_name(), world);
+   fprintf( stderr, "%s: alloc world %p\n", mulle_aba_thread_name(), world);
 #endif
-   }
+
    return( world);
 }
 
@@ -944,7 +943,7 @@ static inline void  log_swap_worlds( enum _mulle_swap_intent intention,
 //    if( rval)
 //    {
 // //      for( i = 0; i < 0x20; i++)
-// //         if( mulle_thread_self() != last_world_ps[ i].thread)
+// //         if( ! mulle_thread_equal( mulle_thread_self(), last_world_ps[ i].thread))
 // //            assert( new_world_p != last_world_ps[ i].world_p);
 //
 //       i = ((uintptr_t) _mulle_atomic_pointer_read( &last_world_ps_index)) & 0x1F;

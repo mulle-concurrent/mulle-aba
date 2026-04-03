@@ -1024,11 +1024,7 @@ int   _mulle_aba_free_owned_pointer( struct mulle_aba *p,
    _mulle_aba_world_assert_sanity( mulle_aba_worldpointer_get_struct( world_p));
 #endif
    entry = _mulle_aba_storage_alloc_freeentry( &p->storage);
-   if( ! entry)
-   {
-      assert( 0);
-      return( -1);
-   }
+   assert( entry);
 
    _mulle_aba_freeentry_set( entry, p_free, pointer, owner);
    _mulle_concurrent_linkedlist_add( &ts_entry->_pointer_list, &entry->_link);
@@ -1049,8 +1045,8 @@ int   _mulle_aba_free_owned_pointer( struct mulle_aba *p,
    while( free_worlds)
    {
       entry = _mulle_aba_storage_alloc_freeentry( &p->storage);
-      if( ! entry)
-         return( -1);
+      assert( entry);
+
 
       next = (struct _mulle_aba_world *) free_worlds->_link._next;
       _mulle_aba_freeentry_set( entry,
