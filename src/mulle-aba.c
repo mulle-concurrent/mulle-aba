@@ -61,6 +61,7 @@ void   mulle_aba_set_global( struct mulle_aba *p)
    global = p;
 }
 
+
 #if defined( MULLE_ABA_TRACE) & (MULLE_ABA_TRACE == 1848)
 char  *mulle_aba_thread_name( void)
 {
@@ -75,6 +76,8 @@ int   _mulle_aba_init( struct mulle_aba *p,
                        struct mulle_allocator *allocator)
 {
    int   rval;
+
+   assert( ! p->timestamp_thread_key);
 
    /*
     * the automatic destruction is only available for the global API
@@ -99,20 +102,16 @@ int   _mulle_aba_init( struct mulle_aba *p,
    }
 #endif
 
-   // convenience for mulle_default_allocator
-   if( allocator == &mulle_default_allocator)
-      mulle_allocator_set_aba( allocator, p, (void *) _mulle_aba_free_owned_pointer);
-
    return( rval);
 }
 
 
 void   _mulle_aba_done( struct mulle_aba *p)
 {
-   if( p->storage._allocator == &mulle_default_allocator)
-      mulle_allocator_set_aba( p->storage._allocator, NULL, NULL);
    _mulle_aba_storage_done( &p->storage);
    mulle_thread_tss_free( p->timestamp_thread_key);
+
+   memset( &p->storage, 0, sizeof( p->storage));
 }
 
 
@@ -1171,12 +1170,21 @@ void   mulle_aba_init( struct mulle_allocator *allocator)
       perror( "_mulle_aba_unregister_thread");
       abort();
    }
+
+   // convenience for mulle_default_allocator
+   // its stupid...
+   if( allocator == &mulle_default_allocator)
+      mulle_aba_set_allocator_aba( allocator);
 }
 
 
 void   mulle_aba_done( void)
 {
    assert( global);
+
+   if( global->storage._allocator == &mulle_default_allocator)
+      mulle_allocator_set_aba( global->storage._allocator, NULL, NULL);
+
    _mulle_aba_done( global);
 }
 

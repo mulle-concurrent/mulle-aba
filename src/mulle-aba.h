@@ -56,12 +56,41 @@ struct mulle_aba
 };
 
 
+MULLE__ABA_GLOBAL
+int   _mulle_aba_init( struct mulle_aba *p,
+                       struct mulle_allocator *allocator);
+MULLE__ABA_GLOBAL
+void  _mulle_aba_done( struct mulle_aba *p);
+
+MULLE__ABA_GLOBAL
+int   _mulle_aba_unregister_current_thread( struct mulle_aba *p);
+MULLE__ABA_GLOBAL
+int   _mulle_aba_register_current_thread( struct mulle_aba *p);
+
+MULLE__ABA_GLOBAL
+int   _mulle_aba_free( struct mulle_aba *p,
+                       void (*p_free)( void *),
+                       void *pointer);
+
+MULLE__ABA_GLOBAL
+int   _mulle_aba_free_owned_pointer( struct mulle_aba *p,
+                                     void (*p_free)( void *, void *),
+                                     void *pointer,
+                                     void *owner);
+
+MULLE__ABA_GLOBAL
+int   _mulle_aba_checkin_current_thread( struct mulle_aba *p);
+
+MULLE__ABA_GLOBAL
+int   _mulle_aba_is_current_thread_registered( struct mulle_aba *p);
+
+
 //
 // you must call this before mulle_aba_init if you want to change the
 // global. Hint: rarely useful.
 //
 MULLE__ABA_GLOBAL
-void                mulle_aba_set_global( struct mulle_aba *p);
+void               mulle_aba_set_global( struct mulle_aba *p);
 
 MULLE__ABA_GLOBAL
 struct mulle_aba   *mulle_aba_get_global( void);
@@ -109,6 +138,18 @@ int   mulle_aba_free_owned_pointer( void (*p_free)( void *owner, void *pointer),
                                     void *pointer,
                                     void *owner);
 
+
+static inline void   mulle_aba_set_allocator_aba( struct mulle_allocator *allocator)
+{
+   struct mulle_aba   *global;
+
+   global = mulle_aba_get_global();
+   assert( global);
+   mulle_allocator_set_aba( allocator, global,
+                                       (mulle_allocator_aba_t *) _mulle_aba_free_owned_pointer);
+}
+
+
 #pragma mark - test support
 
 // only really useful for testing
@@ -136,34 +177,6 @@ static inline int   _mulle_aba_is_setup( struct mulle_aba *p)
    return( _mulle_aba_storage_is_setup( &p->storage));
 }
 
-
-MULLE__ABA_GLOBAL
-int   _mulle_aba_init( struct mulle_aba *p,
-                       struct mulle_allocator *allocator);
-MULLE__ABA_GLOBAL
-void  _mulle_aba_done( struct mulle_aba *p);
-
-MULLE__ABA_GLOBAL
-int   _mulle_aba_unregister_current_thread( struct mulle_aba *p);
-MULLE__ABA_GLOBAL
-int   _mulle_aba_register_current_thread( struct mulle_aba *p);
-
-MULLE__ABA_GLOBAL
-int   _mulle_aba_free( struct mulle_aba *p,
-                       void (*p_free)( void *),
-                       void *pointer);
-
-MULLE__ABA_GLOBAL
-int   _mulle_aba_free_owned_pointer( struct mulle_aba *p,
-                                     void (*p_free)( void *, void *),
-                                     void *pointer,
-                                     void *owner);
-
-MULLE__ABA_GLOBAL
-int   _mulle_aba_checkin_current_thread( struct mulle_aba *p);
-
-MULLE__ABA_GLOBAL
-int   _mulle_aba_is_current_thread_registered( struct mulle_aba *p);
 
 
 #pragma mark - test support
