@@ -10,3 +10,9 @@ export MULLE_SOURCETREE_RESOLVE_TAG="NO"
 export MULLE_SOURCETREE_TO_C_PRIVATEINCLUDE_FILE="DISABLE"
 
 
+#
+#
+#
+export vibecoding="off"
+
+
