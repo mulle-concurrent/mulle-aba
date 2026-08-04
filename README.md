@@ -29,6 +29,11 @@ fairly complicated, please read the [Wikipedia article](//en.wikipedia.org/wiki/
 
 
 
+## Documentation & Guides
+
+* [API Summary](asset/dox/api/toc)
+
+
 
 
 ### You are here

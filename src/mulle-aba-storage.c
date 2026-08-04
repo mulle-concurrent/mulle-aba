@@ -1,9 +1,10 @@
 //
-//  mulle_aba_storage.c
+//  mulle-aba-storage.c
 //  mulle-aba
 //
-//  Created by Nat! on 19.03.15.
-//  Copyright (c) 2015 Mulle kybernetiK. All rights reserved.
+//  Copyright (c) 2018 Nat! - Mulle kybernetiK.
+//  All rights reserved.
+//
 //
 //  Redistribution and use in source and binary forms, with or without
 //  modification, are permitted provided that the following conditions are met:
