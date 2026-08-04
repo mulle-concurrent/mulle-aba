@@ -6,7 +6,7 @@
    "license" : "BSD-3-Clause",
    "repo" : "mulle-concurrent/mulle-aba",
    "src" : [
-      "asset/dox/TOC.md",
+      "asset/dox/api/toc/index.md",
       "src/generic/include.h",
       "src/mulle-aba-defines.h",
       "src/mulle-aba-storage.c",
