@@ -90,14 +90,14 @@ mulle-aba is a lock-free, cross-platform solution to the ABA problem in concurre
 - **Returns:** 0 on success; -1 if timestamp unavailable (thread not registered).
 - **Behavior:** Records timestamp; calls p_free when safe for all threads.
 
-**`int mulle_aba_free_owned_pointer(void (*p_free)(void *owner, void *pointer), void *pointer, void *owner)`**
+**`int mulle_aba_free_owned_pointer(void (*p_free)(void *pointer, void *owner), void *pointer, void *owner)`**
 
 - **Purpose:** Free pointer with owner context.
 - **Parameters:**
-  - `p_free`: Callback receiving owner and pointer.
+  - `p_free`: Callback receiving pointer and owner.
   - `pointer`: Memory to free.
   - `owner`: Context passed to p_free.
-- **Behavior:** p_free called as `p_free(owner, pointer)`.
+- **Behavior:** p_free called as `p_free(pointer, owner)`.
 
 #### Testing Support
 

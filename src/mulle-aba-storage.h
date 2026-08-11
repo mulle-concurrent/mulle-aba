@@ -224,15 +224,6 @@ static inline int   mulle_aba_worldpointer_get_bit( _mulle_aba_worldpointer_t p_
 }
 
 
-static inline _mulle_aba_worldpointer_t   *
-   mulle_aba_worldpointer_set_struct( _mulle_aba_worldpointer_t p_world,
-                                      struct _mulle_aba_world *world)
-{
-   assert( ! ((intptr_t) world & 0x3));
-   return( (void *) (((intptr_t) p_world & 0x3) | (intptr_t) world));
-}
-
-
 static inline struct _mulle_aba_world   *
    mulle_aba_worldpointer_get_struct( _mulle_aba_worldpointer_t p_world)
 {

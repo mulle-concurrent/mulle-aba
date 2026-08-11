@@ -132,9 +132,9 @@ void   mulle_aba_unregister( void);
 MULLE__ABA_GLOBAL
 int   mulle_aba_free( void (*p_free)( void *), void *pointer);
 
-// same as above but owner, will be first parameter for p_free
+// same as above but pointer will be first parameter for p_free
 MULLE__ABA_GLOBAL
-int   mulle_aba_free_owned_pointer( void (*p_free)( void *owner, void *pointer),
+int   mulle_aba_free_owned_pointer( void (*p_free)( void *pointer, void *owner),
                                     void *pointer,
                                     void *owner);
 

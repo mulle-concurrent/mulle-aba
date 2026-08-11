@@ -110,6 +110,7 @@ void   _mulle_aba_done( struct mulle_aba *p)
 {
    _mulle_aba_storage_done( &p->storage);
    mulle_thread_tss_free( p->timestamp_thread_key);
+   p->timestamp_thread_key = 0;
 
    memset( &p->storage, 0, sizeof( p->storage));
 }
