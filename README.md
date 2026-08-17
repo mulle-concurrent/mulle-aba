@@ -12,7 +12,7 @@ fairly complicated, please read the [Wikipedia article](//en.wikipedia.org/wiki/
 * [mulle-aba: How it works 1](//www.mulle-kybernetik.com/weblog/2015/mulle_aba_how_it_works_1.html)
 * [mulle-aba: How it works 2](//www.mulle-kybernetik.com/weblog/2015/mulle_aba_how_it_works_2.html)
 * [mulle-aba: How it works 3](//www.mulle-kybernetik.com/weblog/2015/mulle_aba_how_it_works_3.html)
-* [Example](example/main.m)
+* [Example](example/main.c)
 
 
 
@@ -24,7 +24,7 @@ fairly complicated, please read the [Wikipedia article](//en.wikipedia.org/wiki/
 
 ## API
 
-* [Aba](dox/API_ABA.md)
+* [Aba](dox/API.md)
 
 
 
@@ -46,29 +46,40 @@ fairly complicated, please read the [Wikipedia article](//en.wikipedia.org/wiki/
 
 ## Add
 
-**This project is a component of the [mulle-core](//github.com/mulle-core/mulle-core) library. As such you usually will *not* add or install it
-individually, unless you specifically do not want to link against
-`mulle-core`.**
+mulle-aba is a component of the [mulle-core](//github.com/mulle-core/mulle-core) library. So in your code include the mulle-core umbrella header:
 
-
-### Add as an individual component
-
-Use [mulle-sde](//github.com/mulle-sde) to add mulle-aba to your project:
-
-``` sh
-mulle-sde add github:mulle-concurrent/mulle-aba
+``` c
+#include <mulle-core/mulle-core.h>
 ```
 
-To only add the sources of mulle-aba with dependency
-sources use [clib](https://github.com/clibs/clib):
+### Add mulle-core to a cmake and git project
 
-
-``` sh
-clib install --out src/mulle-concurrent mulle-concurrent/mulle-aba
+``` bash
+git submodule add https://github.com/mulle-core/mulle-core.git mulle-core
 ```
 
-Add `-isystem src/mulle-concurrent` to your `CFLAGS` and compile all the sources that were downloaded with your project.
+Add this to your `CMakeLists.txt`:
 
+``` cmake
+add_subdirectory( mulle-core)
+target_link_libraries( ${PROJECT_NAME} PRIVATE mulle-core)
+```
+
+
+### Add mulle-core to a mulle-sde project
+
+``` sh
+mulle-sde add github:mulle-core/mulle-core
+```
+
+### Embed mulle-aba with clib
+
+``` sh
+clib install --out src mulle-concurrent/mulle-aba
+```
+
+Append `src` to your include path (e.g. add `-isystem src`  to your `CFLAGS`)
+and compile all the sources that were downloaded.
 
 ## Install
 

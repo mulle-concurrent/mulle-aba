@@ -1035,7 +1035,7 @@ int   _mulle_aba_free_owned_pointer( struct mulle_aba *p,
                         owner,
                         &ts_entry->_pointer_list,
                         timestamp,
-                        (intptr_t) _mulle_atomic_pointer_read( &ts_entry->_retain_count_1) + 1);
+                        (intptr_t) _mulle_atomic_pointer_read_relaxed( &ts_entry->_retain_count_1) + 1);
 #endif
 
 
@@ -1056,7 +1056,7 @@ int   _mulle_aba_free_owned_pointer( struct mulle_aba *p,
 
       _mulle_concurrent_linkedlist_add( &ts_entry->_pointer_list, &entry->_link);
 #if MULLE_ABA_TRACE || MULLE_ABA_TRACE_LIST
-      fprintf( stderr,  "\n%s: *** put old world %p on linked list %p of ts=%ld rc=%ld***\n", mulle_aba_thread_name(), free_worlds, &ts_entry->_pointer_list, timestamp, (intptr_t) _mulle_atomic_pointer_read( &ts_entry->_retain_count_1) + 1);
+      fprintf( stderr,  "\n%s: *** put old world %p on linked list %p of ts=%ld rc=%ld***\n", mulle_aba_thread_name(), free_worlds, &ts_entry->_pointer_list, timestamp, (intptr_t) _mulle_atomic_pointer_read_relaxed( &ts_entry->_retain_count_1) + 1);
 #endif
       free_worlds = next;
    }
@@ -1272,7 +1272,7 @@ void   _mulle_aba_print_worldpointer( _mulle_aba_worldpointer_t world_p)
       fprintf( stderr,  "    #%u : adr=%p bits=%p\n",
                         i,
                         ts_storage,
-                        _mulle_atomic_pointer_read( & ts_storage->_usage_bits));
+                        _mulle_atomic_pointer_read_relaxed( & ts_storage->_usage_bits));
    }
 
    if( world->_n)
