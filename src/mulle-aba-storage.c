@@ -637,7 +637,7 @@ void   _mulle_aba_storage_free_leak_worlds( struct _mulle_aba_storage *q)
    fprintf( stderr, "%s: freeing leaked worlds %p of storage %p\n", mulle_aba_thread_name(), &q->_leaks, q);
 #endif
    entry = _mulle_concurrent_linkedlist_remove_all( &q->_leaks);
-   _mulle_atomic_pointer_write( &list._head.pointer, entry);
+   _mulle_atomic_pointer_nonatomic_write( &list._head.pointer, entry);
 
    _mulle_concurrent_linkedlist_walk( &list, (void *) free_world, q->_allocator);
 }
@@ -652,7 +652,7 @@ void   _mulle_aba_storage_free_unused_worlds( struct _mulle_aba_storage *q)
    fprintf( stderr, "%s: freeing unused worlds %p of storage %p\n", mulle_aba_thread_name(), &q->_free_worlds, q);
 #endif
    entry = _mulle_concurrent_linkedlist_remove_all( &q->_free_worlds);
-   _mulle_atomic_pointer_write( &list._head.pointer, entry);
+   _mulle_atomic_pointer_nonatomic_write( &list._head.pointer, entry);
 
    _mulle_concurrent_linkedlist_walk( &list, (void *) free_world, q->_allocator);
 }
@@ -684,7 +684,7 @@ void   _mulle_aba_storage_free_unused_free_entries( struct _mulle_aba_storage *q
    fprintf( stderr, "%s: freeing unused entries %p of storage %p\n", mulle_aba_thread_name(), &q->_free_entries, q);
 #endif
    entry = _mulle_concurrent_linkedlist_remove_all( &q->_free_entries);
-   _mulle_atomic_pointer_write( &list._head.pointer, entry);
+   _mulle_atomic_pointer_nonatomic_write( &list._head.pointer, entry);
 
    _mulle_concurrent_linkedlist_walk( &list, (void *) free_entry, q->_allocator);
 }
@@ -1532,7 +1532,7 @@ void   _mulle_aba_world_check_timerange( struct _mulle_aba_world *world,
                               mulle_aba_thread_name(),
                               &ts_entry->_pointer_list,
                               timestamp,
-                              (intptr_t) _mulle_atomic_pointer_read( &ts_entry->_retain_count_1) + 1);
+                              (intptr_t) _mulle_atomic_pointer_read_relaxed( &ts_entry->_retain_count_1) + 1);
       _mulle_concurrent_linkedlist_print( &ts_entry->_pointer_list);
 #endif
 
