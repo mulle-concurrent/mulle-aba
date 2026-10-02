@@ -34,7 +34,6 @@
 //  POSSIBILITY OF SUCH DAMAGE.
 //
 #include <mulle-aba/mulle-aba.h>
-#include <mulle-testallocator/mulle-testallocator.h>
 #include <assert.h>
 #include <errno.h>
 #include <stdio.h>
@@ -84,9 +83,8 @@ static void   reset_memory()
    fprintf( stderr, "\n================================================\n");
 #endif
 
-   mulle_testallocator_reset();
 
-   _mulle_aba_init( &test_global, &mulle_testallocator);
+   _mulle_aba_init( &test_global, &mulle_allocator_default);
 }
 
 
@@ -98,6 +96,8 @@ static void  fake_free( void *p)
 }
 
 #pragma mark - run GC
+
+static void    run_gc_free_list_test( void) MULLE_C_UNUSED_FUNCTION;
 
 static void    run_gc_free_list_test( void)
 {
@@ -231,6 +231,8 @@ static void    run_thread_gc_free_list_test( void)
       }
 }
 
+
+static void  single_threaded_test( void) MULLE_C_UNUSED_FUNCTION;
 
 static void  single_threaded_test( void)
 {
@@ -371,8 +373,6 @@ static void  verbose_free( void *s)
 static int   _main(int argc, const char * argv[])
 {
    unsigned int   i;
-   unsigned int   n;
-   unsigned int   j;
    int            rval;
 
    srand( (unsigned int) time( NULL));
@@ -385,13 +385,15 @@ static int   _main(int argc, const char * argv[])
 #endif
 
    mulle_aba_set_global( &test_global);
-   _mulle_aba_init( &test_global, &mulle_testallocator);
+   _mulle_aba_init( &test_global, &mulle_allocator_default);
 
 #if FOREVER
    fprintf( stderr, "This test runs forever, waiting for a crash\n");
 #endif
 
+#if FOREVER
 forever:
+#endif
    reset_memory();
 
    //
@@ -440,7 +442,6 @@ forever:
    mulle_thread_tss_free( threadname_key);
 
    // collect last uglies
-   mulle_testallocator_reset();
 
    return( 0);
 }

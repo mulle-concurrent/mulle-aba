@@ -1,6 +1,6 @@
 cmake_minimum_required( VERSION 3.13...99.99)
 
-project( mulle-aba VERSION 3.1.6 LANGUAGES C)
+project( mulle-aba VERSION 3.1.7 LANGUAGES C)
 
 
 
@@ -53,8 +53,8 @@ endif()
 include( InstallLibrary)
 
 if( LINK_PHASE)
-   include( InstallCMakeInclude)
-   include( InstallCMakePackage)
+   include( AddSubdirectorySupport)
+   include( FindPackageSupport)
 endif() 
 
 include( FinalOutput OPTIONAL)

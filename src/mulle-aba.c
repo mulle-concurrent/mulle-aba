@@ -845,11 +845,12 @@ static int   reorganize_storage_and_increment_timestamp( int mode,
 }
 
 
-int   _mulle_aba_free_owned_pointer( struct mulle_aba *p,
+int   _mulle_aba_free_owned_pointer( void *aba,
                                      void (*p_free)( void *, void *),
                                      void *pointer,
                                      void *owner)
 {
+   struct mulle_aba                   *p;
    _mulle_aba_worldpointer_t          world_p;
    int                                old_bit;
    struct _mulle_aba_world            *free_worlds;
@@ -862,6 +863,8 @@ int   _mulle_aba_free_owned_pointer( struct mulle_aba *p,
    struct _mulle_aba_timestampentry   *ts_entry;
    struct add_context                 ctxt;
    uintptr_t                          timestamp;
+
+   p = aba;
 
    assert( p);
    assert( p_free);

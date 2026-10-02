@@ -38,7 +38,7 @@
 //
 // community version is always even
 //
-#define MULLE__ABA_VERSION     ((3UL << 20) | (1 << 8) | 6)
+#define MULLE__ABA_VERSION     ((3UL << 20) | (1 << 8) | 7)
 
 #include "include.h"
 
@@ -73,7 +73,7 @@ int   _mulle_aba_free( struct mulle_aba *p,
                        void *pointer);
 
 MULLE__ABA_GLOBAL
-int   _mulle_aba_free_owned_pointer( struct mulle_aba *p,
+int   _mulle_aba_free_owned_pointer( void *aba,
                                      void (*p_free)( void *, void *),
                                      void *pointer,
                                      void *owner);
@@ -146,7 +146,7 @@ static inline void   mulle_aba_set_allocator_aba( struct mulle_allocator *alloca
    global = mulle_aba_get_global();
    assert( global);
    mulle_allocator_set_aba( allocator, global,
-                                       (mulle_allocator_aba_t *) _mulle_aba_free_owned_pointer);
+                            _mulle_aba_free_owned_pointer);
 }
 
 
