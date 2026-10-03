@@ -1,3 +1,17 @@
+### 3.1.7
+
+
+* Add API reference entry for ``_mulle_aba_free_owned_pointer`,` describing its purpose, parameters, and return value.
+* Note that `aba` matches the allocator callback signature and ``p_free`` receives both pointer and owner context.
+
+
+
+* **BREAKING**: ``_mulle_aba_free_owned_pointer`` now takes a `void *aba`
+  argument instead of `struct `mulle_aba` *`, matching ``mulle_allocator_aba_t``
+  directly so callers no longer need a cast
+* mulle-allocator 9.0.0 or later is now required, as enforced by the
+  generated version checks
+
 ### 3.1.6
 
 
