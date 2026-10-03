@@ -141,6 +141,16 @@ For scenarios requiring multiple independent ABA systems:
 
 - **Purpose:** Unregister current thread from specific instance.
 
+**`int _mulle_aba_free_owned_pointer(void *aba, void (*p_free)(void *, void *), void *pointer, void *owner)`**
+
+- **Purpose:** Free an owned pointer through a specific ABA instance.
+- **Parameters:**
+  - `aba`: ABA instance to use (matches the allocator callback signature).
+  - `p_free`: Callback receiving pointer and owner.
+  - `pointer`: Memory to free.
+  - `owner`: Context passed to p_free.
+- **Returns:** 0 on success, -1 on error.
+
 ## 4. Performance Characteristics
 
 - **Register/Unregister:** O(n) first call (TSS creation); O(1) thereafter.
