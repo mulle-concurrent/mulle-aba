@@ -3,11 +3,12 @@
    {
       description="🚮 A lock-free, cross-platform solution to the ABA problem";
       domain="github";
+      language="c";
+      dialect="c";
       name="mulle-aba";
       user="mulle-concurrent";
       repo="mulle-aba";
       homepage="https://github.com/mulle-concurrent/mulle-aba";
-      version="3.1.7";
       license="BSD-3-Clause";
    };
    dependencies =
@@ -29,7 +30,7 @@
          user="mulle-concurrent";
       },
       {
-         description="🔂 mulle-linkedlist a wait and lock-free linked list";
+         description="🔂 mulle-linkedlist a lock-free intrusive linked list";
          domain="github";
          name="mulle-linkedlist";
          repo="mulle-linkedlist";
