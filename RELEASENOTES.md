@@ -2,6 +2,15 @@
 
 
 
+
+
+
+
+
+* Add API reference entry for ``_mulle_aba_free_owned_pointer`,` describing its purpose, parameters, and return value.
+* Note that `aba` matches the allocator callback signature and ``p_free`` receives both pointer and owner context.
+
+
 * Add API reference entry for ``_mulle_aba_free_owned_pointer`,` describing its purpose, parameters, and return value.
 * Note that `aba` matches the allocator callback signature and ``p_free`` receives both pointer and owner context.
 
